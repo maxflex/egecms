@@ -64,6 +64,7 @@ const elixir = require('laravel-elixir');
              '../bower/ace-builds/src/mode-json.js',
              '../bower/ace/lib/ace/commands/default_commands.js',
              '../bower/angular-file-upload/dist/angular-file-upload.min.js',
+             '../bower/jquery.maskedinput/dist/jquery.maskedinput.min.js',
              'resources/assets/js/*.js',
          ], 'public/js/vendor.js');
  });

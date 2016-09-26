@@ -14,6 +14,11 @@ class CommaSeparated extends TestCase
      */
     public function it_gets_comma_separated()
     {
-        // $page =
+        $request = [
+            'subjects' => [4, 5]
+        ];
+        Page::find(10)->update($request);
+
+        $this->assertEqual(true, false);
     }
 }

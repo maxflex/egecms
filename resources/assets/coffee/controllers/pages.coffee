@@ -35,7 +35,7 @@ angular
 
         angular.element(document).ready ->
             IndexService.init(Page, $scope.current_page, $attrs)
-    .controller 'PagesForm', ($scope, $attrs, $timeout, FormService, Page, Sort) ->
+    .controller 'PagesForm', ($scope, $attrs, $timeout, FormService, Page) ->
         bindArguments($scope, arguments)
         angular.element(document).ready ->
             FormService.init(Page, $scope.id, $scope.model)

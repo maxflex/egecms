@@ -170,7 +170,7 @@
         return $n . ' ' . $text;
 	}
 
-    function fact($table, $select)
+    function fact($table, $select = null)
     {
         return \App\Models\Service\Factory::json($table, $select);
     }
