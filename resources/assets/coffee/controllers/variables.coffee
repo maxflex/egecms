@@ -13,5 +13,6 @@ angular
                 $scope.editor = ace.edit("editor")
                 mode = if FormService.model.html[0] is '{' then 'json' else 'html'
                 $scope.editor.getSession().setMode("ace/mode/#{mode}")
+                $scope.editor.getSession().setUseWrapMode(true)
             FormService.beforeSave = ->
                 FormService.model.html = $scope.editor.getValue()

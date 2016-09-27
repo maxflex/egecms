@@ -41,6 +41,7 @@ angular
             FormService.init(Page, $scope.id, $scope.model)
             FormService.dataLoaded.promise.then ->
                 $scope.editor = ace.edit("editor")
+                $scope.editor.getSession().setUseWrapMode(true)
                 $scope.editor.getSession().setMode("ace/mode/html")
             FormService.beforeSave = ->
                 FormService.model.html = $scope.editor.getValue()
