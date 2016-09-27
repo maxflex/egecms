@@ -176,126 +176,6 @@
 }).call(this);
 
 (function() {
-  angular.module('Egecms').controller('LoginCtrl', function($scope, $http) {
-    angular.element(document).ready(function() {
-      return $scope.l = Ladda.create(document.querySelector('#login-submit'));
-    });
-    return $scope.checkFields = function() {
-      $scope.l.start();
-      ajaxStart();
-      $scope.in_process = true;
-      return $http.post('login', {
-        login: $scope.login,
-        password: $scope.password
-      }).then(function(response) {
-        if (response.data === true) {
-          return location.reload();
-        } else {
-          $scope.in_process = false;
-          ajaxEnd();
-          $scope.l.stop();
-          return notifyError("Неправильная пара логин-пароль");
-        }
-      });
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').controller('PagesIndex', function($scope, $attrs, $timeout, IndexService, Page, FileUploader) {
-    var onWhenAddingFileFailed;
-    bindArguments($scope, arguments);
-    $scope.sortableOptions = {
-      update: function(e, ui) {
-        return $timeout(function() {
-          return IndexService.page.data.forEach(function(model, index) {
-            return Page.update({
-              id: model.id
-            }, {
-              position: index
-            });
-          });
-        });
-      },
-      axis: 'y'
-    };
-    FileUploader.FileSelect.prototype.isEmptyAfterSelection = function() {
-      return true;
-    };
-    $scope.uploader = new FileUploader({
-      url: 'pages/import',
-      alias: 'pages',
-      autoUpload: true,
-      method: 'post',
-      removeAfterUpload: true,
-      onCompleteItem: function(i, response, status) {
-        if (status === 200) {
-          notifySuccess('Импортирован');
-        }
-        if (status !== 200) {
-          return notifyError('Ошибка!');
-        }
-      }
-    }, onWhenAddingFileFailed = function(item, filter, options) {
-      if (filter.name === "queueLimit") {
-        this.clearQueue();
-        return this.addToQueue(item);
-      }
-    });
-    $scope["import"] = function(e) {
-      e.preventDefault();
-      $('#import-button').trigger('click');
-    };
-    return angular.element(document).ready(function() {
-      return IndexService.init(Page, $scope.current_page, $attrs);
-    });
-  }).controller('PagesForm', function($scope, $attrs, $timeout, FormService, Page) {
-    bindArguments($scope, arguments);
-    return angular.element(document).ready(function() {
-      FormService.init(Page, $scope.id, $scope.model);
-      FormService.dataLoaded.promise.then(function() {
-        $scope.editor = ace.edit("editor");
-        return $scope.editor.getSession().setMode("ace/mode/html");
-      });
-      return FormService.beforeSave = function() {
-        return FormService.model.html = $scope.editor.getValue();
-      };
-    });
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').controller('VariablesIndex', function($scope, $attrs, IndexService, Variable) {
-    bindArguments($scope, arguments);
-    return angular.element(document).ready(function() {
-      return IndexService.init(Variable, $scope.current_page, $attrs);
-    });
-  }).controller('VariablesForm', function($scope, $attrs, $timeout, FormService, Variable) {
-    bindArguments($scope, arguments);
-    return angular.element(document).ready(function() {
-      FormService.init(Variable, $scope.id, $scope.model);
-      FormService.dataLoaded.promise.then(function() {
-        var mode;
-        $scope.editor = ace.edit("editor");
-        mode = FormService.model.html[0] === '{' ? 'json' : 'html';
-        return $scope.editor.getSession().setMode("ace/mode/" + mode);
-      });
-      return FormService.beforeSave = function() {
-        return FormService.model.html = $scope.editor.getValue();
-      };
-    });
-  });
-
-}).call(this);
-
-(function() {
-
-
-}).call(this);
-
-(function() {
 
 
 }).call(this);
@@ -429,6 +309,121 @@
 
 (function() {
 
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').controller('LoginCtrl', function($scope, $http) {
+    angular.element(document).ready(function() {
+      return $scope.l = Ladda.create(document.querySelector('#login-submit'));
+    });
+    return $scope.checkFields = function() {
+      $scope.l.start();
+      ajaxStart();
+      $scope.in_process = true;
+      return $http.post('login', {
+        login: $scope.login,
+        password: $scope.password
+      }).then(function(response) {
+        if (response.data === true) {
+          return location.reload();
+        } else {
+          $scope.in_process = false;
+          ajaxEnd();
+          $scope.l.stop();
+          return notifyError("Неправильная пара логин-пароль");
+        }
+      });
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').controller('PagesIndex', function($scope, $attrs, $timeout, IndexService, Page, FileUploader) {
+    var onWhenAddingFileFailed;
+    bindArguments($scope, arguments);
+    $scope.sortableOptions = {
+      update: function(e, ui) {
+        return $timeout(function() {
+          return IndexService.page.data.forEach(function(model, index) {
+            return Page.update({
+              id: model.id
+            }, {
+              position: index
+            });
+          });
+        });
+      },
+      axis: 'y'
+    };
+    FileUploader.FileSelect.prototype.isEmptyAfterSelection = function() {
+      return true;
+    };
+    $scope.uploader = new FileUploader({
+      url: 'pages/import',
+      alias: 'pages',
+      autoUpload: true,
+      method: 'post',
+      removeAfterUpload: true,
+      onCompleteItem: function(i, response, status) {
+        if (status === 200) {
+          notifySuccess('Импортирован');
+        }
+        if (status !== 200) {
+          return notifyError('Ошибка!');
+        }
+      }
+    }, onWhenAddingFileFailed = function(item, filter, options) {
+      if (filter.name === "queueLimit") {
+        this.clearQueue();
+        return this.addToQueue(item);
+      }
+    });
+    $scope["import"] = function(e) {
+      e.preventDefault();
+      $('#import-button').trigger('click');
+    };
+    return angular.element(document).ready(function() {
+      return IndexService.init(Page, $scope.current_page, $attrs);
+    });
+  }).controller('PagesForm', function($scope, $attrs, $timeout, FormService, Page) {
+    bindArguments($scope, arguments);
+    return angular.element(document).ready(function() {
+      FormService.init(Page, $scope.id, $scope.model);
+      FormService.dataLoaded.promise.then(function() {
+        $scope.editor = ace.edit("editor");
+        return $scope.editor.getSession().setMode("ace/mode/html");
+      });
+      return FormService.beforeSave = function() {
+        return FormService.model.html = $scope.editor.getValue();
+      };
+    });
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').controller('VariablesIndex', function($scope, $attrs, IndexService, Variable) {
+    bindArguments($scope, arguments);
+    return angular.element(document).ready(function() {
+      return IndexService.init(Variable, $scope.current_page, $attrs);
+    });
+  }).controller('VariablesForm', function($scope, $attrs, $timeout, FormService, Variable) {
+    bindArguments($scope, arguments);
+    return angular.element(document).ready(function() {
+      FormService.init(Variable, $scope.id, $scope.model);
+      FormService.dataLoaded.promise.then(function() {
+        var mode;
+        $scope.editor = ace.edit("editor");
+        mode = FormService.model.html[0] === '{' ? 'json' : 'html';
+        return $scope.editor.getSession().setMode("ace/mode/" + mode);
+      });
+      return FormService.beforeSave = function() {
+        return FormService.model.html = $scope.editor.getValue();
+      };
+    });
+  });
 
 }).call(this);
 
@@ -576,6 +571,11 @@
     };
     return this;
   });
+
+}).call(this);
+
+(function() {
+
 
 }).call(this);
 
