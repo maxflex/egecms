@@ -2,6 +2,7 @@
 /public/storage
 /vendor
 /.idea
+Envoy.blade.php
 Homestead.json
 Homestead.yaml
 .env
