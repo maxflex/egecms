@@ -6,7 +6,7 @@
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <meta charset="utf-8">
     <base href="{{ config('app.url') }}">
-    <link href="{{ asset('css/app.css', isProduction()) }}" rel="stylesheet" type="text/css">
+    <link href="css/app.css" rel="stylesheet" type="text/css">
     <link href="css/signin.css" rel="stylesheet" type="text/css">
     @yield('scripts')
 

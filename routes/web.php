@@ -1,4 +1,5 @@
 <?php
+URL::forceSchema('https');
 
 Route::post('login', 'LoginController@login');
 Route::get('logout', 'LoginController@logout');
