@@ -313,11 +313,6 @@
 }).call(this);
 
 (function() {
-
-
-}).call(this);
-
-(function() {
   angular.module('Egecms').directive('ngMulti', function() {
     return {
       restrict: 'E',
@@ -469,6 +464,11 @@
       }
     };
   };
+
+}).call(this);
+
+(function() {
+
 
 }).call(this);
 
