@@ -250,23 +250,34 @@
     return angular.element(document).ready(function() {
       return IndexService.init(Page, $scope.current_page, $attrs);
     });
-  }).controller('PagesForm', function($scope, $attrs, $timeout, FormService, Page, Published, UpDown) {
+  }).controller('PagesForm', function($scope, $attrs, $timeout, FormService, AceService, Page, Published, UpDown) {
     bindArguments($scope, arguments);
-    return angular.element(document).ready(function() {
+    angular.element(document).ready(function() {
       FormService.init(Page, $scope.id, $scope.model);
       FormService.dataLoaded.promise.then(function() {
-        $scope.editor = ace.edit("editor");
-        $scope.editor.getSession().setUseWrapMode(true);
-        $scope.editor.getSession().setMode("ace/mode/html");
-        return $scope.editor.setOptions({
-          minLines: 15,
-          maxLines: Infinity
-        });
+        return AceService.initEditor(15);
       });
       return FormService.beforeSave = function() {
-        return FormService.model.html = $scope.editor.getValue();
+        return FormService.model.html = AceService.editor.getValue();
       };
     });
+    return $scope.checkExistance = function(field, event) {
+      return Page.checkExistance({
+        id: FormService.model.id,
+        field: field,
+        value: FormService.model[field]
+      }, function(response) {
+        var element;
+        element = $(event.target);
+        if (response.exists) {
+          FormService.error_element = element;
+          return element.addClass('has-error');
+        } else {
+          FormService.error_element = void 0;
+          return element.removeClass('has-error');
+        }
+      });
+    };
   });
 
 }).call(this);
@@ -277,23 +288,15 @@
     return angular.element(document).ready(function() {
       return IndexService.init(Variable, $scope.current_page, $attrs);
     });
-  }).controller('VariablesForm', function($scope, $attrs, $timeout, FormService, Variable) {
+  }).controller('VariablesForm', function($scope, $attrs, $timeout, FormService, AceService, Variable) {
     bindArguments($scope, arguments);
     return angular.element(document).ready(function() {
       FormService.init(Variable, $scope.id, $scope.model);
       FormService.dataLoaded.promise.then(function() {
-        var mode;
-        $scope.editor = ace.edit("editor");
-        mode = FormService.model.html[0] === '{' ? 'json' : 'html';
-        $scope.editor.getSession().setMode("ace/mode/" + mode);
-        $scope.editor.getSession().setUseWrapMode(true);
-        return $scope.editor.setOptions({
-          minLines: 30,
-          maxLines: Infinity
-        });
+        return AceService.initEditor(30);
       });
       return FormService.beforeSave = function() {
-        return FormService.model.html = $scope.editor.getValue();
+        return FormService.model.html = AceService.editor.getValue();
       };
     });
   });
@@ -398,6 +401,31 @@
 }).call(this);
 
 (function() {
+  angular.module('Egecms').directive('ngSelectNew', function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope: {
+        object: '=',
+        model: '=',
+        noneText: '@',
+        label: '@'
+      },
+      templateUrl: 'directives/select-new',
+      controller: function($scope, $element, $attrs, $timeout) {
+        if (!$scope.noneText) {
+          $scope.model = _.first(Object.keys($scope.object));
+        }
+        return $timeout(function() {
+          return $($element).selectpicker();
+        }, 500);
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
   angular.module('Egecms').directive('ngSelect', function() {
     return {
       restrict: 'E',
@@ -452,6 +480,71 @@
       title: 'внизу'
     }
   ]);
+
+}).call(this);
+
+(function() {
+  var apiPath, countable, updatable;
+
+  angular.module('Egecms').factory('Variable', function($resource) {
+    return $resource(apiPath('variables'), {
+      id: '@id'
+    }, updatable());
+  }).factory('Page', function($resource) {
+    return $resource(apiPath('pages'), {
+      id: '@id'
+    }, {
+      update: {
+        method: 'PUT'
+      },
+      checkExistance: {
+        method: 'POST',
+        url: apiPath('pages', 'checkExistance')
+      }
+    });
+  });
+
+  apiPath = function(entity, additional) {
+    if (additional == null) {
+      additional = '';
+    }
+    return ("api/" + entity + "/") + (additional ? additional + '/' : '') + ":id";
+  };
+
+  updatable = function() {
+    return {
+      update: {
+        method: 'PUT'
+      }
+    };
+  };
+
+  countable = function() {
+    return {
+      count: {
+        method: 'GET'
+      }
+    };
+  };
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').service('AceService', function() {
+    this.initEditor = function(minLines) {
+      if (minLines == null) {
+        minLines = 30;
+      }
+      this.editor = ace.edit("editor");
+      this.editor.getSession().setMode("ace/mode/html");
+      this.editor.getSession().setUseWrapMode(true);
+      return this.editor.setOptions({
+        minLines: minLines,
+        maxLines: Infinity
+      });
+    };
+    return this;
+  });
 
 }).call(this);
 
@@ -514,11 +607,17 @@
     })(this);
     beforeSave = (function(_this) {
       return function() {
-        ajaxStart();
-        if (_this.beforeSave !== void 0) {
-          _this.beforeSave();
+        if (_this.error_element === void 0) {
+          ajaxStart();
+          if (_this.beforeSave !== void 0) {
+            _this.beforeSave();
+          }
+          _this.saving = true;
+          return true;
+        } else {
+          $(_this.error_element).focus();
+          return false;
         }
-        return _this.saving = true;
       };
     })(this);
     modelName = function() {
@@ -543,7 +642,9 @@
       })(this));
     };
     this.edit = function() {
-      beforeSave();
+      if (!beforeSave()) {
+        return;
+      }
       return this.model.$update().then((function(_this) {
         return function() {
           _this.saving = false;
@@ -552,7 +653,9 @@
       })(this));
     };
     this.create = function() {
-      beforeSave();
+      if (!beforeSave()) {
+        return;
+      }
       return this.model.$save().then((function(_this) {
         return function(response) {
           return redirect(modelName() + ("/" + response.id + "/edit"));
@@ -561,44 +664,6 @@
     };
     return this;
   });
-
-}).call(this);
-
-(function() {
-  var apiPath, countable, updatable;
-
-  angular.module('Egecms').factory('Variable', function($resource) {
-    return $resource(apiPath('variables'), {
-      id: '@id'
-    }, updatable());
-  }).factory('Page', function($resource) {
-    return $resource(apiPath('pages'), {
-      id: '@id'
-    }, updatable());
-  });
-
-  apiPath = function(entity, additional) {
-    if (additional == null) {
-      additional = '';
-    }
-    return ("api/" + entity + "/") + (additional ? additional + '/' : '') + ":id";
-  };
-
-  updatable = function() {
-    return {
-      update: {
-        method: 'PUT'
-      }
-    };
-  };
-
-  countable = function() {
-    return {
-      count: {
-        method: 'GET'
-      }
-    };
-  };
 
 }).call(this);
 

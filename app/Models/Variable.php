@@ -11,4 +11,9 @@ class Variable extends Model
         'html',
         'desc'
     ];
+
+    public static function getLight()
+    {
+        return self::select('id', 'name')->get();
+    }
 }

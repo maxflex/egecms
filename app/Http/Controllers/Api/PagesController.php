@@ -85,4 +85,18 @@ class PagesController extends Controller
     {
         Page::destroy($id);
     }
+
+    /**
+     * Check page existance
+     */
+     public function checkExistance(Request $request, $id = null)
+     {
+         $query = Page::query();
+
+         if ($id !== null) {
+             $query->where('id', '!=', $id);
+         }
+
+         return ['exists' => $query->where($request->field, $request->value)->exists()];
+     }
 }

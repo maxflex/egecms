@@ -45,9 +45,15 @@ angular.module 'Egecms'
                 this.dataLoaded.resolve(true)
 
         beforeSave = =>
-            ajaxStart()
-            this.beforeSave() if this.beforeSave isnt undefined
-            this.saving = true
+            if this.error_element is undefined
+                ajaxStart()
+                this.beforeSave() if this.beforeSave isnt undefined
+                this.saving = true
+                true
+            else
+                $(this.error_element).focus()
+                # если нет ошибок, вернуть true и обработать в save/create
+                false
 
         # вырезаем MODEL из url типа /website/model/create
         modelName = ->
@@ -64,13 +70,13 @@ angular.module 'Egecms'
                         redirect modelName()
 
         this.edit = ->
-            beforeSave()
+            return if not beforeSave()
             this.model.$update().then =>
                 this.saving = false
                 ajaxEnd()
 
         this.create = ->
-            beforeSave()
+            return if not beforeSave()
             this.model.$save().then (response) =>
                 redirect modelName() + "/#{response.id}/edit"
 

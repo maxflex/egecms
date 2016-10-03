@@ -17,6 +17,7 @@ class Page extends Model
        'seo_desktop' => 'string',
        'seo_mobile'  => 'string',
        'station_id'  => 'string',
+       'variable_id'  => 'string',
    ];
 
    protected $attributes = [
@@ -45,7 +46,8 @@ class Page extends Model
         'subjects',
         'station_id',
         'seo_desktop',
-        'seo_mobile'
+        'seo_mobile',
+        'variable_id',
     ];
 
     protected static $hidden_on_export = [
@@ -54,6 +56,15 @@ class Page extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function setVariableIdAttribute($value)
+    {
+        if (empty($value)) {
+            $this->attributes['variable_id'] = null;
+        } else {
+            $this->attributes['variable_id'] = $value;
+        }
+    }
 
     private static function _getNextPosition()
     {

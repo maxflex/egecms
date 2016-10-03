@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\Page;
+use App\Models\Variable;
 
 class PagesController extends Controller
 {
@@ -29,7 +30,7 @@ class PagesController extends Controller
     public function create()
     {
         return view('pages.create')->with(ngInit([
-            'model' => new Page,
+            'model' => new Page
         ]));
     }
 

@@ -5,10 +5,10 @@
 </div>
 <div class="row mbs">
     <div class="col-sm-4">
-        @include('modules.input', ['title' => 'отображаемый URL', 'model' => 'url'])
+        @include('modules.input', ['title' => 'отображаемый URL', 'model' => 'url', 'keyup' => 'checkExistance(\'url\', $event)'])
     </div>
     <div class="col-sm-4">
-        @include('modules.input', ['title' => 'title', 'model' => 'title'])
+        @include('modules.input', ['title' => 'title', 'model' => 'title', 'keyup' => 'checkExistance(\'title\', $event)'])
     </div>
     <div class="col-sm-4">
         <label class="no-margin-bottom">публикация</label>
@@ -17,7 +17,8 @@
 </div>
 <div class="row mbs">
     <div class="col-sm-4">
-        @include('modules.input', ['title' => 'h1', 'model' => 'h1'])
+        <label class="no-margin-bottom">макет</label>
+        <ng-select-new model='FormService.model.variable_id' object='{{ App\Models\Variable::getLight() }}' label='name' none-text='не указано'></ng-select>
     </div>
     <div class="col-sm-4">
         <label class="no-margin-bottom">seo desktop</label>
@@ -26,6 +27,11 @@
     <div class="col-sm-4">
         <label class="no-margin-bottom">seo mobile</label>
         <ng-select model='FormService.model.seo_mobile' object="UpDown" label='title' none-text='не указано'></ng-select>
+    </div>
+</div>
+<div class="row mbs">
+    <div class="col-sm-12">
+        @include('modules.input', ['title' => 'h1', 'model' => 'h1'])
     </div>
 </div>
 <div class="row mbs">

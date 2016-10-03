@@ -35,16 +35,25 @@ angular
 
         angular.element(document).ready ->
             IndexService.init(Page, $scope.current_page, $attrs)
-    .controller 'PagesForm', ($scope, $attrs, $timeout, FormService, Page, Published, UpDown) ->
+    .controller 'PagesForm', ($scope, $attrs, $timeout, FormService, AceService, Page, Published, UpDown) ->
         bindArguments($scope, arguments)
         angular.element(document).ready ->
             FormService.init(Page, $scope.id, $scope.model)
             FormService.dataLoaded.promise.then ->
-                $scope.editor = ace.edit("editor")
-                $scope.editor.getSession().setUseWrapMode(true)
-                $scope.editor.getSession().setMode("ace/mode/html")
-                $scope.editor.setOptions
-                    minLines: 15
-                    maxLines: Infinity
+                AceService.initEditor(15)
             FormService.beforeSave = ->
-                FormService.model.html = $scope.editor.getValue()
+                FormService.model.html = AceService.editor.getValue()
+
+        $scope.checkExistance = (field, event) ->
+            Page.checkExistance
+                id: FormService.model.id
+                field: field
+                value: FormService.model[field]
+            , (response) ->
+                element = $(event.target)
+                if response.exists
+                    FormService.error_element = element
+                    element.addClass('has-error')
+                else
+                    FormService.error_element = undefined
+                    element.removeClass('has-error')
