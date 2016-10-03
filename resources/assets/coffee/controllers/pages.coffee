@@ -35,7 +35,7 @@ angular
 
         angular.element(document).ready ->
             IndexService.init(Page, $scope.current_page, $attrs)
-    .controller 'PagesForm', ($scope, $attrs, $timeout, FormService, Page) ->
+    .controller 'PagesForm', ($scope, $attrs, $timeout, FormService, Page, Published, UpDown) ->
         bindArguments($scope, arguments)
         angular.element(document).ready ->
             FormService.init(Page, $scope.id, $scope.model)
@@ -43,5 +43,8 @@ angular
                 $scope.editor = ace.edit("editor")
                 $scope.editor.getSession().setUseWrapMode(true)
                 $scope.editor.getSession().setMode("ace/mode/html")
+                $scope.editor.setOptions
+                    minLines: 15
+                    maxLines: Infinity
             FormService.beforeSave = ->
                 FormService.model.html = $scope.editor.getValue()

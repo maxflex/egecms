@@ -14,5 +14,8 @@ angular
                 mode = if FormService.model.html[0] is '{' then 'json' else 'html'
                 $scope.editor.getSession().setMode("ace/mode/#{mode}")
                 $scope.editor.getSession().setUseWrapMode(true)
+                $scope.editor.setOptions
+                    minLines: 30
+                    maxLines: Infinity
             FormService.beforeSave = ->
                 FormService.model.html = $scope.editor.getValue()

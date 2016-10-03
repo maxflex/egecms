@@ -35,7 +35,7 @@ angular.module 'Egecms'
             if id
                 this.model = Resource.get({id: id}, => modelLoaded())
             else
-                this.model = new Resource()
+                this.model = new Resource(model)
                 modelLoaded()
 
 

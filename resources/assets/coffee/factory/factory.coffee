@@ -1,7 +1,6 @@
-# angular.module('Egecms')
-#     .value 'Sort', [
-#         {id: 1, title: 'по цене – сначала дороже'}
-#         {id: 2, title: 'по цене – сначала дешевле'}
-#         {id: 3, title: 'по популярности'}
-#         {id: 4, title: 'по близости к метро'}
-#     ]
+angular.module('Egecms')
+    .value 'Published', ['не опубликовано', 'опубликовано']
+    .value 'UpDown', [
+        {id: 1, title: 'вверху'},
+        {id: 2, title: 'внизу'},
+    ]

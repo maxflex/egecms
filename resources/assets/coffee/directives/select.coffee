@@ -15,4 +15,4 @@ angular.module 'Egecms'
 
             $timeout ->
                 $($element).selectpicker()
-            , 100
+            , 150

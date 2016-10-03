@@ -9,28 +9,43 @@ use Shared\Model;
 
 class Page extends Model
 {
+    const UPLOAD_FOLDER = 'storage/app/public';
+
     protected $casts = [
-       'sort'      => 'string',
-       'place'      => 'string',
-       'station_id' => 'string',
+       'sort'        => 'string',
+       'place'       => 'string',
+       'seo_desktop' => 'string',
+       'seo_mobile'  => 'string',
+       'station_id'  => 'string',
+   ];
+
+   protected $attributes = [
+       'sort'        => 0,
+       'place'       => 0,
+       'seo_desktop' => 0,
+       'seo_mobile'  => 0,
+       'station_id'  => 0,
+       'published'   => 0,
    ];
 
    protected $commaSeparated = ['subjects'];
-
-   const UPLOAD_FOLDER = 'storage/app/public';
 
    protected $fillable = [
         'keyphrase',
         'url',
         'title',
         'keywords',
+        'desc',
+        'published',
         'h1',
         'html',
         'position',
         'sort',
         'place',
         'subjects',
-        'station_id'
+        'station_id',
+        'seo_desktop',
+        'seo_mobile'
     ];
 
     protected static $hidden_on_export = [

@@ -12,3 +12,5 @@
         <div id='editor' style="height: 500px">@{{ FormService.model.html }}</div>
     </div>
 </div>
+
+{{-- @include('docs.commands') --}}

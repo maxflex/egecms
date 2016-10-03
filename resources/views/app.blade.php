@@ -39,8 +39,17 @@
       </div>
       <div style="padding: 0; width: 80.6%;" class="col-sm-9 content-col">
         <div class="panel panel-primary">
-          <div class="panel-heading">@yield('title')
-              <div class="pull-right links-right">@yield('title-right')</div>
+          <div class="panel-heading panel-heading-main">
+              <div class="row">
+                  <div class="col-sm-4">@yield('title')</div>
+                  <div class="col-sm-4 center">
+                      @yield('title-center')
+                  </div>
+                  <div class="col-sm-4 right">
+                      @yield('title-right')
+                  </div>
+              </div>
+
           </div>
           <div class="panel-body panel-frontend-loading">
               <div class="frontend-loading animate-fadeIn" ng-show='frontend_loading'>

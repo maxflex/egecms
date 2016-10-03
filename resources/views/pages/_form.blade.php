@@ -4,18 +4,41 @@
     </div>
 </div>
 <div class="row mbs">
-    <div class="col-sm-6">
+    <div class="col-sm-4">
         @include('modules.input', ['title' => 'отображаемый URL', 'model' => 'url'])
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
         @include('modules.input', ['title' => 'title', 'model' => 'title'])
+    </div>
+    <div class="col-sm-4">
+        <label class="no-margin-bottom">публикация</label>
+        <select class="form-control" bs-select ng-model='FormService.model.published' ng-options="+(index) as title for (index, title) in Published"></select>
+    </div>
+</div>
+<div class="row mbs">
+    <div class="col-sm-4">
+        @include('modules.input', ['title' => 'h1', 'model' => 'h1'])
+    </div>
+    <div class="col-sm-4">
+        <label class="no-margin-bottom">seo desktop</label>
+        <ng-select model='FormService.model.seo_desktop' object="UpDown" label='title' none-text='не указано'></ng-select>
+    </div>
+    <div class="col-sm-4">
+        <label class="no-margin-bottom">seo mobile</label>
+        <ng-select model='FormService.model.seo_mobile' object="UpDown" label='title' none-text='не указано'></ng-select>
     </div>
 </div>
 <div class="row mbs">
     <div class="col-sm-12">
-        @include('modules.input', ['title' => 'h1', 'model' => 'h1'])
+        @include('modules.input', ['title' => 'ключевые слова', 'model' => 'keywords'])
     </div>
 </div>
+<div class="row mbs">
+    <div class="col-sm-12">
+        @include('modules.input', ['title' => 'описание', 'model' => 'desc'])
+    </div>
+</div>
+
 <div class="serp">
     <div class="row mb">
         <div class="col-sm-3">
@@ -36,7 +59,7 @@
         </div>
     </div>
 </div>
-<div class="row mbs">
+<div class="row mbb">
     <div class="col-sm-12">
         <label>содержание раздела</label>
         <div id='editor' style="height: 500px">@{{ FormService.model.html }}</div>

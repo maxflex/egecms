@@ -250,14 +250,18 @@
     return angular.element(document).ready(function() {
       return IndexService.init(Page, $scope.current_page, $attrs);
     });
-  }).controller('PagesForm', function($scope, $attrs, $timeout, FormService, Page) {
+  }).controller('PagesForm', function($scope, $attrs, $timeout, FormService, Page, Published, UpDown) {
     bindArguments($scope, arguments);
     return angular.element(document).ready(function() {
       FormService.init(Page, $scope.id, $scope.model);
       FormService.dataLoaded.promise.then(function() {
         $scope.editor = ace.edit("editor");
         $scope.editor.getSession().setUseWrapMode(true);
-        return $scope.editor.getSession().setMode("ace/mode/html");
+        $scope.editor.getSession().setMode("ace/mode/html");
+        return $scope.editor.setOptions({
+          minLines: 15,
+          maxLines: Infinity
+        });
       });
       return FormService.beforeSave = function() {
         return FormService.model.html = $scope.editor.getValue();
@@ -282,13 +286,22 @@
         $scope.editor = ace.edit("editor");
         mode = FormService.model.html[0] === '{' ? 'json' : 'html';
         $scope.editor.getSession().setMode("ace/mode/" + mode);
-        return $scope.editor.getSession().setUseWrapMode(true);
+        $scope.editor.getSession().setUseWrapMode(true);
+        return $scope.editor.setOptions({
+          minLines: 30,
+          maxLines: Infinity
+        });
       });
       return FormService.beforeSave = function() {
         return FormService.model.html = $scope.editor.getValue();
       };
     });
   });
+
+}).call(this);
+
+(function() {
+
 
 }).call(this);
 
@@ -402,7 +415,7 @@
         }
         return $timeout(function() {
           return $($element).selectpicker();
-        }, 100);
+        }, 150);
       }
     };
   });
@@ -430,45 +443,15 @@
 }).call(this);
 
 (function() {
-  var apiPath, countable, updatable;
-
-  angular.module('Egecms').factory('Variable', function($resource) {
-    return $resource(apiPath('variables'), {
-      id: '@id'
-    }, updatable());
-  }).factory('Page', function($resource) {
-    return $resource(apiPath('pages'), {
-      id: '@id'
-    }, updatable());
-  });
-
-  apiPath = function(entity, additional) {
-    if (additional == null) {
-      additional = '';
+  angular.module('Egecms').value('Published', ['не опубликовано', 'опубликовано']).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
     }
-    return ("api/" + entity + "/") + (additional ? additional + '/' : '') + ":id";
-  };
-
-  updatable = function() {
-    return {
-      update: {
-        method: 'PUT'
-      }
-    };
-  };
-
-  countable = function() {
-    return {
-      count: {
-        method: 'GET'
-      }
-    };
-  };
-
-}).call(this);
-
-(function() {
-
+  ]);
 
 }).call(this);
 
@@ -517,7 +500,7 @@
           };
         })(this));
       } else {
-        this.model = new Resource();
+        this.model = new Resource(model);
         return modelLoaded();
       }
     };
@@ -578,6 +561,44 @@
     };
     return this;
   });
+
+}).call(this);
+
+(function() {
+  var apiPath, countable, updatable;
+
+  angular.module('Egecms').factory('Variable', function($resource) {
+    return $resource(apiPath('variables'), {
+      id: '@id'
+    }, updatable());
+  }).factory('Page', function($resource) {
+    return $resource(apiPath('pages'), {
+      id: '@id'
+    }, updatable());
+  });
+
+  apiPath = function(entity, additional) {
+    if (additional == null) {
+      additional = '';
+    }
+    return ("api/" + entity + "/") + (additional ? additional + '/' : '') + ":id";
+  };
+
+  updatable = function() {
+    return {
+      update: {
+        method: 'PUT'
+      }
+    };
+  };
+
+  countable = function() {
+    return {
+      count: {
+        method: 'GET'
+      }
+    };
+  };
 
 }).call(this);
 
