@@ -57,6 +57,11 @@ class Page extends Model
         'updated_at'
     ];
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
     public function setVariableIdAttribute($value)
     {
         if (empty($value)) {

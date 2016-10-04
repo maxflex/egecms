@@ -256,6 +256,8 @@ Check the current image's Exif Orientation information.
 
 More exactly, read the Orientation value for rotating or flipping the image, and then override the Orientation value with `1` (the default value) to avoid some issues (#120, #509) on iOS devices.
 
+Requires to set both the `rotatable` and `scalable` options to `true` at the same time.
+
 **Note:** Don't trust this all the time as some JPG images have incorrect (not standard) Orientation values.
 
 > Requires [Typed Arrays](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) support ([IE 10+](http://caniuse.com/typedarrays)).
@@ -850,6 +852,7 @@ Change the crop box position and size with new data.
     - `width`: the destination width of the output canvas
     - `height`: the destination height of the output canvas
     - `fillColor`: a color to fill any alpha values in the output canvas
+  - Note: The aspect ratio of the output canvas will be fitted to aspect ratio of the crop box automatically.
 
 - (return  value):
   - Type: `HTMLCanvasElement`

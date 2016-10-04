@@ -49,7 +49,7 @@ class PagesController extends Controller
      */
     public function show($id)
     {
-        return Page::find($id);
+        return Page::with('tags')->find($id);
     }
 
     /**
@@ -67,12 +67,16 @@ class PagesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int  $id§
+     * @return \Illumi§nate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        Page::find($id)->update($request->input());
+        $page = Page::find($id);
+        if (isset($request->tags)) {
+            $page->tags()->sync(Collect($request->tags)->pluck('id')->all());
+        }
+        $page->update($request->input());
     }
 
     /**

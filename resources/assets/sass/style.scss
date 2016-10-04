@@ -3957,3 +3957,13 @@ label {
     position: absolute;
     text-align: center;
 }
+
+.tag-item {
+    background: $green_main !important;
+    border-color: transparent !important;
+    & .remove-button {
+        color: white !important;
+        top: 1px;
+        position: relative;
+    }
+}

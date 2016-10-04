@@ -5,7 +5,19 @@
 </div>
 <div class="row mbs">
     <div class="col-sm-4">
-        @include('modules.input', ['title' => 'отображаемый URL', 'model' => 'url', 'keyup' => 'checkExistance(\'url\', $event)'])
+        <div class="field-container">
+            <div class="input-group">
+                <input ng-keyup="checkExistance('url', $event)" type="text" class="field form-control" required
+                       placeholder="отображаемый URL" ng-model='FormService.model.url'
+                       ng-model-options="{ allowInvalid: true }">
+               <label class="floating-label">отображаемый URL</label>
+               <span class="input-group-btn">
+                   <button class="btn btn-default" type="button" ng-disabled="!FormService.model.keyphrase" ng-click="generateUrl($event)">
+                       <span class="glyphicon glyphicon-refresh no-margin-right"></span>
+                   </button>
+               </span>
+            </div>
+        </div>
     </div>
     <div class="col-sm-4">
         @include('modules.input', ['title' => 'title', 'model' => 'title', 'keyup' => 'checkExistance(\'title\', $event)'])
@@ -42,6 +54,14 @@
 <div class="row mbs">
     <div class="col-sm-12">
         @include('modules.input', ['title' => 'описание', 'model' => 'desc'])
+    </div>
+</div>
+<div class="row mbs">
+    <div class="col-sm-12">
+        <label class="no-margin-bottom">тэги</label>
+        <tags-input ng-model="FormService.model.tags" display-property="text" add-from-autocomplete-only="true" placeholder="добавьте тэг">
+            <auto-complete source='{{ \App\Models\Tag::all() }}'></auto-complete>
+        </tags-input>
     </div>
 </div>
 

@@ -1,6 +1,6 @@
 {
   "name": "nya-bootstrap-select",
-  "version": "2.1.7",
+  "version": "2.1.9",
   "main": [
     "dist/js/nya-bs-select.js",
     "dist/css/nya-bs-select.css"
@@ -31,11 +31,11 @@
     "angular-translate": "^2.9.0"
   },
   "homepage": "https://github.com/lordfriend/nya-bootstrap-select",
-  "_release": "2.1.7",
+  "_release": "2.1.9",
   "_resolution": {
     "type": "version",
-    "tag": "v2.1.7",
-    "commit": "23235f2b21fe627962604addfcd3b985f041d45c"
+    "tag": "v2.1.9",
+    "commit": "5b70c1287438397b156b1ba70f1f85bf78040b8d"
   },
   "_source": "https://github.com/lordfriend/nya-bootstrap-select.git",
   "_target": "~2.1.2",

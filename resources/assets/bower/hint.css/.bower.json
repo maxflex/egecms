@@ -13,12 +13,12 @@
     "ui"
   ],
   "homepage": "https://github.com/chinchang/hint.css",
-  "version": "2.3.2",
-  "_release": "2.3.2",
+  "version": "2.4.0",
+  "_release": "2.4.0",
   "_resolution": {
     "type": "version",
-    "tag": "v2.3.2",
-    "commit": "8b63bde325f4f77d4eaad7cf5ba1c5542704a0de"
+    "tag": "v2.4.0",
+    "commit": "7c205d93ffafcb41c64f8a00277a8f9a9212406d"
   },
   "_source": "https://github.com/chinchang/hint.css.git",
   "_target": "^2.3.1",

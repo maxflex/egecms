@@ -1,13 +1,15 @@
 angular.module('Egecms')
     .factory 'Variable', ($resource) ->
         $resource apiPath('variables'), {id: '@id'}, updatable()
+    .factory 'Tag', ($resource) ->
+        $resource apiPath('tags'), {id: '@id'}, updatable()
     .factory 'Page', ($resource) ->
         $resource apiPath('pages'), {id: '@id'},
             update:
                 method: 'PUT'
             checkExistance:
                 method: 'POST'
-                url: apiPath('pages', 'checkExistance') 
+                url: apiPath('pages', 'checkExistance')
 
 apiPath = (entity, additional = '') ->
     "api/#{entity}/" + (if additional then additional + '/' else '') + ":id"

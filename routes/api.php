@@ -1,11 +1,17 @@
 <?php
-
-use Illuminate\Http\Request;
-
 URL::forceSchema('https');
 
 Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
+    # Variables
     Route::resource('variables', 'VariablesController');
+
+    # Pages
     Route::post('pages/checkExistance/{id?}', 'PagesController@checkExistance');
     Route::resource('pages', 'PagesController');
+
+    # Translit
+    Route::post('translit/to-url', 'TranslitController@toUrl');
+
+    # Tags
+    Route::resource('tags', 'TagsController');
 });

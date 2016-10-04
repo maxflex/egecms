@@ -36,15 +36,12 @@ const elixir = require('laravel-elixir');
          .scripts(jsFromBower([
              'jquery/dist/jquery',
              'bootstrap/dist/js/bootstrap.min',
-             'jquery-ui/ui/minified/core.min',
-             'jquery-ui/ui/minified/widget.min',
              'angular/angular.min',
              'angular-animate/angular-animate.min',
              'angular-sanitize/angular-sanitize.min',
              'angular-resource/angular-resource.min',
              'angular-aria/angular-aria.min',
              'angular-messages/angular-messages.min',
-             'angular-material/angular-material.min',
              'angular-i18n/angular-locale_ru-ru',
              'nprogress/nprogress',
              'underscore/underscore-min',
@@ -74,5 +71,6 @@ const elixir = require('laravel-elixir');
              'ace/lib/ace/commands/default_commands',
              'angular-file-upload/dist/angular-file-upload.min',
              'jquery.maskedinput/dist/jquery.maskedinput.min',
+             'ng-tags-input/ng-tags-input.min'
          ]).concat(['resources/assets/js/*.js']), 'public/js/vendor.js');
  });

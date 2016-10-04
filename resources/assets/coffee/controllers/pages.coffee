@@ -35,7 +35,7 @@ angular
 
         angular.element(document).ready ->
             IndexService.init(Page, $scope.current_page, $attrs)
-    .controller 'PagesForm', ($scope, $attrs, $timeout, FormService, AceService, Page, Published, UpDown) ->
+    .controller 'PagesForm', ($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown) ->
         bindArguments($scope, arguments)
         angular.element(document).ready ->
             FormService.init(Page, $scope.id, $scope.model)
@@ -43,6 +43,14 @@ angular
                 AceService.initEditor(15)
             FormService.beforeSave = ->
                 FormService.model.html = AceService.editor.getValue()
+
+        $scope.generateUrl = (event) ->
+            $http.post '/api/translit/to-url',
+                text: FormService.model.keyphrase
+            .then (response) ->
+                FormService.model.url = response.data
+                $scope.checkExistance 'url',
+                    target: $(event.target).closest('div').find('input')
 
         $scope.checkExistance = (field, event) ->
             Page.checkExistance
@@ -53,7 +61,7 @@ angular
                 element = $(event.target)
                 if response.exists
                     FormService.error_element = element
-                    element.addClass('has-error')
+                    element.addClass('has-error').focus()
                 else
                     FormService.error_element = undefined
                     element.removeClass('has-error')
