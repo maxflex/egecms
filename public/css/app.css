@@ -15709,5 +15709,7 @@ label {
     color: white !important;
     top: 1px;
     position: relative; }
+  .tag-item.selected {
+    background: #ff0039 !important; }
 
 /*# sourceMappingURL=app.css.map */
