@@ -80,7 +80,7 @@
             <ng-select model='FormService.model.station_id' object="{{ fact('stations', 'title') }}" label='title' none-text='не указано' live-search='true'></ng-select>
         </div>
         <div class="col-sm-3">
-            <label class="no-margin-bottom">сортировка</label>
+            <label class="no-margin-bottom">сортировка по</label>
             <ng-select model='FormService.model.sort' object="{{ fact('sort') }}" label='title' none-text='не указано'></ng-select>
         </div>
     </div>
