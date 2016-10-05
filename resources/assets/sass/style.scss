@@ -1,8 +1,8 @@
 // Цвета
-$placeholder_gray 	: #999999;
 $gray 				: #999999;
 $blue				: #337AB7;
-$green_main			: #26A65B; // new bootstrap
+$green-main			: #26A65B; // new bootstrap
+$green-light        : lighten($green-main, 10);
 $hover_blue			: #23527c;
 
 $promo				: #3A6487;
@@ -278,7 +278,7 @@ email {
 }
 
 .pagination > li > a:focus, .pagination > li > a:hover, .pagination > li > span:focus, .pagination > li > span:hover {
-    color: darken($green_main, 10) !important;
+    color: darken($green-main, 10) !important;
 }
 
 .list-group-item.active, .pagination > li.active > a:hover, .pagination > li.focus > a:hover {
@@ -287,9 +287,9 @@ email {
 
 // new bootstrap
 a {
-    color: $green_main;
+    color: $green-main;
     &:hover {
-        color: darken($green_main, 10);
+        color: darken($green-main, 10);
     }
 }
 
@@ -352,27 +352,27 @@ a {
 
 #nprogress {
     & .bar {
-        background: $green_main;
+        background: $green-main;
         & .peg {
-            box-shadow: 0 0 10px $green_main, 0 0 5px $green_main;
+            box-shadow: 0 0 10px $green-main, 0 0 5px $green-main;
         }
     }
 }
 
 .btn.btn-primary {
-    border-color: $green_main;
-    background-color: $green_main;
+    border-color: $green-main;
+    background-color: $green-main;
     &:hover {
-        background-color: lighten($green_main, 10);
-        border-color: lighten($green_main, 10);
+        background-color: lighten($green-main, 10);
+        border-color: lighten($green-main, 10);
     }
     // &:focus {
-    // 	background-color: lighten($green_main, 10);
-    // 	border-color: lighten($green_main, 10);
+    // 	background-color: lighten($green-main, 10);
+    // 	border-color: lighten($green-main, 10);
     // }
     &[disabled] {
-        border-color: $green_main;
-        background-color: $green_main;
+        border-color: $green-main;
+        background-color: $green-main;
     }
 }
 
@@ -469,7 +469,7 @@ a {
         }
         & td {
             height: 25px;
-            border: 1px solid $placeholder_gray;
+            border: 1px solid $gray;
             padding: 2px 3px;
             &:first-of-type {
                 border-left: none;
@@ -485,7 +485,7 @@ a {
             }
             &.date-td {
                 padding: 3px 3px;
-                border-right: 1px solid $placeholder_gray;
+                border-right: 1px solid $gray;
             }
             &.period-end {
                 height: 250px;
@@ -584,7 +584,7 @@ span {
         text-align: center;
         margin: 300px 0;
         display: block;
-        color: $placeholder_gray;
+        color: $gray;
         animation-duration: 3s;
         animation-name: frontendLoading;
     }
@@ -601,7 +601,7 @@ span {
         text-align: center;
         margin: 300px 0;
         display: block;
-        color: $placeholder_gray;
+        color: $gray;
         animation-duration: 3s;
         animation-name: frontendLoading;
     }
@@ -618,7 +618,7 @@ span {
     border-radius: 5px;
     justify-content: center;
     & span {
-        color: $placeholder_gray;
+        color: $gray;
         animation-duration: 3s;
         animation-name: frontendLoading;
     }
@@ -686,7 +686,7 @@ position: relative !important;
 
 & .input-group-addon {
     background-color: white !important;
-    color: $placeholder_gray;
+    color: $gray;
     padding-right: 0;
 }
 & input {
@@ -715,7 +715,7 @@ margin-bottom: 15px;
 .line-number {
 display: inline-block;
 width: 50px;
-color: $placeholder_gray;
+color: $gray;
 }
 
 .controls-line {
@@ -756,7 +756,7 @@ margin: 0 auto;
 }
 
 .tutor-state-0 {
-color: $placeholder_gray;
+color: $gray;
 background-color: $hr_gray;
 }
 .tutor-state-1 {
@@ -772,12 +772,12 @@ color: white;
 background-color: red;
 }
 .tutor-state-4 {
-color: $green_main;
+color: $green-main;
 background-color: rgb(205, 241, 217);
 }
 .tutor-state-5 {
 color: white;
-background-color: $green_main;
+background-color: $green-main;
 }
 
 .pointer {
@@ -903,7 +903,7 @@ margin-top: 1px;
     padding: 60px 0;
 // 	    display: none;
     opacity: 0;
-    color: $green_main;
+    color: $green-main;
 }
 & .btn-file {
     height: 100%;
@@ -921,7 +921,7 @@ margin-top: 1px;
 .inside-input {
 position: absolute;
 top: 7px;
-color: $placeholder_gray;
+color: $gray;
 left: 49px;
 }
 
@@ -950,7 +950,7 @@ top: 3px;
 }
 & input:nth-of-type(1) {
     background-color: white !important;
-    color: $placeholder_gray;
+    color: $gray;
     border-radius: 4px 0 0 4px;
     border-right: 0;
     width: auto;
@@ -1040,7 +1040,7 @@ color: $promo;
     }
     & a {
         font-size: 12px;
-        color: $placeholder_gray;
+        color: $gray;
         text-decoration: underline;
         &:hover {
             text-decoration: none;
@@ -2301,7 +2301,7 @@ color: $half_black;
 }
 
 .label-white {
-color: $green_main;
+color: $green-main;
 background-color: white;
 margin-left: 3px;
 }
@@ -2761,11 +2761,11 @@ margin: 0;
 }
 
 .link-like {
-color: $green_main;
+color: $green-main;
 text-decoration: none;
 cursor: pointer;
 &:hover {
-    color: darken($green_main, 10);
+    color: darken($green-main, 10);
     text-decoration: underline;
 }
 
@@ -2783,10 +2783,10 @@ cursor: pointer;
 }
 
 .link-gray {
-color: $placeholder_gray;
+color: $gray;
 text-decoration: none;
 &:hover {
-    color: $placeholder_gray !important;
+    color: $gray !important;
     text-decoration: underline;
 }
 }
@@ -2870,7 +2870,7 @@ background-color: transparent;
 }
 
 .comment-add {
-color: $placeholder_gray;
+color: $gray;
 display: inline-block;
 &:hover {
     text-decoration: underline;
@@ -2886,12 +2886,12 @@ font-weight: bold;
 .loaded-file {
 font-size: 12px;
 margin-top: 3px;
-color: $placeholder_gray;
+color: $gray;
 }
 
 .request-duplicates {
 font-size: 12px;
-color: $placeholder_gray;
+color: $gray;
 text-align: right;
 }
 
@@ -3266,10 +3266,10 @@ display: inline-block;
 text-align: right;
 //	padding-top: 20px;
 font-size: 12px;
-color: $placeholder_gray;
+color: $gray;
 font-style: italic;
 & a {
-    color: $placeholder_gray;
+    color: $gray;
     text-decoration: underline;
     &:hover {
         text-decoration: none;
@@ -3278,11 +3278,11 @@ font-style: italic;
 }
 
 .coordinates-gray {
-color: $placeholder_gray;
+color: $gray;
 }
 
 .text-gray {
-color: $placeholder_gray;
+color: $gray;
 }
 
 .phone-masked {
@@ -3303,7 +3303,7 @@ border-radius: 0 4px 4px 0 !important;
 .save-coordinates-big {
 text-align: right;
 padding-top: 20px;
-color: $placeholder_gray;
+color: $gray;
 }
 
 thead {
@@ -3549,7 +3549,7 @@ border-radius: 5px;
 
 .client-droppable-hover {
 background: white;
-color: $green_main !important;
+color: $green-main !important;
 text-decoration: none !important;
 }
 
@@ -3645,10 +3645,10 @@ top: .5px;
 position: relative;
 margin: 0 auto;
 &.new {
-    background-color: $placeholder_gray;
+    background-color: $gray;
 }
 &.inprogress {
-    background-color: $green_main;
+    background-color: $green-main;
 }
 &.ended {
     background-color: $red;
@@ -3656,7 +3656,7 @@ margin: 0 auto;
 }
 
 .text-success {
-color: $green_main !important;
+color: $green-main !important;
 }
 .fake-cell {
 border: none!important;
@@ -3724,7 +3724,7 @@ margin-bottom: 20px;
 }
 
 .btn-primary.focus, .btn-primary:focus {
-background-color: $green_main;
+background-color: $green-main;
 }
 
 .table-small {
@@ -3869,7 +3869,7 @@ label {
 }
 
 .dotted {
-    border-bottom: 1px dotted $green_main;
+    border-bottom: 1px dotted $green-main;
     &:hover {
         text-decoration: none !important;
     }
@@ -3959,7 +3959,7 @@ label {
 }
 
 .tag-item {
-    background: $green_main !important;
+    background: $green-main !important;
     border-color: transparent !important;
     & .remove-button {
         color: white !important;
@@ -3967,6 +3967,6 @@ label {
         position: relative;
     }
     &.selected {
-        background: $red !important;
+        background: $green-light !important;
     }
 }
