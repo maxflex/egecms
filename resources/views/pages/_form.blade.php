@@ -81,7 +81,7 @@
         </div>
         <div class="col-sm-3">
             <label class="no-margin-bottom">сортировка по</label>
-            <ng-select model='FormService.model.sort' object="{{ fact('sort') }}" label='title' none-text='не указано'></ng-select>
+            <ng-select model='FormService.model.sort' object="{{ fact('sort') }}" label='title'></ng-select>
         </div>
     </div>
 </div>
