@@ -55,7 +55,7 @@ const elixir = require('laravel-elixir');
              'jquery-ui/ui/draggable',
              'jquery-ui/ui/droppable',
              'angular-ui-sortable/sortable.min',
-             'angular-bootstrap/ui-bootstrap.min',
+             'angular-bootstrap/ui-bootstrap-tpls.min',
              'cropper/dist/cropper',
              'ladda/dist/spin.min',
              'ladda/dist/ladda.min',
