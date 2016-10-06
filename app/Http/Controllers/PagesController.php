@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\Page;
 use App\Models\Variable;
+use App\Models\Tag;
 
 class PagesController extends Controller
 {
@@ -64,7 +65,8 @@ class PagesController extends Controller
      */
     public function edit($id)
     {
-        return view('pages.edit')->with(ngInit(compact('id')));
+        $tags = Tag::all();
+        return view('pages.edit')->with(ngInit(compact('id', 'tags')));
     }
 
     /**

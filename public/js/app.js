@@ -250,7 +250,7 @@
     return angular.element(document).ready(function() {
       return IndexService.init(Page, $scope.current_page, $attrs);
     });
-  }).controller('PagesForm', function($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown) {
+  }).controller('PagesForm', function($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Tag) {
     bindArguments($scope, arguments);
     angular.element(document).ready(function() {
       FormService.init(Page, $scope.id, $scope.model);
@@ -271,7 +271,7 @@
         });
       });
     };
-    return $scope.checkExistance = function(field, event) {
+    $scope.checkExistance = function(field, event) {
       return Page.checkExistance({
         id: FormService.model.id,
         field: field,
@@ -287,6 +287,11 @@
           return element.removeClass('has-error');
         }
       });
+    };
+    return $scope.loadTags = function(text) {
+      return Tag.autocomplete({
+        text: text
+      }).$promise;
     };
   });
 
@@ -518,7 +523,16 @@
   }).factory('Tag', function($resource) {
     return $resource(apiPath('tags'), {
       id: '@id'
-    }, updatable());
+    }, {
+      update: {
+        method: 'PUT'
+      },
+      autocomplete: {
+        method: 'GET',
+        url: apiPath('tags', 'autocomplete'),
+        isArray: true
+      }
+    });
   }).factory('Page', function($resource) {
     return $resource(apiPath('pages'), {
       id: '@id'

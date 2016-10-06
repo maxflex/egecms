@@ -13,5 +13,6 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
     Route::post('translit/to-url', 'TranslitController@toUrl');
 
     # Tags
+    Route::get('tags/autocomplete', 'TagsController@autocomplete');
     Route::resource('tags', 'TagsController');
 });

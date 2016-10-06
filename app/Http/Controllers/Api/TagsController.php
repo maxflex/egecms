@@ -15,7 +15,7 @@ class TagsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return Tag::paginate(30);
     }
@@ -84,5 +84,10 @@ class TagsController extends Controller
     public function destroy($id)
     {
         Tag::destroy($id);
+    }
+
+    public function autocomplete(Request $request)
+    {
+        return Tag::where('text', 'like', "%{$request->text}%")->get();
     }
 }

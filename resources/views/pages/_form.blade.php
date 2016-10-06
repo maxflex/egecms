@@ -60,7 +60,7 @@
     <div class="col-sm-12">
         <label class="no-margin-bottom">тэги</label>
         <tags-input ng-model="FormService.model.tags" display-property="text" add-from-autocomplete-only="true" placeholder="добавьте тэг">
-            <auto-complete source='{{ \App\Models\Tag::all() }}'></auto-complete>
+            <auto-complete source="loadTags($query)"></auto-complete>
         </tags-input>
     </div>
 </div>

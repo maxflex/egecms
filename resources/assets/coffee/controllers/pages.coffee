@@ -35,7 +35,7 @@ angular
 
         angular.element(document).ready ->
             IndexService.init(Page, $scope.current_page, $attrs)
-    .controller 'PagesForm', ($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown) ->
+    .controller 'PagesForm', ($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Tag) ->
         bindArguments($scope, arguments)
         angular.element(document).ready ->
             FormService.init(Page, $scope.id, $scope.model)
@@ -65,3 +65,6 @@ angular
                 else
                     FormService.error_element = undefined
                     element.removeClass('has-error')
+
+        $scope.loadTags = (text) ->
+            Tag.autocomplete({text: text}).$promise
