@@ -59,7 +59,7 @@
 <div class="row mbs">
     <div class="col-sm-12">
         <label class="no-margin-bottom">тэги</label>
-        <tags-input ng-model="FormService.model.tags" display-property="text" replace-spaces-with-dashes='true' add-from-autocomplete-only="true" placeholder="добавьте тэг">
+        <tags-input ng-model="FormService.model.tags" display-property="text" replace-spaces-with-dashes='false' add-from-autocomplete-only="true" placeholder="добавьте тэг">
             <auto-complete source="loadTags($query)"></auto-complete>
         </tags-input>
     </div>
