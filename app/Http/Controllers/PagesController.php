@@ -65,8 +65,7 @@ class PagesController extends Controller
      */
     public function edit($id)
     {
-        $tags = Tag::all();
-        return view('pages.edit')->with(ngInit(compact('id', 'tags')));
+        return view('pages.edit')->with(ngInit(compact('id')));
     }
 
     /**
