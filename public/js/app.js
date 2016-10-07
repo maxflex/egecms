@@ -255,7 +255,7 @@
     angular.element(document).ready(function() {
       FormService.init(Page, $scope.id, $scope.model);
       FormService.dataLoaded.promise.then(function() {
-        return AceService.initEditor(15);
+        return AceService.initEditor(FormService, 15);
       });
       return FormService.beforeSave = function() {
         return FormService.model.html = AceService.editor.getValue();
@@ -323,7 +323,7 @@
     return angular.element(document).ready(function() {
       FormService.init(Variable, $scope.id, $scope.model);
       FormService.dataLoaded.promise.then(function() {
-        return AceService.initEditor(30);
+        return AceService.initEditor(FormService, 30);
       });
       return FormService.beforeSave = function() {
         return FormService.model.html = AceService.editor.getValue();
@@ -574,16 +574,26 @@
 
 (function() {
   angular.module('Egecms').service('AceService', function() {
-    this.initEditor = function(minLines) {
+    this.initEditor = function(FormService, minLines) {
       if (minLines == null) {
         minLines = 30;
       }
       this.editor = ace.edit("editor");
       this.editor.getSession().setMode("ace/mode/html");
       this.editor.getSession().setUseWrapMode(true);
-      return this.editor.setOptions({
+      this.editor.setOptions({
         minLines: minLines,
         maxLines: Infinity
+      });
+      return this.editor.commands.addCommand({
+        name: 'save',
+        bindKey: {
+          win: 'Ctrl-S',
+          mac: 'Command-S'
+        },
+        exec: function(editor) {
+          return FormService.edit();
+        }
       });
     };
     return this;

@@ -40,7 +40,7 @@ angular
         angular.element(document).ready ->
             FormService.init(Page, $scope.id, $scope.model)
             FormService.dataLoaded.promise.then ->
-                AceService.initEditor(15)
+                AceService.initEditor(FormService, 15)
             FormService.beforeSave = ->
                 FormService.model.html = AceService.editor.getValue()
 
