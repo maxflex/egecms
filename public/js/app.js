@@ -171,11 +171,6 @@
 }).call(this);
 
 (function() {
-
-
-}).call(this);
-
-(function() {
   angular.module('Egecms').controller('LoginCtrl', function($scope, $http) {
     angular.element(document).ready(function() {
       return $scope.l = Ladda.create(document.querySelector('#login-submit'));
@@ -253,6 +248,9 @@
   }).controller('PagesForm', function($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Tag) {
     bindArguments($scope, arguments);
     angular.element(document).ready(function() {
+      if ($scope.model && !$scope.model.tags) {
+        $scope.model.tags = [];
+      }
       FormService.init(Page, $scope.id, $scope.model);
       FormService.dataLoaded.promise.then(function() {
         return AceService.initEditor(FormService, 15);
@@ -330,6 +328,11 @@
       };
     });
   });
+
+}).call(this);
+
+(function() {
+
 
 }).call(this);
 
@@ -583,7 +586,7 @@
       this.editor.getSession().setUseWrapMode(true);
       this.editor.setOptions({
         minLines: minLines,
-        maxLines: Infinity
+        maxLines: 2e308
       });
       return this.editor.commands.addCommand({
         name: 'save',

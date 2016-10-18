@@ -38,7 +38,11 @@ class PagesController extends Controller
      */
     public function store(Request $request)
     {
-        return Page::create($request->input())->fresh();
+        $page = Page::create($request->input())->fresh();
+        if (isset($request->tags)) {
+            $page->tags()->sync(Collect($request->tags)->pluck('id')->all());
+        }
+        return $page;
     }
 
     /**

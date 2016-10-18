@@ -5,7 +5,7 @@
 @stop
 @section('title-right')
     <a href="{{ config('app.web-url') }}@{{ FormService.model.url }}" target="_blank">просмотреть страницу на сайте</a>
-    <span ng-click="FormService.delete($event)">удалить раздел</a>
+    <span ng-click="FormService.delete($event)">удалить раздел</span>
 @stop
 @section('content')
 @section('controller', 'PagesForm')
