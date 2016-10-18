@@ -38,7 +38,6 @@ angular
     .controller 'PagesForm', ($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Tag) ->
         bindArguments($scope, arguments)
         angular.element(document).ready ->
-            $scope.model.tags = [] if $scope.model and not $scope.model.tags
             FormService.init(Page, $scope.id, $scope.model)
             FormService.dataLoaded.promise.then ->
                 AceService.initEditor(FormService, 15)
