@@ -11,24 +11,6 @@ class Page extends Model
 {
     const UPLOAD_FOLDER = 'storage/app/public';
 
-    protected $casts = [
-       'sort'        => 'string',
-       'place'       => 'string',
-       'seo_desktop' => 'string',
-       'seo_mobile'  => 'string',
-       'station_id'  => 'string',
-       'variable_id'  => 'string',
-   ];
-
-   protected $attributes = [
-       'sort'        => 0,
-       'place'       => 0,
-       'seo_desktop' => 0,
-       'seo_mobile'  => 0,
-       'station_id'  => 0,
-       'published'   => 0,
-   ];
-
    protected $commaSeparated = ['subjects'];
 
    protected $fillable = [

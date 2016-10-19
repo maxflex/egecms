@@ -35,7 +35,7 @@
                     <a href="pages/@{{ model.id }}/edit">@{{ model.keyphrase }}</a>
                 </td>
                 <td>
-                    <span class="link-like" ng-class="{'link-gray': 0 == +model.published}" ng-click="toggleEnumServer(model, 'published', Published, Page)">@{{ Published[model.published] }}</span>
+                    <span class="link-like" ng-class="{'link-gray': 0 == +model.published}" ng-click="toggleEnumServer(model, 'published', Published, Page)">@{{ Published[model.published].title }}</span>
                 </td>
                 <td style="text-align: right">
                     <a href="{{ config('app.web-url') }}@{{ model.url }}" target="_blank">просмотреть страницу на сайте</a>

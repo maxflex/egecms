@@ -8,7 +8,7 @@
 </div>
 <div class="row mb">
     <div class="col-sm-12">
-        <label>содержание переменной</label>
+        <label class="label-opacity">содержание переменной</label>
         <div id='editor' style="height: 500px">@{{ FormService.model.html }}</div>
     </div>
 </div>

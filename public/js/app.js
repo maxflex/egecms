@@ -41,6 +41,23 @@
         return null;
       }
     };
+  }).directive('convertToNumber', function() {
+    return {
+      require: 'ngModel',
+      link: function(scope, element, attrs, ngModel) {
+        ngModel.$parsers.push(function(val) {
+          return parseInt(val, 10);
+        });
+        return ngModel.$formatters.push(function(val) {
+          console.log(val, val || val ? '' + val : '');
+          if (val || val === 0) {
+            return '' + val;
+          } else {
+            return '';
+          }
+        });
+      }
+    };
   }).run(function($rootScope, $q) {
     $rootScope.dataLoaded = $q.defer();
     $rootScope.frontendStop = function(rebind_masks) {
@@ -257,9 +274,10 @@
       FormService.dataLoaded.promise.then(function() {
         return AceService.initEditor(FormService, 15);
       });
-      return FormService.beforeSave = function() {
+      FormService.beforeSave = function() {
         return FormService.model.html = AceService.editor.getValue();
       };
+      return console.log(FormService.model);
     });
     $scope.generateUrl = function(event) {
       return $http.post('/api/translit/to-url', {
@@ -335,6 +353,27 @@
 
 (function() {
 
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]);
 
 }).call(this);
 
@@ -444,12 +483,18 @@
         object: '=',
         model: '=',
         noneText: '@',
-        label: '@'
+        label: '@',
+        field: '@'
       },
       templateUrl: 'directives/select-new',
       controller: function($scope, $element, $attrs, $timeout) {
+        var value;
         if (!$scope.noneText) {
-          $scope.model = _.first(Object.keys($scope.object));
+          value = _.first(Object.keys($scope.object));
+          if ($scope.field) {
+            value = $scope.object[value][$scope.field];
+          }
+          $scope.model = value;
         }
         return $timeout(function() {
           return $($element).selectpicker();
@@ -469,12 +514,17 @@
         object: '=',
         model: '=',
         noneText: '@',
-        label: '@'
+        label: '@',
+        field: '@'
       },
       templateUrl: 'directives/ngselect',
       controller: function($scope, $element, $attrs, $timeout) {
         if (!$scope.noneText) {
-          $scope.model = _.first(Object.keys($scope.object));
+          if ($scope.field) {
+            $scope.model = $scope.object[_.first(Object.keys($scope.object))][$scope.field];
+          } else {
+            $scope.model = _.first(Object.keys($scope.object));
+          }
         }
         return $timeout(function() {
           return $($element).selectpicker();
@@ -502,19 +552,6 @@
 
 (function() {
 
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').value('Published', ['не опубликовано', 'опубликовано']).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]);
 
 }).call(this);
 

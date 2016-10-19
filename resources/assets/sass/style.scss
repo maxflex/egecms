@@ -3786,12 +3786,15 @@ height: 20px;
   font-size: 12px;
   opacity:0;
   padding: 0 2px;
-  color: #555;
+  color: rgba(0,0,0,0.3);
   font-weight: normal;
   // left: 6px;
   text-transform: lowercase;
   -webkit-transition: 0.2s ease-in-out;
   transition: 0.2s ease-in-out;
+}
+.label-opacity {
+    color: rgba(0,0,0,0.3);
 }
 .field:valid + .floating-label {
     opacity: 1;

@@ -25,16 +25,15 @@ angular.module("Egecms", ['ngSanitize', 'ngResource', 'ngAnimate', 'ui.sortable'
     .filter 'hideZero', ->
         (item) ->
             if item > 0 then item else null
-#    @todo model casts attr fix
-#    .directive 'convertToNumber', ->
-#        {
-#            require: 'ngModel'
-#            link: (scope, element, attrs, ngModel) ->
-#                ngModel.$parsers.push (val) ->
-#                    +val
-#                ngModel.$formatters.push (val) ->
-#                    '' + val
-#        }
+    .directive 'convertToNumber', ->
+        {
+            require: 'ngModel'
+            link: (scope, element, attrs, ngModel) ->
+                ngModel.$parsers.push (val) ->
+                    parseInt(val,10)
+                ngModel.$formatters.push (val) ->
+                    if val or val is 0 then '' + val else ''
+        }
     .run ($rootScope, $q) ->
         # отвечает за загрузку данных
         $rootScope.dataLoaded = $q.defer()

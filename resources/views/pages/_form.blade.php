@@ -23,22 +23,22 @@
         @include('modules.input', ['title' => 'title', 'model' => 'title', 'keyup' => 'checkExistance(\'title\', $event)'])
     </div>
     <div class="col-sm-4">
-        <label class="no-margin-bottom">публикация</label>
-        <select class="form-control" bs-select ng-model='FormService.model.published' ng-options="+(index) as title for (index, title) in Published"></select>
+        <label class="no-margin-bottom label-opacity">публикация</label>
+        <ng-select-new model='FormService.model.published' object="Published" label="title" convert-to-number></ng-select-new>
     </div>
 </div>
 <div class="row mbs">
     <div class="col-sm-4">
-        <label class="no-margin-bottom">макет</label>
-        <ng-select-new model='FormService.model.variable_id' object='{{ App\Models\Variable::getLight() }}' label='name' none-text='не указано'></ng-select>
+        <label class="no-margin-bottom label-opacity">макет</label>
+        <ng-select-new model='FormService.model.variable_id' object='{{ App\Models\Variable::getLight() }}' label='name' none-text='не указано'></ng-select-new>
     </div>
     <div class="col-sm-4">
-        <label class="no-margin-bottom">seo desktop</label>
-        <ng-select model='FormService.model.seo_desktop' object="UpDown" label='title' none-text='не указано'></ng-select>
+        <label class="no-margin-bottom label-opacity">seo desktop</label>
+        <ng-select-new model='FormService.model.seo_desktop' object="UpDown" label='title' none-text='не указано' convert-to-number></ng-select-new>
     </div>
     <div class="col-sm-4">
-        <label class="no-margin-bottom">seo mobile</label>
-        <ng-select model='FormService.model.seo_mobile' object="UpDown" label='title' none-text='не указано'></ng-select>
+        <label class="no-margin-bottom label-opacity">seo mobile</label>
+        <ng-select-new model='FormService.model.seo_mobile' object="UpDown" label='title' none-text='не указано' convert-to-number></ng-select-new>
     </div>
 </div>
 <div class="row mbs">
@@ -58,7 +58,7 @@
 </div>
 <div class="row mbs">
     <div class="col-sm-12">
-        <label class="no-margin-bottom">тэги</label>
+        <label class="no-margin-bottom label-opacity">тэги</label>
         <tags-input ng-model="FormService.model.tags" display-property="text" replace-spaces-with-dashes='false' add-from-autocomplete-only="true" placeholder="добавьте тэг">
             <auto-complete source="loadTags($query)"></auto-complete>
         </tags-input>
@@ -68,20 +68,20 @@
 <div class="serp">
     <div class="row mb">
         <div class="col-sm-3">
-            <label class="no-margin-bottom">предметы</label>
+            <label class="no-margin-bottom label-opacity">предметы</label>
             <ng-multi object='{{ fact('subjects', 'name') }}' label='name' model='FormService.model.subjects' none-text='выберите предметы'></ng-multi>
         </div>
         <div class="col-sm-3">
-            <label class="no-margin-bottom">выезд</label>
-            <ng-select model='FormService.model.place' object="{{ fact('places', 'title') }}" label='title' none-text='не указано'></ng-select>
+            <label class="no-margin-bottom label-opacity">выезд</label>
+            <ng-select-new model='FormService.model.place' object="{{ fact('places', 'title') }}" label='title' none-text='не указано' convert-to-number></ng-select-new>
         </div>
         <div class="col-sm-3">
-            <label class="no-margin-bottom">метро</label>
-            <ng-select model='FormService.model.station_id' object="{{ fact('stations', 'title', 'title') }}" label='title' none-text='не указано' live-search='true'></ng-select>
+            <label class="no-margin-bottom label-opacity">метро</label>
+            <ng-select-new model='FormService.model.station_id' object="{{ fact('stations', 'title', 'title') }}" label='title' none-text='не указано' live-search='true' convert-to-number></ng-select-new>
         </div>
         <div class="col-sm-3">
-            <label class="no-margin-bottom">сортировка по</label>
-            <ng-select model='FormService.model.sort' object="{{ fact('sort') }}" label='title'></ng-select>
+            <label class="no-margin-bottom label-opacity">сортировка по</label>
+            <ng-select-new model='FormService.model.sort' object="{{ fact('sort') }}" label='title' field="id" convert-to-number></ng-select-new>
         </div>
     </div>
 </div>
