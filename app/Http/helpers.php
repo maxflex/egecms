@@ -170,9 +170,17 @@
         return $n . ' ' . $text;
 	}
 
-    function fact($table, $select = null)
+    /**
+     * @param $table
+     * @param null $select
+     * @param null $orderBy
+     * @example
+     * fact('stations', 'title', 'title')               order by title, ascending sorting by default.
+     * fact('stations', 'title', ['title', 'desc'])     order by title, descending.
+    */
+    function fact($table, $select = null, $orderBy = null)
     {
-        return \App\Models\Service\Factory::json($table, $select);
+        return \App\Models\Service\Factory::json($table, $select, $orderBy);
     }
 
     function camelize($input, $separator = '_')

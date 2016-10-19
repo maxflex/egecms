@@ -25,6 +25,16 @@ angular.module("Egecms", ['ngSanitize', 'ngResource', 'ngAnimate', 'ui.sortable'
     .filter 'hideZero', ->
         (item) ->
             if item > 0 then item else null
+#    @todo model casts attr fix
+#    .directive 'convertToNumber', ->
+#        {
+#            require: 'ngModel'
+#            link: (scope, element, attrs, ngModel) ->
+#                ngModel.$parsers.push (val) ->
+#                    +val
+#                ngModel.$formatters.push (val) ->
+#                    '' + val
+#        }
     .run ($rootScope, $q) ->
         # отвечает за загрузку данных
         $rootScope.dataLoaded = $q.defer()

@@ -1,5 +1,10 @@
 angular.module 'Egecms'
     .service 'IndexService', ($rootScope) ->
+        this.filter = ->
+            $.cookie(this.controller, JSON.stringify(this.search), { expires: 365, path: '/' });
+            this.current_page = 1
+            this.pageChanged()
+
         this.max_size = 30
 
         this.init = (Resource, current_page, attrs) ->
@@ -7,6 +12,7 @@ angular.module 'Egecms'
             this.Resource = Resource
             this.current_page = parseInt(current_page)
             this.controller = attrs.ngController.toLowerCase().slice(0, -5)
+            this.search = if $.cookie(this.controller) then JSON.parse($.cookie(this.controller)) else {}
             this.loadPage()
 
         this.loadPage = ->

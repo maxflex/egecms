@@ -1,6 +1,6 @@
 angular
     .module 'Egecms'
-    .controller 'PagesIndex', ($scope, $attrs, $timeout, IndexService, Page, FileUploader) ->
+    .controller 'PagesIndex', ($scope, $attrs, $timeout, IndexService, Page, Published, FileUploader, Tag) ->
         bindArguments($scope, arguments)
 
         $scope.sortableOptions =
@@ -31,10 +31,14 @@ angular
         $scope.import = (e) ->
             e.preventDefault()
             $('#import-button').trigger 'click'
-            return #parse:isecdom err fix
+            return
 
         angular.element(document).ready ->
             IndexService.init(Page, $scope.current_page, $attrs)
+
+        $scope.loadTags = (text) ->
+            Tag.autocomplete({text: text}).$promise
+
     .controller 'PagesForm', ($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Tag) ->
         bindArguments($scope, arguments)
         angular.element(document).ready ->

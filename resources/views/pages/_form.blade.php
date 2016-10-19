@@ -77,7 +77,7 @@
         </div>
         <div class="col-sm-3">
             <label class="no-margin-bottom">метро</label>
-            <ng-select model='FormService.model.station_id' object="{{ fact('stations', 'title') }}" label='title' none-text='не указано' live-search='true'></ng-select>
+            <ng-select model='FormService.model.station_id' object="{{ fact('stations', 'title', 'title') }}" label='title' none-text='не указано' live-search='true'></ng-select>
         </div>
         <div class="col-sm-3">
             <label class="no-margin-bottom">сортировка по</label>

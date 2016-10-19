@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Page;
+use App\Models\Tag;
 
 class PagesController extends Controller
 {
@@ -17,7 +18,9 @@ class PagesController extends Controller
      */
     public function index()
     {
-        return Page::orderBy('position')->paginate(30);
+        $search = isset($_COOKIE['pages']) ? json_decode($_COOKIE['pages']) : (object)[];
+
+        return Page::search($search)->orderBy('position')->paginate(30);
     }
 
     /**
@@ -40,7 +43,7 @@ class PagesController extends Controller
     {
         $page = Page::create($request->input())->fresh();
         if (isset($request->tags)) {
-            $page->tags()->sync(Collect($request->tags)->pluck('id')->all());
+            $page->tags()->sync(Tag::pluckIds($request->tags));
         }
         return $page;
     }
@@ -78,7 +81,7 @@ class PagesController extends Controller
     {
         $page = Page::find($id);
         if (isset($request->tags)) {
-            $page->tags()->sync(Collect($request->tags)->pluck('id')->all());
+            $page->tags()->sync(Tag::pluckIds($request->tags));
         }
         $page->update($request->input());
     }

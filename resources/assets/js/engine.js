@@ -2,7 +2,6 @@
 		setTimeout(function() {
 			moment.locale('ru-RU')
 			NProgress.settings.showSpinner = false
-			console.log('hdiafdisof')
 			rebindMasks()
 			setScope()
 			configurePlugins()
