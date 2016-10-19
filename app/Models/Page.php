@@ -101,9 +101,11 @@ class Page extends Model
         $query = static::query();
 
         if (!empty($search->tags)) {
-            $query->whereHas('tags', function($query) use ($search) {
-                $query->whereIn('id', Tag::pluckIds($search->tags));
-            });
+            foreach(collect($search->tags)->pluck('id')->all() as $tag_id) {
+                $query->whereHas('tags', function($query) use ($tag_id) {
+                    $query->whereId($tag_id);
+                });
+            }
         }
 
         return $query;

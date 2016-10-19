@@ -15560,8 +15560,8 @@ table.summary-table.left-align tr td {
   -webkit-transition: 0.2s ease-in-out;
   transition: 0.2s ease-in-out; }
 
-.label-opacity {
-  color: rgba(0, 0, 0, 0.3); }
+label {
+  color: rgba(0, 0, 0, 0.3) !important; }
 
 .field:valid + .floating-label {
   opacity: 1;
