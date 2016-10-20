@@ -43,7 +43,7 @@ class PagesController extends Controller
     {
         $page = Page::create($request->input())->fresh();
         if (isset($request->tags)) {
-            $page->tags()->sync(Tag::pluckIds($request->tags));
+            $page->tags()->sync(Tag::getIds($request->tags));
         }
         return $page;
     }
@@ -81,7 +81,7 @@ class PagesController extends Controller
     {
         $page = Page::find($id);
         if (isset($request->tags)) {
-            $page->tags()->sync(Tag::pluckIds($request->tags));
+            $page->tags()->sync(Tag::getIds($request->tags));
         }
         $page->update($request->input());
     }

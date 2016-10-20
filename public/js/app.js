@@ -376,6 +376,184 @@
 }).call(this);
 
 (function() {
+
+
+}).call(this);
+
+(function() {
+
+
+}).call(this);
+
+(function() {
+
+
+}).call(this);
+
+(function() {
+
+
+}).call(this);
+
+(function() {
+
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').directive('ngMulti', function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope: {
+        object: '=',
+        model: '=',
+        label: '@',
+        noneText: '@'
+      },
+      templateUrl: 'directives/ngmulti',
+      controller: function($scope, $element, $attrs, $timeout) {
+        return $timeout(function() {
+          return $($element).selectpicker({
+            noneSelectedText: $scope.noneText
+          });
+        }, 100);
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+
+
+}).call(this);
+
+(function() {
+
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').directive('plural', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        count: '=',
+        type: '@',
+        noneText: '@'
+      },
+      templateUrl: 'directives/plural',
+      controller: function($scope, $element, $attrs, $timeout) {
+        $scope.textOnly = $attrs.hasOwnProperty('textOnly');
+        $scope.hideZero = $attrs.hasOwnProperty('hideZero');
+        return $scope.when = {
+          'age': ['год', 'года', 'лет'],
+          'student': ['ученик', 'ученика', 'учеников'],
+          'minute': ['минуту', 'минуты', 'минут'],
+          'hour': ['час', 'часа', 'часов'],
+          'day': ['день', 'дня', 'дней'],
+          'meeting': ['встреча', 'встречи', 'встреч'],
+          'score': ['балл', 'балла', 'баллов'],
+          'rubbles': ['рубль', 'рубля', 'рублей'],
+          'lesson': ['занятие', 'занятия', 'занятий'],
+          'client': ['клиент', 'клиента', 'клиентов'],
+          'mark': ['оценки', 'оценок', 'оценок'],
+          'request': ['заявка', 'заявки', 'заявок']
+        };
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').directive('ngSelectNew', function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope: {
+        object: '=',
+        model: '=',
+        noneText: '@',
+        label: '@',
+        field: '@'
+      },
+      templateUrl: 'directives/select-new',
+      controller: function($scope, $element, $attrs, $timeout) {
+        var value;
+        if (!$scope.noneText) {
+          value = _.first(Object.keys($scope.object));
+          if ($scope.field) {
+            value = $scope.object[value][$scope.field];
+          }
+          $scope.model = value;
+        }
+        return $timeout(function() {
+          return $($element).selectpicker();
+        }, 500);
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').directive('ngSelect', function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope: {
+        object: '=',
+        model: '=',
+        noneText: '@',
+        label: '@',
+        field: '@'
+      },
+      templateUrl: 'directives/ngselect',
+      controller: function($scope, $element, $attrs, $timeout) {
+        if (!$scope.noneText) {
+          if ($scope.field) {
+            $scope.model = $scope.object[_.first(Object.keys($scope.object))][$scope.field];
+          } else {
+            $scope.model = _.first(Object.keys($scope.object));
+          }
+        }
+        return $timeout(function() {
+          return $($element).selectpicker();
+        }, 150);
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+
+
+}).call(this);
+
+(function() {
+
+
+}).call(this);
+
+(function() {
+
+
+}).call(this);
+
+(function() {
+
+
+}).call(this);
+
+(function() {
   var apiPath, countable, updatable;
 
   angular.module('Egecms').factory('Variable', function($resource) {
@@ -588,184 +766,6 @@
     };
     return this;
   });
-
-}).call(this);
-
-(function() {
-
-
-}).call(this);
-
-(function() {
-
-
-}).call(this);
-
-(function() {
-
-
-}).call(this);
-
-(function() {
-
-
-}).call(this);
-
-(function() {
-
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').directive('ngMulti', function() {
-    return {
-      restrict: 'E',
-      replace: true,
-      scope: {
-        object: '=',
-        model: '=',
-        label: '@',
-        noneText: '@'
-      },
-      templateUrl: 'directives/ngmulti',
-      controller: function($scope, $element, $attrs, $timeout) {
-        return $timeout(function() {
-          return $($element).selectpicker({
-            noneSelectedText: $scope.noneText
-          });
-        }, 100);
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-
-
-}).call(this);
-
-(function() {
-
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').directive('plural', function() {
-    return {
-      restrict: 'E',
-      scope: {
-        count: '=',
-        type: '@',
-        noneText: '@'
-      },
-      templateUrl: 'directives/plural',
-      controller: function($scope, $element, $attrs, $timeout) {
-        $scope.textOnly = $attrs.hasOwnProperty('textOnly');
-        $scope.hideZero = $attrs.hasOwnProperty('hideZero');
-        return $scope.when = {
-          'age': ['год', 'года', 'лет'],
-          'student': ['ученик', 'ученика', 'учеников'],
-          'minute': ['минуту', 'минуты', 'минут'],
-          'hour': ['час', 'часа', 'часов'],
-          'day': ['день', 'дня', 'дней'],
-          'meeting': ['встреча', 'встречи', 'встреч'],
-          'score': ['балл', 'балла', 'баллов'],
-          'rubbles': ['рубль', 'рубля', 'рублей'],
-          'lesson': ['занятие', 'занятия', 'занятий'],
-          'client': ['клиент', 'клиента', 'клиентов'],
-          'mark': ['оценки', 'оценок', 'оценок'],
-          'request': ['заявка', 'заявки', 'заявок']
-        };
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').directive('ngSelectNew', function() {
-    return {
-      restrict: 'E',
-      replace: true,
-      scope: {
-        object: '=',
-        model: '=',
-        noneText: '@',
-        label: '@',
-        field: '@'
-      },
-      templateUrl: 'directives/select-new',
-      controller: function($scope, $element, $attrs, $timeout) {
-        var value;
-        if (!$scope.noneText) {
-          value = _.first(Object.keys($scope.object));
-          if ($scope.field) {
-            value = $scope.object[value][$scope.field];
-          }
-          $scope.model = value;
-        }
-        return $timeout(function() {
-          return $($element).selectpicker();
-        }, 500);
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').directive('ngSelect', function() {
-    return {
-      restrict: 'E',
-      replace: true,
-      scope: {
-        object: '=',
-        model: '=',
-        noneText: '@',
-        label: '@',
-        field: '@'
-      },
-      templateUrl: 'directives/ngselect',
-      controller: function($scope, $element, $attrs, $timeout) {
-        if (!$scope.noneText) {
-          if ($scope.field) {
-            $scope.model = $scope.object[_.first(Object.keys($scope.object))][$scope.field];
-          } else {
-            $scope.model = _.first(Object.keys($scope.object));
-          }
-        }
-        return $timeout(function() {
-          return $($element).selectpicker();
-        }, 150);
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-
-
-}).call(this);
-
-(function() {
-
-
-}).call(this);
-
-(function() {
-
-
-}).call(this);
-
-(function() {
-
 
 }).call(this);
 

@@ -30,6 +30,7 @@ class Page extends Model
         'seo_desktop',
         'seo_mobile',
         'variable_id',
+        'hidden_filter',
     ];
 
     protected static $hidden_on_export = [
@@ -101,7 +102,7 @@ class Page extends Model
         $query = static::query();
 
         if (!empty($search->tags)) {
-            foreach(collect($search->tags)->pluck('id')->all() as $tag_id) {
+            foreach(Tag::getIds($search->tags) as $tag_id) {
                 $query->whereHas('tags', function($query) use ($tag_id) {
                     $query->whereId($tag_id);
                 });

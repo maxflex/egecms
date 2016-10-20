@@ -84,6 +84,11 @@
             <ng-select-new model='FormService.model.sort' object="{{ fact('sort') }}" label='title' field="id" convert-to-number></ng-select-new>
         </div>
     </div>
+    <div class="row mb">
+        <div class="col-sm-12">
+            @include('modules.input', ['title' => 'скрытый фильтр', 'model' => 'hidden_filter'])
+        </div>
+    </div>
 </div>
 <div class="row mbb">
     <div class="col-sm-12">

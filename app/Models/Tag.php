@@ -8,8 +8,8 @@ class Tag extends Model
 {
     protected $fillable = ['text'];
 
-    public static function pluckIds($tags = [])
+    public static function getIds($tags)
     {
-        return Collect($tags)->pluck('id')->all();
+        return collect($tags)->pluck('id')->all();
     }
 }
