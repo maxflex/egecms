@@ -65,9 +65,9 @@ class Page extends Model
         });
     }
 
-    public static function fieldsToExport()
+    public static function fieldsToExport($exclude = [])
     {
-        return array_diff(Schema::getColumnListing('pages'), static::$hidden_on_export);
+        return array_diff(Schema::getColumnListing('pages'), array_merge($exclude, static::$hidden_on_export));
     }
 
     public static function export()
@@ -101,7 +101,7 @@ class Page extends Model
         $query = static::query();
 
         if (!empty($search->tags)) {
-            foreach(collect($search->tags)->pluck('id')->all() as $tag_id) {
+            foreach(Tag::pluckIds($search->tags) as $tag_id) {
                 $query->whereHas('tags', function($query) use ($tag_id) {
                     $query->whereId($tag_id);
                 });

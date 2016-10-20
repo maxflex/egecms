@@ -3,12 +3,15 @@
 @section('controller', 'PagesIndex')
 
 @section('title-right')
-    {{ link_to_route('pages.export', 'экспорт') }}
+    {{ link_to_route('pages.export', 'экспорт', [], ['ng-click'=>'export($event)']) }}
     {{ link_to_route('pages.import', 'импорт', [], ['ng-click'=>'import($event)']) }}
     {{ link_to_route('pages.create', 'добавить раздел') }}
 @endsection
 
 @section('content')
+    <div id="export-modal" ng-show="exporting">
+        <ng-select ng-init="export_field = export_field ? export_field : 0" model="export_field" object="fields_to_export" label="field" none-text="Выберите поле для експорта"></ng-select>
+    </div>
     <div class="import-upload-container ng-hide">
         <input id="import-button" accept=".xls" type="file" nv-file-select uploader="uploader"/><br/>
     </div>

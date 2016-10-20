@@ -19,7 +19,10 @@ class PagesController extends Controller
     public function index(Request $request)
     {
         return view('pages.index')->with(ngInit([
-            'current_page' => $request->page
+            'current_page'      => $request->page,
+            'fields_to_export'  => collect(Page::fieldsToExport(['id']))->map(function($field, $index) {
+                return (object)['id' => $index, 'field'=>$field];
+            })->all(),
         ]));
     }
 

@@ -33,6 +33,24 @@ angular
             $('#import-button').trigger 'click'
             return
 
+        $scope.export = (e)->
+            e.preventDefault()
+            $scope.exporting = true
+            $scope.export_dialog = bootbox.dialog
+                message: $ '#export-modal'
+                closeButton: true
+                onEscape: ->
+                    $scope.exporting = false
+                    return true
+                buttons:
+                    'export':
+                        label: 'Экспорт',
+                        callback: ->
+                            $scope.exporting = false
+            return
+
+
+
         angular.element(document).ready ->
             IndexService.init(Page, $scope.current_page, $attrs)
 
