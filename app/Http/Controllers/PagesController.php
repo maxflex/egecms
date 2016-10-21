@@ -103,7 +103,7 @@ class PagesController extends Controller
             $excel->sheet('pages', function($sheet) use ($request) {
                 // если экспортируем HTML, то только длина символов
                 $field = $request->field == 'html' ? DB::raw('LENGTH(html) as html') : $request->field;
-                $sheet->with(Page::select('id', $field)->get());
+                $sheet->fromArray(Page::select('id', $field)->get(), null, 'A1', true);
             });
         })->download('xls');
     }
