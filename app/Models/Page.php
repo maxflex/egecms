@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use Excel;
 use DB;
 use Schema;
 use Shared\Model;
 
 class Page extends Model
 {
-    const UPLOAD_FOLDER = 'storage/app/public';
-
    protected $commaSeparated = ['subjects'];
 
    protected $fillable = [
@@ -34,8 +31,9 @@ class Page extends Model
     ];
 
     protected static $hidden_on_export = [
-        'subjects',
+        'id',
         'html',
+        'position',
         'created_at',
         'updated_at'
     ];
@@ -66,35 +64,9 @@ class Page extends Model
         });
     }
 
-    public static function fieldsToExport()
+    public static function getExportableFields()
     {
-        return array_diff(Schema::getColumnListing('pages'), static::$hidden_on_export);
-    }
-
-    public static function export()
-    {
-        return Excel::create('pages_'.date('Y-d-m_H-i-s'), function($excel){
-            $excel->sheet('pages', function($sheet) {
-                $sheet->with(self::select(static::fieldsToExport())->get());
-            });
-        })->download('xls');
-    }
-
-    /**
-     * Импорт данных из excel файла.
-     *
-     */
-    public static function import($pathToFile = false)
-    {
-        if ($pathToFile) {
-            Excel::load($pathToFile, function($reader){
-                $pages = $reader->all()->toArray();
-
-                foreach ($pages as $page) {
-                    self::where('id', $page['id'])->update($page);
-                }
-            });
-        }
+        return array_values(array_diff(collect(Schema::getColumnListing('pages'))->sort()->all(), static::$hidden_on_export));
     }
 
     public static function search($search)

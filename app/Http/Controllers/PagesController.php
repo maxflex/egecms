@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Excel;
 use App\Http\Requests;
 use App\Models\Page;
 use App\Models\Variable;
@@ -19,7 +20,8 @@ class PagesController extends Controller
     public function index(Request $request)
     {
         return view('pages.index')->with(ngInit([
-            'current_page' => $request->page
+            'current_page'      => $request->page,
+            'exportable_fields' => Page::getExportableFields('id'),
         ]));
     }
 
@@ -91,16 +93,29 @@ class PagesController extends Controller
         //
     }
 
-    public function export() {
-        return Page::export();
+    /**
+     * Экспорт данных в excel файл
+     *
+     */
+    public function export(Request $request) {
+        return Excel::create('pages_' . date('Y-m-d_H-i-s'), function($excel) use ($request) {
+            $excel->sheet('pages', function($sheet) use ($request) {
+                $sheet->with(Page::select('id', $request->field)->get());
+            });
+        })->download('xls');
     }
 
+    /**
+     * Импорт данных из excel файла
+     *
+     */
     public function import(Request $request) {
         if ($request->hasFile('pages')) {
-            $fileName = 'pages.xls';
-            $request->file('pages')->move(Page::UPLOAD_FOLDER, $fileName);
-
-            Page::import(Page::UPLOAD_FOLDER.'/'.$fileName);
+            Excel::load($request->file('pages'), function($reader){
+                foreach ($reader->all()->toArray() as $page) {
+                    Page::whereId($page['id'])->update($page);
+                }
+            });
         } else {
             abort(400);
         }

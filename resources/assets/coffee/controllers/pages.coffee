@@ -2,7 +2,6 @@ angular
     .module 'Egecms'
     .controller 'PagesIndex', ($scope, $attrs, $timeout, IndexService, Page, Published, FileUploader, Tag) ->
         bindArguments($scope, arguments)
-
         $scope.sortableOptions =
             update: (e, ui) ->
                 $timeout ->
@@ -20,8 +19,8 @@ angular
             method: 'post'
             removeAfterUpload: true
             onCompleteItem: (i, response, status) ->
-                notifySuccess 'Импортирован' if status is 200
-                notifyError 'Ошибка!' if status isnt 200
+                notifySuccess 'Импортировано' if status is 200
+                notifyError 'Ошибка импорта' if status isnt 200
             onWhenAddingFileFailed  = (item, filter, options) ->
                 if filter.name is "queueLimit"
                     this.clearQueue()
@@ -32,6 +31,15 @@ angular
             e.preventDefault()
             $('#import-button').trigger 'click'
             return
+
+        $scope.exportDialog = ->
+            $('#export-modal').modal 'show'
+            return false
+
+        $scope.export = ->
+            window.location = "/pages/export?field=#{ $scope.export_field }"
+            $('#export-modal').modal 'hide'
+            return false
 
         angular.element(document).ready ->
             IndexService.init(Page, $scope.current_page, $attrs)

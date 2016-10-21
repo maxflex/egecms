@@ -247,10 +247,10 @@
       removeAfterUpload: true,
       onCompleteItem: function(i, response, status) {
         if (status === 200) {
-          notifySuccess('Импортирован');
+          notifySuccess('Импортировано');
         }
         if (status !== 200) {
-          return notifyError('Ошибка!');
+          return notifyError('Ошибка импорта');
         }
       }
     }, onWhenAddingFileFailed = function(item, filter, options) {
@@ -262,6 +262,15 @@
     $scope["import"] = function(e) {
       e.preventDefault();
       $('#import-button').trigger('click');
+    };
+    $scope.exportDialog = function() {
+      $('#export-modal').modal('show');
+      return false;
+    };
+    $scope["export"] = function() {
+      window.location = "/pages/export?field=" + $scope.export_field;
+      $('#export-modal').modal('hide');
+      return false;
     };
     angular.element(document).ready(function() {
       return IndexService.init(Page, $scope.current_page, $attrs);
@@ -351,27 +360,6 @@
       };
     });
   });
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]);
 
 }).call(this);
 
@@ -554,65 +542,6 @@
 }).call(this);
 
 (function() {
-  var apiPath, countable, updatable;
-
-  angular.module('Egecms').factory('Variable', function($resource) {
-    return $resource(apiPath('variables'), {
-      id: '@id'
-    }, updatable());
-  }).factory('Tag', function($resource) {
-    return $resource(apiPath('tags'), {
-      id: '@id'
-    }, {
-      update: {
-        method: 'PUT'
-      },
-      autocomplete: {
-        method: 'GET',
-        url: apiPath('tags', 'autocomplete'),
-        isArray: true
-      }
-    });
-  }).factory('Page', function($resource) {
-    return $resource(apiPath('pages'), {
-      id: '@id'
-    }, {
-      update: {
-        method: 'PUT'
-      },
-      checkExistance: {
-        method: 'POST',
-        url: apiPath('pages', 'checkExistance')
-      }
-    });
-  });
-
-  apiPath = function(entity, additional) {
-    if (additional == null) {
-      additional = '';
-    }
-    return ("api/" + entity + "/") + (additional ? additional + '/' : '') + ":id";
-  };
-
-  updatable = function() {
-    return {
-      update: {
-        method: 'PUT'
-      }
-    };
-  };
-
-  countable = function() {
-    return {
-      count: {
-        method: 'GET'
-      }
-    };
-  };
-
-}).call(this);
-
-(function() {
   angular.module('Egecms').service('AceService', function() {
     this.initEditor = function(FormService, minLines) {
       if (minLines == null) {
@@ -766,6 +695,86 @@
     };
     return this;
   });
+
+}).call(this);
+
+(function() {
+  var apiPath, countable, updatable;
+
+  angular.module('Egecms').factory('Variable', function($resource) {
+    return $resource(apiPath('variables'), {
+      id: '@id'
+    }, updatable());
+  }).factory('Tag', function($resource) {
+    return $resource(apiPath('tags'), {
+      id: '@id'
+    }, {
+      update: {
+        method: 'PUT'
+      },
+      autocomplete: {
+        method: 'GET',
+        url: apiPath('tags', 'autocomplete'),
+        isArray: true
+      }
+    });
+  }).factory('Page', function($resource) {
+    return $resource(apiPath('pages'), {
+      id: '@id'
+    }, {
+      update: {
+        method: 'PUT'
+      },
+      checkExistance: {
+        method: 'POST',
+        url: apiPath('pages', 'checkExistance')
+      }
+    });
+  });
+
+  apiPath = function(entity, additional) {
+    if (additional == null) {
+      additional = '';
+    }
+    return ("api/" + entity + "/") + (additional ? additional + '/' : '') + ":id";
+  };
+
+  updatable = function() {
+    return {
+      update: {
+        method: 'PUT'
+      }
+    };
+  };
+
+  countable = function() {
+    return {
+      count: {
+        method: 'GET'
+      }
+    };
+  };
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]);
 
 }).call(this);
 

@@ -15715,4 +15715,7 @@ label {
   .tag-item.selected {
     background: #30d072 !important; }
 
+.col-xs-11.col-sm-4.alert {
+  width: auto !important; }
+
 /*# sourceMappingURL=app.css.map */
