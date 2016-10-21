@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Excel;
+use DB;
 use App\Http\Requests;
 use App\Models\Page;
 use App\Models\Variable;
@@ -100,7 +101,9 @@ class PagesController extends Controller
     public function export(Request $request) {
         return Excel::create('pages_' . date('Y-m-d_H-i-s'), function($excel) use ($request) {
             $excel->sheet('pages', function($sheet) use ($request) {
-                $sheet->with(Page::select('id', $request->field)->get());
+                // если экспортируем HTML, то только длина символов
+                $field = $request->field == 'html' ? DB::raw('LENGTH(html) as html') : $request->field;
+                $sheet->with(Page::select('id', $field)->get());
             });
         })->download('xls');
     }

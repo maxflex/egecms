@@ -32,7 +32,6 @@ class Page extends Model
 
     protected static $hidden_on_export = [
         'id',
-        'html',
         'position',
         'created_at',
         'updated_at'
