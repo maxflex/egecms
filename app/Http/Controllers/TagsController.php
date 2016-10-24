@@ -17,7 +17,8 @@ class TagsController extends Controller
     public function index(Request $request)
     {
         return view('tags.index')->with(ngInit([
-            'current_page' => $request->page
+            'current_page' => $request->page,
+            'exportable_fields' => Tag::getExportableFields(),
         ]));
     }
 
@@ -87,5 +88,21 @@ class TagsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Экспорт данных в excel файл
+     *
+     */
+    public function export(Request $request) {
+        return Tag::export($request);
+    }
+
+    /**
+     * Импорт данных из excel файла
+     *
+     */
+    public function import(Request $request) {
+        Tag::import($request);
     }
 }

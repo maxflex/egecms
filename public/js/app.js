@@ -187,11 +187,6 @@
 }).call(this);
 
 (function() {
-
-
-}).call(this);
-
-(function() {
   angular.module('Egecms').controller('LoginCtrl', function($scope, $http) {
     angular.element(document).ready(function() {
       return $scope.l = Ladda.create(document.querySelector('#login-submit'));
@@ -219,9 +214,11 @@
 }).call(this);
 
 (function() {
-  angular.module('Egecms').controller('PagesIndex', function($scope, $attrs, $timeout, IndexService, Page, Published, FileUploader, Tag) {
-    var onWhenAddingFileFailed;
+  angular.module('Egecms').controller('PagesIndex', function($scope, $attrs, $timeout, IndexService, Page, Published, Tag, ExportService) {
     bindArguments($scope, arguments);
+    ExportService.init({
+      controller: 'pages'
+    });
     $scope.sortableOptions = {
       update: function(e, ui) {
         return $timeout(function() {
@@ -235,42 +232,6 @@
         });
       },
       axis: 'y'
-    };
-    FileUploader.FileSelect.prototype.isEmptyAfterSelection = function() {
-      return true;
-    };
-    $scope.uploader = new FileUploader({
-      url: 'pages/import',
-      alias: 'pages',
-      autoUpload: true,
-      method: 'post',
-      removeAfterUpload: true,
-      onCompleteItem: function(i, response, status) {
-        if (status === 200) {
-          notifySuccess('Импортировано');
-        }
-        if (status !== 200) {
-          return notifyError('Ошибка импорта');
-        }
-      }
-    }, onWhenAddingFileFailed = function(item, filter, options) {
-      if (filter.name === "queueLimit") {
-        this.clearQueue();
-        return this.addToQueue(item);
-      }
-    });
-    $scope["import"] = function(e) {
-      e.preventDefault();
-      $('#import-button').trigger('click');
-    };
-    $scope.exportDialog = function() {
-      $('#export-modal').modal('show');
-      return false;
-    };
-    $scope["export"] = function() {
-      window.location = "/pages/export?field=" + $scope.export_field;
-      $('#export-modal').modal('hide');
-      return false;
     };
     angular.element(document).ready(function() {
       return IndexService.init(Page, $scope.current_page, $attrs);
@@ -328,8 +289,11 @@
 }).call(this);
 
 (function() {
-  angular.module('Egecms').controller('TagsIndex', function($scope, $attrs, IndexService, Tag) {
+  angular.module('Egecms').controller('TagsIndex', function($scope, $attrs, IndexService, ExportService, Tag) {
     bindArguments($scope, arguments);
+    ExportService.init({
+      controller: 'tags'
+    });
     return angular.element(document).ready(function() {
       return IndexService.init(Tag, $scope.current_page, $attrs);
     });
@@ -360,6 +324,11 @@
       };
     });
   });
+
+}).call(this);
+
+(function() {
+
 
 }).call(this);
 
@@ -542,6 +511,86 @@
 }).call(this);
 
 (function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  var apiPath, countable, updatable;
+
+  angular.module('Egecms').factory('Variable', function($resource) {
+    return $resource(apiPath('variables'), {
+      id: '@id'
+    }, updatable());
+  }).factory('Tag', function($resource) {
+    return $resource(apiPath('tags'), {
+      id: '@id'
+    }, {
+      update: {
+        method: 'PUT'
+      },
+      autocomplete: {
+        method: 'GET',
+        url: apiPath('tags', 'autocomplete'),
+        isArray: true
+      }
+    });
+  }).factory('Page', function($resource) {
+    return $resource(apiPath('pages'), {
+      id: '@id'
+    }, {
+      update: {
+        method: 'PUT'
+      },
+      checkExistance: {
+        method: 'POST',
+        url: apiPath('pages', 'checkExistance')
+      }
+    });
+  });
+
+  apiPath = function(entity, additional) {
+    if (additional == null) {
+      additional = '';
+    }
+    return ("api/" + entity + "/") + (additional ? additional + '/' : '') + ":id";
+  };
+
+  updatable = function() {
+    return {
+      update: {
+        method: 'PUT'
+      }
+    };
+  };
+
+  countable = function() {
+    return {
+      count: {
+        method: 'GET'
+      }
+    };
+  };
+
+}).call(this);
+
+(function() {
   angular.module('Egecms').service('AceService', function() {
     this.initEditor = function(FormService, minLines) {
       if (minLines == null) {
@@ -552,7 +601,7 @@
       this.editor.getSession().setUseWrapMode(true);
       this.editor.setOptions({
         minLines: minLines,
-        maxLines: Infinity
+        maxLines: 2e308
       });
       return this.editor.commands.addCommand({
         name: 'save',
@@ -699,82 +748,50 @@
 }).call(this);
 
 (function() {
-  var apiPath, countable, updatable;
-
-  angular.module('Egecms').factory('Variable', function($resource) {
-    return $resource(apiPath('variables'), {
-      id: '@id'
-    }, updatable());
-  }).factory('Tag', function($resource) {
-    return $resource(apiPath('tags'), {
-      id: '@id'
-    }, {
-      update: {
-        method: 'PUT'
-      },
-      autocomplete: {
-        method: 'GET',
-        url: apiPath('tags', 'autocomplete'),
-        isArray: true
-      }
-    });
-  }).factory('Page', function($resource) {
-    return $resource(apiPath('pages'), {
-      id: '@id'
-    }, {
-      update: {
-        method: 'PUT'
-      },
-      checkExistance: {
-        method: 'POST',
-        url: apiPath('pages', 'checkExistance')
-      }
-    });
+  angular.module('Egecms').service('ExportService', function($rootScope, FileUploader) {
+    bindArguments(this, arguments);
+    this.init = function(options) {
+      var onWhenAddingFileFailed;
+      this.controller = options.controller;
+      this.FileUploader.FileSelect.prototype.isEmptyAfterSelection = function() {
+        return true;
+      };
+      return this.uploader = new this.FileUploader({
+        url: this.controller + "/import",
+        alias: 'imported_file',
+        autoUpload: true,
+        method: 'post',
+        removeAfterUpload: true,
+        onCompleteItem: function(i, response, status) {
+          if (status === 200) {
+            notifySuccess('Импортировано');
+          }
+          if (status !== 200) {
+            return notifyError('Ошибка импорта');
+          }
+        }
+      }, onWhenAddingFileFailed = function(item, filter, options) {
+        if (filter.name === "queueLimit") {
+          this.clearQueue();
+          return this.addToQueue(item);
+        }
+      });
+    };
+    this["import"] = function(e) {
+      e.preventDefault();
+      $('#import-button').trigger('click');
+    };
+    this.exportDialog = function() {
+      $('#export-modal').modal('show');
+      return false;
+    };
+    this["export"] = function() {
+      window.location = "/" + this.controller + "/export?field=" + this.export_field;
+      $('#export-modal').modal('hide');
+      return false;
+    };
+    return this;
   });
-
-  apiPath = function(entity, additional) {
-    if (additional == null) {
-      additional = '';
-    }
-    return ("api/" + entity + "/") + (additional ? additional + '/' : '') + ":id";
-  };
-
-  updatable = function() {
-    return {
-      update: {
-        method: 'PUT'
-      }
-    };
-  };
-
-  countable = function() {
-    return {
-      count: {
-        method: 'GET'
-      }
-    };
-  };
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]);
 
 }).call(this);
 

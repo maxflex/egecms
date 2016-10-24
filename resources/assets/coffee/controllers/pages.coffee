@@ -1,45 +1,16 @@
 angular
     .module 'Egecms'
-    .controller 'PagesIndex', ($scope, $attrs, $timeout, IndexService, Page, Published, FileUploader, Tag) ->
+    .controller 'PagesIndex', ($scope, $attrs, $timeout, IndexService, Page, Published, Tag, ExportService) ->
         bindArguments($scope, arguments)
+        ExportService.init
+            controller: 'pages'
+
         $scope.sortableOptions =
             update: (e, ui) ->
                 $timeout ->
                     IndexService.page.data.forEach (model, index) ->
                         Page.update({id: model.id}, {position: index})
             axis: 'y'
-
-        FileUploader.FileSelect.prototype.isEmptyAfterSelection = ->
-            true
-
-        $scope.uploader = new FileUploader
-            url: 'pages/import'
-            alias: 'pages'
-            autoUpload: true
-            method: 'post'
-            removeAfterUpload: true
-            onCompleteItem: (i, response, status) ->
-                notifySuccess 'Импортировано' if status is 200
-                notifyError 'Ошибка импорта' if status isnt 200
-            onWhenAddingFileFailed  = (item, filter, options) ->
-                if filter.name is "queueLimit"
-                    this.clearQueue()
-                    this.addToQueue(item)
-
-
-        $scope.import = (e) ->
-            e.preventDefault()
-            $('#import-button').trigger 'click'
-            return
-
-        $scope.exportDialog = ->
-            $('#export-modal').modal 'show'
-            return false
-
-        $scope.export = ->
-            window.location = "/pages/export?field=#{ $scope.export_field }"
-            $('#export-modal').modal 'hide'
-            return false
 
         angular.element(document).ready ->
             IndexService.init(Page, $scope.current_page, $attrs)

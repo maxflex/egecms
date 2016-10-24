@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Exportable;
 use DB;
 use Schema;
 use Shared\Model;
 
 class Page extends Model
 {
+   use Exportable;
    protected $commaSeparated = ['subjects'];
 
    protected $fillable = [
@@ -37,6 +39,11 @@ class Page extends Model
         'updated_at'
     ];
 
+    protected static $selects_on_export = [
+        'id',
+        'keyphrase',
+    ];
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
@@ -61,11 +68,6 @@ class Page extends Model
         static::creating(function($model) {
             $model->position = static::_getNextPosition();
         });
-    }
-
-    public static function getExportableFields()
-    {
-        return array_values(array_diff(collect(Schema::getColumnListing('pages'))->sort()->all(), static::$hidden_on_export));
     }
 
     public static function search($search)

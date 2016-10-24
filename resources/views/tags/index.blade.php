@@ -3,6 +3,8 @@
 @section('controller', 'TagsIndex')
 
 @section('title-right')
+    <span ng-click='ExportService.exportDialog()'>экспорт</span>
+    {{ link_to_route('pages.import', 'импорт', [], ['ng-click'=>'ExportService.import($event)']) }}
     {{ link_to_route('tags.create', 'добавить тэг') }}
 @endsection
 
@@ -27,4 +29,5 @@
         next-text="»"
     ></pagination>
     {{-- @include('modules.pagination') --}}
+    @include('modules._export_dialog')
 @stop

@@ -1,7 +1,10 @@
 angular
     .module 'Egecms'
-    .controller 'TagsIndex', ($scope, $attrs, IndexService, Tag) ->
+    .controller 'TagsIndex', ($scope, $attrs, IndexService, ExportService, Tag) ->
         bindArguments($scope, arguments)
+        ExportService.init
+            controller: 'tags'
+
         angular.element(document).ready ->
             IndexService.init(Tag, $scope.current_page, $attrs)
     .controller 'TagsForm', ($scope, $attrs, $timeout, FormService, Tag) ->

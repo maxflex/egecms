@@ -8,8 +8,6 @@ use Excel;
 use DB;
 use App\Http\Requests;
 use App\Models\Page;
-use App\Models\Variable;
-use App\Models\Tag;
 
 class PagesController extends Controller
 {
@@ -22,7 +20,7 @@ class PagesController extends Controller
     {
         return view('pages.index')->with(ngInit([
             'current_page'      => $request->page,
-            'exportable_fields' => Page::getExportableFields('id'),
+            'exportable_fields' => Page::getExportableFields(),
         ]));
     }
 
@@ -99,13 +97,7 @@ class PagesController extends Controller
      *
      */
     public function export(Request $request) {
-        return Excel::create('pages_' . date('Y-m-d_H-i-s'), function($excel) use ($request) {
-            $excel->sheet('pages', function($sheet) use ($request) {
-                // если экспортируем HTML, то только длина символов
-                $field = $request->field == 'html' ? DB::raw('LENGTH(html) as html') : $request->field;
-                $sheet->fromArray(Page::select('id', $field)->get(), null, 'A1', true);
-            });
-        })->download('xls');
+        return Page::export($request);
     }
 
     /**
@@ -113,14 +105,6 @@ class PagesController extends Controller
      *
      */
     public function import(Request $request) {
-        if ($request->hasFile('pages')) {
-            Excel::load($request->file('pages'), function($reader){
-                foreach ($reader->all()->toArray() as $page) {
-                    Page::whereId($page['id'])->update($page);
-                }
-            });
-        } else {
-            abort(400);
-        }
+        Page::import($request);
     }
 }
