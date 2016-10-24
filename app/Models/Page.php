@@ -44,6 +44,10 @@ class Page extends Model
         'keyphrase',
     ];
 
+    protected static $long_fields = [
+        'html'
+    ];
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class);

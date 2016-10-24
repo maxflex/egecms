@@ -4,13 +4,18 @@ namespace App\Traits;
 
 use Schema;
 use Excel;
-//use App\Models\*;
 
+
+/**
+ *
+ * using Exportable trait obliges defining $selects_on_export field in classes.
+ *
+*/
 trait Exportable
 {
     public static function getExportableFields()
     {
-        return array_values(array_diff(collect(Schema::getColumnListing((new static)->getTable()))->sort()->all(), static::$hidden_on_export));
+        return array_values(array_diff(collect(Schema::getColumnListing((new static)->getTable()))->sort()->all(), isset(static::$hidden_on_export) ? static::$hidden_on_export : []));
     }
 
     /**
@@ -22,7 +27,7 @@ trait Exportable
         return Excel::create($table_name . '_' . date('Y-m-d_H-i-s'), function($excel) use ($request, $table_name) {
             $excel->sheet($table_name, function($sheet) use ($request) {
                 // если экспортируем HTML, то только длина символов
-                static::$selects_on_export[] = $request->field == 'html' ? \DB::raw('LENGTH(html) as html') : $request->field;
+                static::$selects_on_export[] = isset(static::$long_fields) && in_array($request->field, static::$long_fields) ? \DB::raw("LENGTH({$request->field}) as {$request->field}") : $request->field;
 
                 $sheet->fromArray(static::select(array_unique(static::$selects_on_export))->get(), null, 'A1', true);
             });
@@ -37,6 +42,12 @@ trait Exportable
         if ($request->hasFile('imported_file')) {
             Excel::load($request->file('imported_file'), function($reader){
                 foreach ($reader->all()->toArray() as $model) {
+                    if (isset(static::$long_fields)) {
+                        foreach (static::$long_fields as $field) {
+                            unset($model[$field]);
+                        }
+                    }
+
                     static::whereId($model['id'])->update($model);
                 }
             });
