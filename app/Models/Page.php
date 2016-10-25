@@ -48,6 +48,10 @@ class Page extends Model
         'html'
     ];
 
+    protected static $with_comma_on_export = [
+        'tags'
+    ];
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
