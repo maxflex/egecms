@@ -36,29 +36,36 @@ trait Exportable
             $excel->sheet($table_name, function($sheet) use ($request) {
                 $query = static::query();
                 // если экспортируем HTML, то только длина символов
-                if (isset(static::$long_fields) && in_array($request->field, static::$long_fields)) {
-                    static::$selects_on_export[] =  \DB::raw("LENGTH({$request->field}) as {$request->field}");
-                } else if(isset(static::$with_comma_on_export) && in_array($request->field, static::$with_comma_on_export)) {
+                if(isset(static::$with_comma_on_export) && in_array($request->field, static::$with_comma_on_export)) {
                     $query->with(static::$with_comma_on_export);
                 } else {
                     static::$selects_on_export[] =  $request->field;
                 }
 
-                $c = [];
-
                 $data = $query->select(array_unique(static::$selects_on_export))->get();
+                $exportData = [];
 
-                $data->map(function($item, $key) use ($request, $c) {
+                $data->map(function ($item, $key) use ($request, &$exportData) {
                     if (isset(static::$with_comma_on_export) && in_array($request->field, static::$with_comma_on_export)) {
                         foreach (static::$with_comma_on_export as $field) {
                             $item->$field = count($ids = $item->$field->pluck('id')) ? implode(',', $ids->all()) : '';
                             unset($item->relations[$field]);
                         }
                     }
+
+                    $exportData[$key] = $item->toArray();
+                    switch($field = $request->field) {
+                        case 'subjects':
+                            $exportData[$key][$field] = $item->getClean($field);
+                            break;
+                        case 'html':
+                            $exportData[$key][$field] = strlen($item->$field);
+                            break;
+                    }
+
                 });
 
-                $sheet->fromArray($data, null, 'A1', true);
-
+                $sheet->fromArray($exportData, null, 'A1', true);
             });
         })->download('xls');
     }
