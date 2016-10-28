@@ -20,9 +20,11 @@ angular
 
     .controller 'PagesForm', ($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Tag) ->
         bindArguments($scope, arguments)
+        empty_useful = {text: null, page_id_field: null}
         angular.element(document).ready ->
             FormService.init(Page, $scope.id, $scope.model)
             FormService.dataLoaded.promise.then ->
+                FormService.model.useful = [angular.copy(empty_useful)] if (not FormService.model.useful or not FormService.model.useful.length)
                 AceService.initEditor(FormService, 15)
             FormService.beforeSave = ->
                 FormService.model.html = AceService.editor.getValue()
@@ -48,6 +50,25 @@ angular
                 else
                     FormService.error_element = undefined
                     element.removeClass('has-error')
+
+        # @todo: объединить с checkExistance
+        $scope.checkUsefulExistance = (field, event, value) ->
+            Page.checkExistance
+                id: FormService.model.id
+                field: field
+                value: value
+            , (response) ->
+                element = $(event.target)
+                if not value or response.exists
+                    FormService.error_element = undefined
+                    element.removeClass('has-error')
+                else
+                    FormService.error_element = element
+                    element.addClass('has-error').focus()
+
+        $scope.addUseful = ->
+            FormService.model.useful.push(angular.copy(empty_useful))
+
 
         $scope.loadTags = (text) ->
             Tag.autocomplete({text: text}).$promise

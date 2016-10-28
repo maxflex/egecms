@@ -187,6 +187,11 @@
 }).call(this);
 
 (function() {
+
+
+}).call(this);
+
+(function() {
   angular.module('Egecms').controller('LoginCtrl', function($scope, $http) {
     angular.element(document).ready(function() {
       return $scope.l = Ladda.create(document.querySelector('#login-submit'));
@@ -242,10 +247,18 @@
       }).$promise;
     };
   }).controller('PagesForm', function($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Tag) {
+    var empty_useful;
     bindArguments($scope, arguments);
+    empty_useful = {
+      text: null,
+      page_id_field: null
+    };
     angular.element(document).ready(function() {
       FormService.init(Page, $scope.id, $scope.model);
       FormService.dataLoaded.promise.then(function() {
+        if (!FormService.model.useful || !FormService.model.useful.length) {
+          FormService.model.useful = [angular.copy(empty_useful)];
+        }
         return AceService.initEditor(FormService, 15);
       });
       return FormService.beforeSave = function() {
@@ -278,6 +291,26 @@
           return element.removeClass('has-error');
         }
       });
+    };
+    $scope.checkUsefulExistance = function(field, event, value) {
+      return Page.checkExistance({
+        id: FormService.model.id,
+        field: field,
+        value: value
+      }, function(response) {
+        var element;
+        element = $(event.target);
+        if (!value || response.exists) {
+          FormService.error_element = void 0;
+          return element.removeClass('has-error');
+        } else {
+          FormService.error_element = element;
+          return element.addClass('has-error').focus();
+        }
+      });
+    };
+    $scope.addUseful = function() {
+      return FormService.model.useful.push(angular.copy(empty_useful));
     };
     return $scope.loadTags = function(text) {
       return Tag.autocomplete({
@@ -324,11 +357,6 @@
       };
     });
   });
-
-}).call(this);
-
-(function() {
-
 
 }).call(this);
 
@@ -601,7 +629,7 @@
       this.editor.getSession().setUseWrapMode(true);
       this.editor.setOptions({
         minLines: minLines,
-        maxLines: 2e308
+        maxLines: Infinity
       });
       return this.editor.commands.addCommand({
         name: 'save',

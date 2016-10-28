@@ -65,6 +65,23 @@
     </div>
 </div>
 
+<div class="row mbs">
+    <div class="col-sm-5">
+        <label class="no-margin-bottom label-opacity">блок «полезное»</label>
+        <div class="input-group" ng-repeat='u in FormService.model.useful track by $index' style='width: 100%' ng-class="{'mbs': !$last}">
+           <input class="field form-control" placeholder="текст" ng-model='u.text' style='width: 150%'>
+           <span class="input-group-btn" style="width:0px;"></span>
+           <input class="field form-control" style='margin-left: calc(50% - 1px); width: 50%'
+                  placeholder="ID раздела" ng-model='u.page_id_field' ng-keyup="checkUsefulExistance('id', $event, u.page_id_field)">
+           <span class="input-group-btn" style='left: -1px' ng-if='$last'>
+               <button class="btn btn-default" type="button" ng-disabled="!FormService.model.keyphrase" ng-click="addUseful()">
+                   <span class="glyphicon glyphicon-plus no-margin-right" style='font-size: 12px'></span>
+               </button>
+           </span>
+        </div>
+    </div>
+</div>
+
 <div class="serp">
     <div class="row mb">
         <div class="col-sm-3">
