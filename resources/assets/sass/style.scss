@@ -1,8 +1,11 @@
 // Цвета
 $gray 				: #999999;
+$gray-opacity       : rgba(0, 0, 0, 0.3) !important;
+$gray-high-opacity  : rgba(0, 0, 0, 0.1);
 $blue				: #337AB7;
 $green-main			: #26A65B; // new bootstrap
 $green-light        : lighten($green-main, 10);
+$green-dark         : darken($green-main, 10);
 $hover_blue			: #23527c;
 
 $promo				: #3A6487;
@@ -3976,4 +3979,43 @@ label {
 
 .col-xs-11.col-sm-4.alert {
     width: auto !important;
+}
+
+.input-counter {
+    color: $gray-opacity;
+    position: absolute;
+    top: 7px;
+    right: 10px;
+    background: white;
+}
+
+.burger {
+    margin-top: 23px;
+    display: inline-block;
+    & > div {
+        height: 5px;
+        background: $gray-high-opacity;
+        border-radius: 1px;
+        &:not(:last-child) {
+            margin-bottom: 3px;
+        }
+        &.selectable {
+            background: #7ac979;
+            cursor: pointer;
+        }
+        &.selected {
+            background: #005e11 !important;
+        }
+    }
+    &.seo-desktop {
+        width: 40px;
+    }
+    &.seo-mobile {
+        width: 20px;
+        margin-left: 3px;
+    }
+}
+
+.useful-width {
+    width: calc(100% - 32px);
 }

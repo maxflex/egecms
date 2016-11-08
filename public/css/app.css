@@ -15718,4 +15718,34 @@ label {
 .col-xs-11.col-sm-4.alert {
   width: auto !important; }
 
+.input-counter {
+  color: rgba(0, 0, 0, 0.3) !important;
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  background: white; }
+
+.burger {
+  margin-top: 23px;
+  display: inline-block; }
+  .burger > div {
+    height: 5px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 1px; }
+    .burger > div:not(:last-child) {
+      margin-bottom: 3px; }
+    .burger > div.selectable {
+      background: #7ac979;
+      cursor: pointer; }
+    .burger > div.selected {
+      background: #005e11 !important; }
+  .burger.seo-desktop {
+    width: 40px; }
+  .burger.seo-mobile {
+    width: 20px;
+    margin-left: 3px; }
+
+.useful-width {
+  width: calc(100% - 32px); }
+
 /*# sourceMappingURL=app.css.map */

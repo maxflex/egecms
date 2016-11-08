@@ -312,6 +312,11 @@
     $scope.addUseful = function() {
       return FormService.model.useful.push(angular.copy(empty_useful));
     };
+    $scope.$watch('FormService.model.station_id', function(newVal, oldVal) {
+      return $timeout(function() {
+        return $('#sort').selectpicker('refresh');
+      });
+    });
     return $scope.loadTags = function(text) {
       return Tag.autocomplete({
         text: text
@@ -361,7 +366,23 @@
 }).call(this);
 
 (function() {
-
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]);
 
 }).call(this);
 
@@ -372,6 +393,26 @@
 
 (function() {
 
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').directive('ngCounter', function($timeout) {
+    return {
+      restrict: 'A',
+      link: function($scope, $element, $attrs) {
+        var counter;
+        $($element).parent().append("<span class='input-counter'></span>");
+        counter = $($element).parent().find('.input-counter');
+        $($element).on('keyup', function() {
+          return counter.text($(this).val().length || '');
+        });
+        return $timeout(function() {
+          return $($element).keyup();
+        }, 500);
+      }
+    };
+  });
 
 }).call(this);
 
@@ -535,27 +576,6 @@
 
 (function() {
 
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]);
 
 }).call(this);
 

@@ -20,7 +20,9 @@ angular
 
     .controller 'PagesForm', ($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Tag) ->
         bindArguments($scope, arguments)
+
         empty_useful = {text: null, page_id_field: null}
+
         angular.element(document).ready ->
             FormService.init(Page, $scope.id, $scope.model)
             FormService.dataLoaded.promise.then ->
@@ -69,6 +71,8 @@ angular
         $scope.addUseful = ->
             FormService.model.useful.push(angular.copy(empty_useful))
 
+        $scope.$watch 'FormService.model.station_id', (newVal, oldVal) ->
+            $timeout -> $('#sort').selectpicker('refresh')
 
         $scope.loadTags = (text) ->
             Tag.autocomplete({text: text}).$promise

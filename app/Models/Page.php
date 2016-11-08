@@ -19,6 +19,7 @@ class Page extends Model
         'desc',
         'published',
         'h1',
+        'h1_bottom',
         'html',
         'position',
         'sort',
