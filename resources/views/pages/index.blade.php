@@ -5,7 +5,7 @@
 @section('title-right')
     <span ng-click='ExportService.exportDialog()'>экспорт</span>
     {{ link_to_route('pages.import', 'импорт', [], ['ng-click'=>'ExportService.import($event)']) }}
-    {{ link_to_route('pages.create', 'добавить раздел') }}
+    {{ link_to_route('pages.create', 'добавить страницу') }}
 @stop
 
 @section('content')
