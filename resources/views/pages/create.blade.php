@@ -1,6 +1,6 @@
 @extends('app')
 @section('controller', 'PagesForm')
-@section('title', 'Добавление переменной')
+@section('title', 'Добавление страницы')
 @section('title-center')
     <span ng-click="!FormService.saving && FormService.create()">добавить</span>
 @stop
