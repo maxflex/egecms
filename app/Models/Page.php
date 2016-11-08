@@ -53,6 +53,12 @@ class Page extends Model
         'tags'
     ];
 
+    protected $attributes = [
+        'seo_desktop' => 0,
+        'seo_mobile' => 0,
+        'sort' => 1,
+    ];
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class);

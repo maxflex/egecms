@@ -49,6 +49,7 @@ angular.module 'Egecms'
             $rootScope.frontend_loading = false
             $timeout =>
                 this.dataLoaded.resolve(true)
+                $('.selectpicker').selectpicker 'refresh'
 
         beforeSave = =>
             if this.error_element is undefined
