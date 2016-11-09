@@ -20,7 +20,7 @@ class PagesController extends Controller
     {
         $search = isset($_COOKIE['pages']) ? json_decode($_COOKIE['pages']) : (object)[];
 
-        return Page::search($search)->orderBy('variable_id')->orderBy('position')->paginate(30);
+        return Page::search($search)->orderBy('variable_id')->orderBy('keyphrase')->paginate(30);
     }
 
     /**
