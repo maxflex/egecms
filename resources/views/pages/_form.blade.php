@@ -55,18 +55,10 @@
         <label class="no-margin-bottom label-opacity">публикация</label>
         <ng-select-new model='FormService.model.published' object="Published" label="title" convert-to-number></ng-select-new>
     </div>
-    {{-- <div class="col-sm-4">
-        <label class="no-margin-bottom label-opacity">seo desktop</label>
-        <ng-select-new model='FormService.model.seo_desktop' object="UpDown" label='title' none-text='не указано' convert-to-number></ng-select-new>
-    </div>
-    <div class="col-sm-4">
-        <label class="no-margin-bottom label-opacity">seo mobile</label>
-        <ng-select-new model='FormService.model.seo_mobile' object="UpDown" label='title' none-text='не указано' convert-to-number></ng-select-new>
-    </div> --}}
 </div>
 
 <div class="row mbs">
-    <div class="col-sm-6">
+    <div class="col-sm-12">
         @include('modules.input', [
             'title' => 'h1 вверху',
             'model' => 'h1',
@@ -75,7 +67,9 @@
             ]
         ])
     </div>
-    <div class="col-sm-6">
+</div>
+<div class="row mbs">
+    <div class="col-sm-12">
         @include('modules.input', [
             'title' => 'h1 внизу',
             'model' => 'h1_bottom',
