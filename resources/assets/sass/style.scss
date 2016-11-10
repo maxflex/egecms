@@ -1721,6 +1721,7 @@ cursor: pointer;
     }
     & span.active, a.active {
         font-weight: bold;
+        -webkit-font-smoothing: antialiased;
         color: black !important;
         cursor: default;
         text-decoration: none;

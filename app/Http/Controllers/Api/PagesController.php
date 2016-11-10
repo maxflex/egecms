@@ -16,11 +16,16 @@ class PagesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $search = isset($_COOKIE['pages']) ? json_decode($_COOKIE['pages']) : (object)[];
-
-        return Page::search($search)->orderBy('variable_id')->orderBy('keyphrase')->paginate(30);
+        $query = Page::search($search);
+        if ($request->sort) {
+            $query->orderBy('updated_at', 'desc');
+        } else {
+            $query->orderBy('keyphrase');
+        }
+        return $query->paginate(30);
     }
 
     /**

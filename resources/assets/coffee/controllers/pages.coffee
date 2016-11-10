@@ -5,15 +5,15 @@ angular
         ExportService.init
             controller: 'pages'
 
-        $scope.sortableOptions =
-            update: (e, ui) ->
-                $timeout ->
-                    IndexService.page.data.forEach (model, index) ->
-                        Page.update({id: model.id}, {position: index})
-            axis: 'y'
+        # $scope.sortableOptions =
+        #     update: (e, ui) ->
+        #         $timeout ->
+        #             IndexService.page.data.forEach (model, index) ->
+        #                 Page.update({id: model.id}, {position: index})
+        #     axis: 'y'
 
         angular.element(document).ready ->
-            IndexService.init(Page, $scope.current_page, $attrs)
+            IndexService.init(Page, $scope.current_page, $attrs, false)
 
         $scope.loadTags = (text) ->
             Tag.autocomplete({text: text}).$promise

@@ -11,6 +11,9 @@
 @section('content')
     <table class="table reverse-borders">
         <div class="row mbs">
+            <div class='col-sm-12'>
+                <order-by options="['по алфавиту', 'по времени сохранения']"></order-by>
+            </div>
             <div class="col-sm-12">
                 <tags-input
                     ng-model="IndexService.search.tags"
@@ -25,13 +28,17 @@
                 </tags-input>
             </div>
         </div>
-        <tbody ui-sortable='sortableOptions' ng-model="IndexService.page.data" >
+        {{-- <tbody ui-sortable='sortableOptions' ng-model="IndexService.page.data" > --}}
+        <tbody>
             <tr ng-repeat="model in IndexService.page.data">
                 <td>
                     <a href="pages/@{{ model.id }}/edit">@{{ model.keyphrase }}</a>
                 </td>
                 <td width='300'>
                     <span class="link-like" ng-class="{'link-gray': 0 == +model.published}" ng-click="toggleEnumServer(model, 'published', Published, Page)">@{{ Published[model.published].title }}</span>
+                </td>
+                <td>
+                    @{{ formatDateTime(model.updated_at) }}
                 </td>
                 <td style="text-align: right">
                     <a href="{{ config('app.web-url') }}@{{ model.url }}" target="_blank">просмотреть страницу на сайте</a>

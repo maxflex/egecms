@@ -13958,6 +13958,7 @@ tr.ui-sortable-helper {
     display: inline-block; }
   .top-links span.active, .top-links a.active {
     font-weight: bold;
+    -webkit-font-smoothing: antialiased;
     color: black !important;
     cursor: default;
     text-decoration: none; }

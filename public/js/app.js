@@ -224,22 +224,8 @@
     ExportService.init({
       controller: 'pages'
     });
-    $scope.sortableOptions = {
-      update: function(e, ui) {
-        return $timeout(function() {
-          return IndexService.page.data.forEach(function(model, index) {
-            return Page.update({
-              id: model.id
-            }, {
-              position: index
-            });
-          });
-        });
-      },
-      axis: 'y'
-    };
     angular.element(document).ready(function() {
-      return IndexService.init(Page, $scope.current_page, $attrs);
+      return IndexService.init(Page, $scope.current_page, $attrs, false);
     });
     return $scope.loadTags = function(text) {
       return Tag.autocomplete({
@@ -430,6 +416,41 @@
 }).call(this);
 
 (function() {
+  angular.module('Egecms').directive('orderBy', function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope: {
+        options: '='
+      },
+      templateUrl: 'directives/order-by',
+      link: function($scope, $element, $attrs) {
+        var IndexService, local_storage_key, syncIndexService;
+        IndexService = $scope.$parent.IndexService;
+        local_storage_key = 'sort-' + IndexService.controller;
+        syncIndexService = function(sort) {
+          IndexService.sort = sort;
+          IndexService.current_page = 1;
+          return IndexService.loadPage();
+        };
+        $scope.sort = localStorage.getItem(local_storage_key);
+        if ($scope.sort === null) {
+          $scope.setSort(0);
+        } else {
+          syncIndexService($scope.sort);
+        }
+        return $scope.setSort = function(sort) {
+          $scope.sort = sort;
+          localStorage.setItem(local_storage_key, sort);
+          return syncIndexService(sort);
+        };
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
 
 
 }).call(this);
@@ -559,27 +580,6 @@
 }).call(this);
 
 (function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]);
-
-}).call(this);
-
-(function() {
   var apiPath, countable, updatable;
 
   angular.module('Egecms').factory('Variable', function($resource) {
@@ -639,6 +639,27 @@
 }).call(this);
 
 (function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]);
+
+}).call(this);
+
+(function() {
   angular.module('Egecms').service('AceService', function() {
     this.initEditor = function(FormService, minLines) {
       if (minLines == null) {
@@ -678,18 +699,28 @@
       return this.pageChanged();
     };
     this.max_size = 30;
-    this.init = function(Resource, current_page, attrs) {
+    this.init = function(Resource, current_page, attrs, load_page) {
+      if (load_page == null) {
+        load_page = true;
+      }
       $rootScope.frontend_loading = true;
       this.Resource = Resource;
       this.current_page = parseInt(current_page);
       this.controller = attrs.ngController.toLowerCase().slice(0, -5);
       this.search = $.cookie(this.controller) ? JSON.parse($.cookie(this.controller)) : {};
-      return this.loadPage();
+      if (load_page) {
+        return this.loadPage();
+      }
     };
     this.loadPage = function() {
-      return this.Resource.get({
+      var params;
+      params = {
         page: this.current_page
-      }, (function(_this) {
+      };
+      if (this.sort !== void 0) {
+        params.sort = this.sort;
+      }
+      return this.Resource.get(params, (function(_this) {
         return function(response) {
           _this.page = response;
           return $rootScope.frontend_loading = false;
