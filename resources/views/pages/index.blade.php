@@ -31,16 +31,16 @@
         {{-- <tbody ui-sortable='sortableOptions' ng-model="IndexService.page.data" > --}}
         <tbody>
             <tr ng-repeat="model in IndexService.page.data">
-                <td>
+                <td width='35%'>
                     <a href="pages/@{{ model.id }}/edit">@{{ model.keyphrase }}</a>
                 </td>
-                <td width='300'>
+                <td width='20%'>
                     <span class="link-like" ng-class="{'link-gray': 0 == +model.published}" ng-click="toggleEnumServer(model, 'published', Published, Page)">@{{ Published[model.published].title }}</span>
                 </td>
-                <td>
+                <td width='20%'>
                     @{{ formatDateTime(model.updated_at) }}
                 </td>
-                <td style="text-align: right">
+                <td style="text-align: right; width: 25%">
                     <a href="{{ config('app.web-url') }}@{{ model.url }}" target="_blank">просмотреть страницу на сайте</a>
                 </td>
             </tr>
