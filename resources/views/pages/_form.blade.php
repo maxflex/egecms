@@ -33,9 +33,9 @@
 </div>
 
 <div class="row mbs">
-    <div class="col-sm-5">
-        <label class="no-margin-bottom label-opacity">макет</label>
-        <ng-select-new model='FormService.model.variable_id' object='{{ App\Models\Variable::getLight() }}' label='name' none-text='не указано'></ng-select-new>
+    <div class="col-sm-11">
+        <label class="no-margin-bottom label-opacity">публикация</label>
+        <ng-select-new model='FormService.model.published' object="Published" label="title" convert-to-number></ng-select-new>
     </div>
     <div class="col-sm-1">
         <div class='burger seo-desktop'>
@@ -50,10 +50,6 @@
             <div></div>
             <div class='selectable' ng-class="{'selected': FormService.model.seo_mobile == 0}" ng-click='FormService.model.seo_mobile = 0'></div>
         </div>
-    </div>
-    <div class="col-sm-6">
-        <label class="no-margin-bottom label-opacity">публикация</label>
-        <ng-select-new model='FormService.model.published' object="Published" label="title" convert-to-number></ng-select-new>
     </div>
 </div>
 
@@ -152,6 +148,11 @@
 <div class="row mbb">
     <div class="col-sm-12">
         <label>содержание раздела</label>
+        <div class="top-links pull-right">
+            <span ng-repeat="option in options" class="link-like ng-binding ng-scope" ng-class="{'active': $index == sort}" ng-click="setSort($index)">по алфавиту</span>
+            <span ng-repeat="option in options" class="link-like ng-binding ng-scope active" ng-class="{'active': $index == sort}" ng-click="setSort($index)">по времени сохранения</span>
+        </div>
         <div id='editor' style="height: 500px">@{{ FormService.model.html }}</div>
+        <div id='editor-mobile' style="height: 500px">@{{ FormService.model.html_mobile }}</div>
     </div>
 </div>

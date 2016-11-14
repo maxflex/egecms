@@ -245,7 +245,8 @@
         if (!FormService.model.useful || !FormService.model.useful.length) {
           FormService.model.useful = [angular.copy(empty_useful)];
         }
-        return AceService.initEditor(FormService, 15);
+        AceService.initEditor(FormService, 15);
+        return AceService.initEditor(FormService, 15, 'editor-mobile');
       });
       return FormService.beforeSave = function() {
         return FormService.model.html = AceService.editor.getValue();
@@ -580,27 +581,6 @@
 }).call(this);
 
 (function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]);
-
-}).call(this);
-
-(function() {
   var apiPath, countable, updatable;
 
   angular.module('Egecms').factory('Variable', function($resource) {
@@ -660,12 +640,36 @@
 }).call(this);
 
 (function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]);
+
+}).call(this);
+
+(function() {
   angular.module('Egecms').service('AceService', function() {
-    this.initEditor = function(FormService, minLines) {
+    this.initEditor = function(FormService, minLines, id) {
       if (minLines == null) {
         minLines = 30;
       }
-      this.editor = ace.edit("editor");
+      if (id == null) {
+        id = 'editor';
+      }
+      this.editor = ace.edit(id);
       this.editor.getSession().setMode("ace/mode/html");
       this.editor.getSession().setUseWrapMode(true);
       this.editor.setOptions({

@@ -1,7 +1,7 @@
 angular.module 'Egecms'
     .service 'AceService', ->
-        this.initEditor = (FormService, minLines = 30) ->
-            this.editor = ace.edit("editor")
+        this.initEditor = (FormService, minLines = 30, id = 'editor') ->
+            this.editor = ace.edit(id)
             this.editor.getSession().setMode("ace/mode/html")
             this.editor.getSession().setUseWrapMode(true)
             this.editor.setOptions
