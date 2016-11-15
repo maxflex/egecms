@@ -245,8 +245,7 @@
         if (!FormService.model.useful || !FormService.model.useful.length) {
           FormService.model.useful = [angular.copy(empty_useful)];
         }
-        AceService.initEditor(FormService, 15);
-        return AceService.initEditor(FormService, 15, 'editor-mobile');
+        return AceService.initEditor(FormService, 15);
       });
       return FormService.beforeSave = function() {
         return FormService.model.html = AceService.editor.getValue();
@@ -581,6 +580,27 @@
 }).call(this);
 
 (function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]);
+
+}).call(this);
+
+(function() {
   var apiPath, countable, updatable;
 
   angular.module('Egecms').factory('Variable', function($resource) {
@@ -636,27 +656,6 @@
       }
     };
   };
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]);
 
 }).call(this);
 

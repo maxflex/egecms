@@ -153,6 +153,5 @@
             <span ng-repeat="option in options" class="link-like ng-binding ng-scope active" ng-class="{'active': $index == sort}" ng-click="setSort($index)">по времени сохранения</span>
         </div>
         <div id='editor' style="height: 500px">@{{ FormService.model.html }}</div>
-        <div id='editor-mobile' style="height: 500px">@{{ FormService.model.html_mobile }}</div>
     </div>
 </div>

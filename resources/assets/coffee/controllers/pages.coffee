@@ -28,7 +28,6 @@ angular
             FormService.dataLoaded.promise.then ->
                 FormService.model.useful = [angular.copy(empty_useful)] if (not FormService.model.useful or not FormService.model.useful.length)
                 AceService.initEditor(FormService, 15)
-                AceService.initEditor(FormService, 15, 'editor-mobile')
             FormService.beforeSave = ->
                 FormService.model.html = AceService.editor.getValue()
 
