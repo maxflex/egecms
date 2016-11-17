@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Service\Api;
 use App\Models\Variable;
 use App\Models\Page;
 use Illuminate\Console\Command;
@@ -39,23 +40,8 @@ class Sync extends Command
      */
     public function handle()
     {
-        $this->variables();
-    }
-
-    private function variables()
-    {
         $this->info('Getting variables...');
         $variables = Variable::all();
-
-        $bar = $this->output->createProgressBar(count($variables));
-
-        \DB::connection('remote')->table('variables')->truncate();
-        foreach ($variables as $variable) {
-            \DB::connection('remote')->table('variables')->insert($variable->toArray());
-            $bar->advance();
-        }
-
-        $bar->finish();
+        Api::exec('variables/sync', ['variables' => $variables->toArray()]);
     }
-
 }

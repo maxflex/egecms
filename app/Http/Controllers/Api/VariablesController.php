@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Service\Api;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -84,5 +85,15 @@ class VariablesController extends Controller
     public function destroy($id)
     {
         Variable::destroy($id);
+    }
+
+    public function sync(Request $request)
+    {
+        if (Api::API_KEY == $request->input('API_KEY')) {
+            \DB::table('variables')->truncate();
+            \DB::table('variables')->insert($request->input('variables'));
+        } else {
+            return false;
+        }
     }
 }

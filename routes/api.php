@@ -3,6 +3,7 @@ URL::forceSchema('https');
 
 Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
     # Variables
+    Route::post('variables/sync', 'VariablesController@sync');
     Route::resource('variables', 'VariablesController');
 
     # Pages
