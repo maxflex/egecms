@@ -40,7 +40,7 @@ class Sync extends Command
      */
     public function handle()
     {
-        $this->info('Getting variables...');
+        $this->info('Syncing variables...');
         $variables = Variable::all();
         Api::exec('variables/sync', ['variables' => $variables->toArray()]);
     }
