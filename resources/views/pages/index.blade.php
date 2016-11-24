@@ -24,7 +24,7 @@
                     placeholder="поиск по тегам"
                     replace-spaces-with-dashes="false"
                 >
-                    <auto-complete source="loadTags($query)"></auto-complete>
+                    <auto-complete min-length='2' source="loadTags($query)"></auto-complete>
                 </tags-input>
             </div>
         </div>
