@@ -10,4 +10,5 @@ angular
     .controller 'TagsForm', ($scope, $attrs, $timeout, FormService, Tag) ->
         bindArguments($scope, arguments)
         angular.element(document).ready ->
+            FormService.onCreateError = (response) -> notifyError 'тэг уже существует'
             FormService.init(Tag, $scope.id, $scope.model)

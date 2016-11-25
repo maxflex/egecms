@@ -38,7 +38,7 @@ class TagsController extends Controller
      */
     public function store(Request $request)
     {
-        return Tag::create($request->input())->fresh();
+        return Tag::create($request->input());
     }
 
     /**

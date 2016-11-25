@@ -86,5 +86,9 @@ angular.module 'Egecms'
             return if not beforeSave()
             this.model.$save().then (response) =>
                 redirect modelName() + "/#{response.id}/edit"
+            , (response) =>
+                this.saving = false
+                ajaxEnd()
+                this.onCreateError(response)
 
         this

@@ -324,6 +324,9 @@
   }).controller('TagsForm', function($scope, $attrs, $timeout, FormService, Tag) {
     bindArguments($scope, arguments);
     return angular.element(document).ready(function() {
+      FormService.onCreateError = function(response) {
+        return notifyError('тэг уже существует');
+      };
       return FormService.init(Tag, $scope.id, $scope.model);
     });
   });
@@ -822,6 +825,12 @@
       return this.model.$save().then((function(_this) {
         return function(response) {
           return redirect(modelName() + ("/" + response.id + "/edit"));
+        };
+      })(this), (function(_this) {
+        return function(response) {
+          _this.saving = false;
+          ajaxEnd();
+          return _this.onCreateError(response);
         };
       })(this));
     };
