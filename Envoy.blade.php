@@ -7,6 +7,11 @@
     php artisan route:cache
 @endtask
 
+@task('update_shared')
+    cd /home/egecms
+    composer update ege-shared
+@endtask
+
 @task('gulp')
     cd /home/egecms
     gulp --production
