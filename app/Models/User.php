@@ -13,15 +13,15 @@ class User extends Model
         'password',
         'color',
         'type',
-        'banned_egerep',
-        'can_approve_tutors',
         'id_entity',
     ];
+
+    protected static $commaSeparated = ['rights'];
 
     public $timestamps = false;
 
     const USER_TYPE    = 'USER';
-    const BANNED_COLOR = 'black';
+    const DEFAULT_COLOR = 'black';
 
     # Fake system user
     const SYSTEM_USER = [
@@ -39,8 +39,8 @@ class User extends Model
      */
     public function getColorAttribute()
     {
-        if ($this->banned_egerep) {
-            return static::BANNED_COLOR;
+        if ($this->allowed(\Shared\Rights::ERC_BANNED)) {
+            return static::DEFAULT_COLOR;
         } else {
             return $this->attributes['color'];
         }
@@ -51,16 +51,14 @@ class User extends Model
      */
     public static function login($data)
     {
-        $User = User::where([
+        $User = User::active()->where([
             'login'         => $data['login'],
             'password'      => static::_password($data['password']),
-            'banned_egerep' => 0,
-            'type'          => static::USER_TYPE
         ]);
 
         if ($User->exists()) {
             $user = $User->first();
-            if ($user->worldwide_access || strpos($_SERVER['HTTP_X_REAL_IP'], '213.184.130.') === 0) {
+            if ($user->allowed(\Shared\Rights::WORLDWIDE_ACCESS) || strpos($_SERVER['HTTP_X_REAL_IP'], '213.184.130.') === 0) {
                 $_SESSION['user'] = $user;
                 return true;
             }
@@ -141,6 +139,14 @@ class User extends Model
      */
     public static function scopeActive($query)
     {
-        return $query->where('type', static::USER_TYPE)->where('banned_egerep', 0);
+        return $query->real()->whereRaw('NOT FIND_IN_SET(' . \Shared\Rights::ERC_BANNED . ', rights)');
+    }
+
+    /**
+     * User has rights to perform the action
+     */
+    public function allowed($right)
+    {
+        return in_array($right, $this->rights);
     }
 }

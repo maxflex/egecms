@@ -569,7 +569,7 @@
             "source": {
                 "type": "git",
                 "url": "https://mkolyadin@bitbucket.org/mkolyadin/ege-shared.git",
-                "reference": "844381e3a1b7f0c1390f1e75dfb5681f03149fcd"
+                "reference": "637b6e94eabb48c1a0cad12057f939f7bc31ae42"
             },
             "type": "library",
             "autoload": {
@@ -577,7 +577,7 @@
                     "Shared\\": "src/"
                 }
             },
-            "time": "2016-09-09 11:27:41"
+            "time": "2016-12-09 07:22:04"
         },
         {
             "name": "jakub-onderka/php-console-color",
