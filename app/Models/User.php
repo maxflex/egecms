@@ -16,7 +16,7 @@ class User extends Model
         'id_entity',
     ];
 
-    protected static $commaSeparated = ['rights'];
+    protected $commaSeparated = ['rights'];
 
     public $timestamps = false;
 
