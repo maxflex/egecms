@@ -192,6 +192,174 @@
 }).call(this);
 
 (function() {
+  angular.module('Egecms').controller('LoginCtrl', function($scope, $http) {
+    angular.element(document).ready(function() {
+      return $scope.l = Ladda.create(document.querySelector('#login-submit'));
+    });
+    return $scope.checkFields = function() {
+      $scope.l.start();
+      ajaxStart();
+      $scope.in_process = true;
+      return $http.post('login', {
+        login: $scope.login,
+        password: $scope.password
+      }).then(function(response) {
+        if (response.data === true) {
+          return location.reload();
+        } else {
+          $scope.in_process = false;
+          ajaxEnd();
+          $scope.l.stop();
+          return notifyError("Неправильная пара логин-пароль");
+        }
+      });
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').controller('PagesIndex', function($scope, $attrs, $timeout, IndexService, Page, Published, Tag, ExportService) {
+    bindArguments($scope, arguments);
+    ExportService.init({
+      controller: 'pages'
+    });
+    angular.element(document).ready(function() {
+      return IndexService.init(Page, $scope.current_page, $attrs, false);
+    });
+    return $scope.loadTags = function(text) {
+      return Tag.autocomplete({
+        text: text
+      }).$promise;
+    };
+  }).controller('PagesForm', function($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Tag) {
+    var empty_useful;
+    bindArguments($scope, arguments);
+    empty_useful = {
+      text: null,
+      page_id_field: null
+    };
+    angular.element(document).ready(function() {
+      FormService.init(Page, $scope.id, $scope.model);
+      FormService.dataLoaded.promise.then(function() {
+        if (!FormService.model.useful || !FormService.model.useful.length) {
+          FormService.model.useful = [angular.copy(empty_useful)];
+        }
+        return AceService.initEditor(FormService, 15);
+      });
+      return FormService.beforeSave = function() {
+        return FormService.model.html = AceService.editor.getValue();
+      };
+    });
+    $scope.generateUrl = function(event) {
+      return $http.post('/api/translit/to-url', {
+        text: FormService.model.keyphrase
+      }).then(function(response) {
+        FormService.model.url = response.data;
+        return $scope.checkExistance('url', {
+          target: $(event.target).closest('div').find('input')
+        });
+      });
+    };
+    $scope.checkExistance = function(field, event) {
+      return Page.checkExistance({
+        id: FormService.model.id,
+        field: field,
+        value: FormService.model[field]
+      }, function(response) {
+        var element;
+        element = $(event.target);
+        if (response.exists) {
+          FormService.error_element = element;
+          return element.addClass('has-error').focus();
+        } else {
+          FormService.error_element = void 0;
+          return element.removeClass('has-error');
+        }
+      });
+    };
+    $scope.checkUsefulExistance = function(field, event, value) {
+      return Page.checkExistance({
+        id: FormService.model.id,
+        field: field,
+        value: value
+      }, function(response) {
+        var element;
+        element = $(event.target);
+        if (!value || response.exists) {
+          FormService.error_element = void 0;
+          return element.removeClass('has-error');
+        } else {
+          FormService.error_element = element;
+          return element.addClass('has-error').focus();
+        }
+      });
+    };
+    $scope.addUseful = function() {
+      return FormService.model.useful.push(angular.copy(empty_useful));
+    };
+    $scope.$watch('FormService.model.station_id', function(newVal, oldVal) {
+      return $timeout(function() {
+        return $('#sort').selectpicker('refresh');
+      });
+    });
+    return $scope.loadTags = function(text) {
+      return Tag.autocomplete({
+        text: text
+      }).$promise;
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').controller('TagsIndex', function($scope, $attrs, IndexService, ExportService, Tag) {
+    bindArguments($scope, arguments);
+    ExportService.init({
+      controller: 'tags'
+    });
+    return angular.element(document).ready(function() {
+      return IndexService.init(Tag, $scope.current_page, $attrs);
+    });
+  }).controller('TagsForm', function($scope, $attrs, $timeout, FormService, Tag) {
+    bindArguments($scope, arguments);
+    return angular.element(document).ready(function() {
+      FormService.onCreateError = function(response) {
+        return notifyError('тэг уже существует');
+      };
+      return FormService.init(Tag, $scope.id, $scope.model);
+    });
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').controller('VariablesIndex', function($scope, $attrs, IndexService, Variable) {
+    bindArguments($scope, arguments);
+    return angular.element(document).ready(function() {
+      return IndexService.init(Variable, $scope.current_page, $attrs);
+    });
+  }).controller('VariablesForm', function($scope, $attrs, $timeout, FormService, AceService, Variable) {
+    bindArguments($scope, arguments);
+    return angular.element(document).ready(function() {
+      FormService.init(Variable, $scope.id, $scope.model);
+      FormService.dataLoaded.promise.then(function() {
+        return AceService.initEditor(FormService, 30);
+      });
+      return FormService.beforeSave = function() {
+        return FormService.model.html = AceService.editor.getValue();
+      };
+    });
+  });
+
+}).call(this);
+
+(function() {
+
+
+}).call(this);
+
+(function() {
 
 
 }).call(this);
@@ -715,174 +883,6 @@
       return false;
     };
     return this;
-  });
-
-}).call(this);
-
-(function() {
-
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').controller('LoginCtrl', function($scope, $http) {
-    angular.element(document).ready(function() {
-      return $scope.l = Ladda.create(document.querySelector('#login-submit'));
-    });
-    return $scope.checkFields = function() {
-      $scope.l.start();
-      ajaxStart();
-      $scope.in_process = true;
-      return $http.post('login', {
-        login: $scope.login,
-        password: $scope.password
-      }).then(function(response) {
-        if (response.data === true) {
-          return location.reload();
-        } else {
-          $scope.in_process = false;
-          ajaxEnd();
-          $scope.l.stop();
-          return notifyError("Неправильная пара логин-пароль");
-        }
-      });
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').controller('PagesIndex', function($scope, $attrs, $timeout, IndexService, Page, Published, Tag, ExportService) {
-    bindArguments($scope, arguments);
-    ExportService.init({
-      controller: 'pages'
-    });
-    angular.element(document).ready(function() {
-      return IndexService.init(Page, $scope.current_page, $attrs, false);
-    });
-    return $scope.loadTags = function(text) {
-      return Tag.autocomplete({
-        text: text
-      }).$promise;
-    };
-  }).controller('PagesForm', function($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Tag) {
-    var empty_useful;
-    bindArguments($scope, arguments);
-    empty_useful = {
-      text: null,
-      page_id_field: null
-    };
-    angular.element(document).ready(function() {
-      FormService.init(Page, $scope.id, $scope.model);
-      FormService.dataLoaded.promise.then(function() {
-        if (!FormService.model.useful || !FormService.model.useful.length) {
-          FormService.model.useful = [angular.copy(empty_useful)];
-        }
-        return AceService.initEditor(FormService, 15);
-      });
-      return FormService.beforeSave = function() {
-        return FormService.model.html = AceService.editor.getValue();
-      };
-    });
-    $scope.generateUrl = function(event) {
-      return $http.post('/api/translit/to-url', {
-        text: FormService.model.keyphrase
-      }).then(function(response) {
-        FormService.model.url = response.data;
-        return $scope.checkExistance('url', {
-          target: $(event.target).closest('div').find('input')
-        });
-      });
-    };
-    $scope.checkExistance = function(field, event) {
-      return Page.checkExistance({
-        id: FormService.model.id,
-        field: field,
-        value: FormService.model[field]
-      }, function(response) {
-        var element;
-        element = $(event.target);
-        if (response.exists) {
-          FormService.error_element = element;
-          return element.addClass('has-error').focus();
-        } else {
-          FormService.error_element = void 0;
-          return element.removeClass('has-error');
-        }
-      });
-    };
-    $scope.checkUsefulExistance = function(field, event, value) {
-      return Page.checkExistance({
-        id: FormService.model.id,
-        field: field,
-        value: value
-      }, function(response) {
-        var element;
-        element = $(event.target);
-        if (!value || response.exists) {
-          FormService.error_element = void 0;
-          return element.removeClass('has-error');
-        } else {
-          FormService.error_element = element;
-          return element.addClass('has-error').focus();
-        }
-      });
-    };
-    $scope.addUseful = function() {
-      return FormService.model.useful.push(angular.copy(empty_useful));
-    };
-    $scope.$watch('FormService.model.station_id', function(newVal, oldVal) {
-      return $timeout(function() {
-        return $('#sort').selectpicker('refresh');
-      });
-    });
-    return $scope.loadTags = function(text) {
-      return Tag.autocomplete({
-        text: text
-      }).$promise;
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').controller('TagsIndex', function($scope, $attrs, IndexService, ExportService, Tag) {
-    bindArguments($scope, arguments);
-    ExportService.init({
-      controller: 'tags'
-    });
-    return angular.element(document).ready(function() {
-      return IndexService.init(Tag, $scope.current_page, $attrs);
-    });
-  }).controller('TagsForm', function($scope, $attrs, $timeout, FormService, Tag) {
-    bindArguments($scope, arguments);
-    return angular.element(document).ready(function() {
-      FormService.onCreateError = function(response) {
-        return notifyError('тэг уже существует');
-      };
-      return FormService.init(Tag, $scope.id, $scope.model);
-    });
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').controller('VariablesIndex', function($scope, $attrs, IndexService, Variable) {
-    bindArguments($scope, arguments);
-    return angular.element(document).ready(function() {
-      return IndexService.init(Variable, $scope.current_page, $attrs);
-    });
-  }).controller('VariablesForm', function($scope, $attrs, $timeout, FormService, AceService, Variable) {
-    bindArguments($scope, arguments);
-    return angular.element(document).ready(function() {
-      FormService.init(Variable, $scope.id, $scope.model);
-      FormService.dataLoaded.promise.then(function() {
-        return AceService.initEditor(FormService, 30);
-      });
-      return FormService.beforeSave = function() {
-        return FormService.model.html = AceService.editor.getValue();
-      };
-    });
   });
 
 }).call(this);
