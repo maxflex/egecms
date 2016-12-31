@@ -16,7 +16,8 @@
         "laravelcollective/html": "5.3.*",
         "ege-shared":"dev-master",
         "maatwebsite/excel": "^2.1",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
