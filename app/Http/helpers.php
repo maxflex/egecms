@@ -187,3 +187,9 @@
     {
         return str_replace($separator, '', ucwords($input, $separator));
     }
+
+    function allowed($right, $return_int = false)
+   {
+       $allowed = \App\Models\User::fromSession()->allowed($right);
+       return $return_int ? (int)$allowed : $allowed;
+   }
