@@ -121,7 +121,7 @@ class PagesController extends Controller
       */
     public function search(Request $request)
     {
-        return Page::where('keyphrase', 'like', '%' . $request->q . '%')
+        return Page::where('keyphrase', 'like', '%' . $request->q . '%')->orWhere('id', $request->q)
             ->select('id', 'keyphrase', \DB::raw("CONCAT(id, ' – ', keyphrase) as title"))->get()->all();
     }
 }
