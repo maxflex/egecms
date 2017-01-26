@@ -71,6 +71,26 @@ angular
         $scope.addUseful = ->
             FormService.model.useful.push(angular.copy(empty_useful))
 
+        $scope.addLinkDialog = ->
+            $scope.link_text = AceService.editor.getSelectedText()
+            $('#link-manager').modal 'show'
+
+        $scope.search = (input, promise)->
+            $http.post('api/pages/search', {q: input}, {timeout: promise})
+                .then (response) ->
+                    return response
+
+        $scope.searchSelected = (selectedObject) ->
+            $scope.link_page_id = selectedObject.originalObject.id
+            $scope.$broadcast('angucomplete-alt:changeInput', 'page-search', $scope.link_page_id.toString())
+
+        $scope.addLink = ->
+            link = "<a href='[link|#{$scope.link_page_id}]'>#{$scope.link_text}</a>"
+            $scope.link_page_id = undefined
+            $scope.$broadcast('angucomplete-alt:clearInput')
+            AceService.editor.session.replace(AceService.editor.selection.getRange(), link)
+            $('#link-manager').modal 'hide'
+
         $scope.$watch 'FormService.model.station_id', (newVal, oldVal) ->
             $timeout -> $('#sort').selectpicker('refresh')
 

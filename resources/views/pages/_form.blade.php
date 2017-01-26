@@ -148,6 +148,9 @@
 <div class="row mbb">
     <div class="col-sm-12">
         <label>содержание раздела</label>
+        <label class="pull-right" style='top: 3px; position: relative'>
+            <span class='link-like' ng-click='addLinkDialog()'>добавить ссылку</span>
+        </label>
         <div class="top-links pull-right">
             <span ng-repeat="option in options" class="link-like ng-binding ng-scope" ng-class="{'active': $index == sort}" ng-click="setSort($index)">по алфавиту</span>
             <span ng-repeat="option in options" class="link-like ng-binding ng-scope active" ng-class="{'active': $index == sort}" ng-click="setSort($index)">по времени сохранения</span>
@@ -155,3 +158,4 @@
         <div id='editor' style="height: 500px">@{{ FormService.model.html }}</div>
     </div>
 </div>
+@include('pages._modals')

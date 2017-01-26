@@ -29,7 +29,11 @@ const elixir = require('laravel-elixir');
             open: 'external',
             host: 'egecms.app',
             proxy: 'https://egecms.app:8087',
-            https: true
+            https: true,
+            ghostMode: false,
+            watchOptions: {
+                ignored: '*.php'
+            }
         })
          .sass('app.scss')
          .coffee(['resources/assets/coffee/*.coffee', 'resources/assets/coffee/*/*.coffee'])
@@ -71,6 +75,7 @@ const elixir = require('laravel-elixir');
              'ace/lib/ace/commands/default_commands',
              'angular-file-upload/dist/angular-file-upload.min',
              'jquery.maskedinput/dist/jquery.maskedinput.min',
-             'ng-tags-input/ng-tags-input.min'
+             'ng-tags-input/ng-tags-input.min',
+             'angucomplete-alt/dist/angucomplete-alt.min'
          ]).concat(['resources/assets/js/*.js']), 'public/js/vendor.js');
  });

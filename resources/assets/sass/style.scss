@@ -4020,3 +4020,30 @@ label {
 .useful-width {
     width: calc(100% - 32px);
 }
+
+.highlight {
+    font-weight: bold;
+}
+
+.angucomplete-row {
+    margin: 0 !important;
+}
+
+.angucomplete-searching {
+    padding: 5px;
+}
+.angucomplete-dropdown {
+    margin-top: 5px;
+    position: absolute;
+    padding: 5px 0;
+    z-index: 999;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.angucomplete-selected-row {
+    color: #262626;
+    background-color: #f5f5f5;
+}

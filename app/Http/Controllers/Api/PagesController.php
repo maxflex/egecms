@@ -115,4 +115,13 @@ class PagesController extends Controller
 
          return ['exists' => $query->where($request->field, $request->value)->exists()];
      }
+
+     /**
+      * Search (used in Link Manager)
+      */
+    public function search(Request $request)
+    {
+        return Page::where('keyphrase', 'like', '%' . $request->q . '%')
+            ->select('id', 'keyphrase', \DB::raw("CONCAT(id, ' – ', keyphrase) as title"))->get()->all();
+    }
 }

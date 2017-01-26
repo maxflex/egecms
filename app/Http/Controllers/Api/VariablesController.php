@@ -18,7 +18,7 @@ class VariablesController extends Controller
      */
     public function index()
     {
-        return Variable::orderBy('name')->paginate(30);
+        return Variable::orderBy('name')->paginate(100);
     }
 
     /**
