@@ -4047,3 +4047,8 @@ label {
     color: #262626;
     background-color: #f5f5f5;
 }
+
+.angucomplete-dropdown {
+    overflow-y: auto;
+    max-height: 300px; // your preference
+}
