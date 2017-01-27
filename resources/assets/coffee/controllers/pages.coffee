@@ -2,21 +2,10 @@ angular
     .module 'Egecms'
     .controller 'PagesIndex', ($scope, $attrs, $timeout, IndexService, Page, Published, Tag, ExportService) ->
         bindArguments($scope, arguments)
-        ExportService.init
-            controller: 'pages'
-
-        # $scope.sortableOptions =
-        #     update: (e, ui) ->
-        #         $timeout ->
-        #             IndexService.page.data.forEach (model, index) ->
-        #                 Page.update({id: model.id}, {position: index})
-        #     axis: 'y'
+        ExportService.init({controller: 'pages'})
 
         angular.element(document).ready ->
             IndexService.init(Page, $scope.current_page, $attrs, false)
-
-        $scope.loadTags = (text) ->
-            Tag.autocomplete({text: text}).$promise
 
     .controller 'PagesForm', ($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Tag) ->
         bindArguments($scope, arguments)

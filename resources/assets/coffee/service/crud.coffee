@@ -1,7 +1,7 @@
 angular.module 'Egecms'
     .service 'IndexService', ($rootScope) ->
         this.filter = ->
-            $.cookie(this.controller, JSON.stringify(this.search), { expires: 365, path: '/' });
+            $.cookie(this.controller, JSON.stringify(this.search), { expires: 365, path: '/' })
             this.current_page = 1
             this.pageChanged()
 

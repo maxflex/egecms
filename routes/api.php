@@ -17,4 +17,7 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
     # Tags
     Route::get('tags/autocomplete', 'TagsController@autocomplete');
     Route::resource('tags', 'TagsController');
+
+    # Factory
+    Route::post('factory', 'FactoryController@get');
 });

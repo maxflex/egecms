@@ -4052,3 +4052,7 @@ label {
     overflow-y: auto;
     max-height: 300px; // your preference
 }
+
+select[multiple] {
+    height: 34px;
+}

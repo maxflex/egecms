@@ -224,14 +224,9 @@
     ExportService.init({
       controller: 'pages'
     });
-    angular.element(document).ready(function() {
+    return angular.element(document).ready(function() {
       return IndexService.init(Page, $scope.current_page, $attrs, false);
     });
-    return $scope.loadTags = function(text) {
-      return Tag.autocomplete({
-        text: text
-      }).$promise;
-    };
   }).controller('PagesForm', function($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Tag) {
     var empty_useful;
     bindArguments($scope, arguments);
@@ -333,6 +328,19 @@
         text: text
       }).$promise;
     };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').controller('SearchIndex', function($scope, $attrs, $timeout, IndexService, Page, Published, Tag, ExportService) {
+    bindArguments($scope, arguments);
+    ExportService.init({
+      controller: 'pages'
+    });
+    return angular.element(document).ready(function() {
+      return IndexService.init(Page, $scope.current_page, $attrs, false);
+    });
   });
 
 }).call(this);
@@ -527,6 +535,164 @@
 }).call(this);
 
 (function() {
+  angular.module('Egecms').directive('search', function() {
+    return {
+      restrict: 'E',
+      templateUrl: 'directives/search',
+      scope: {},
+      link: function() {
+        return $('.search-icon').on('click', function() {
+          return $('#search-app').modal('show');
+        });
+      },
+      controller: function($scope, $timeout, $http, Published, Tag, FactoryService) {
+        bindArguments($scope, arguments);
+        $scope.conditions = [];
+        $scope.options = [
+          {
+            title: 'ключевая фраза',
+            value: 'keyphrase',
+            type: 'text'
+          }, {
+            title: 'отображаемый URL',
+            value: 'url',
+            type: 'text'
+          }, {
+            title: 'title',
+            value: 'title',
+            type: 'text'
+          }, {
+            title: 'публикация',
+            value: 'published',
+            type: 'published'
+          }, {
+            title: 'сео (стационар)',
+            value: 'seo_desktop',
+            type: 'seo_desktop'
+          }, {
+            title: 'сео (мобильная)',
+            value: 'seo_mobile',
+            type: 'seo_mobile'
+          }, {
+            title: 'h1 вверху',
+            value: 'h1',
+            type: 'text'
+          }, {
+            title: 'h1 внизу',
+            value: 'h1_bottom',
+            type: 'text'
+          }, {
+            title: 'meta keywords',
+            value: 'keywords',
+            type: 'text'
+          }, {
+            title: 'meta description',
+            value: 'desc',
+            type: 'text'
+          }, {
+            title: 'тэги',
+            value: 'tags',
+            type: 'tags'
+          }, {
+            title: 'предметы',
+            value: 'subjects',
+            type: 'subjects'
+          }, {
+            title: 'выезд',
+            value: 'place',
+            type: 'place'
+          }, {
+            title: 'метро',
+            value: 'station_id',
+            type: 'station_id'
+          }, {
+            title: 'сортировка',
+            value: 'sort',
+            type: 'sort'
+          }, {
+            title: 'скрытый фильтр',
+            value: 'hidden_filter',
+            type: 'text'
+          }, {
+            title: 'содержание раздела',
+            value: 'html',
+            type: 'text'
+          }
+        ];
+        $scope.getOption = function(condition) {
+          return $scope.options[condition.option];
+        };
+        $scope.addCondition = function() {
+          $scope.conditions.push({
+            option: 0
+          });
+          return $timeout(function() {
+            return $('.selectpicker').selectpicker();
+          });
+        };
+        $scope.addCondition();
+        $scope.selectControl = function(condition) {
+          condition.value = null;
+          switch ($scope.getOption(condition).type) {
+            case 'published':
+            case 'seo_desktop':
+            case 'seo_mobile':
+              return condition.value = 0;
+            case 'subjects':
+              if ($scope.subjects === void 0) {
+                return FactoryService.get('subjects', 'name').then(function(response) {
+                  return $scope.subjects = response.data;
+                });
+              }
+              break;
+            case 'place':
+              if ($scope.places === void 0) {
+                return FactoryService.get('places', 'serp').then(function(response) {
+                  return $scope.places = response.data;
+                });
+              }
+              break;
+            case 'station_id':
+              if ($scope.stations === void 0) {
+                return FactoryService.get('stations', 'title', 'title').then(function(response) {
+                  return $scope.stations = response.data;
+                });
+              }
+              break;
+            case 'sort':
+              if ($scope.sort === void 0) {
+                return FactoryService.get('sort').then(function(response) {
+                  return $scope.sort = response.data;
+                });
+              }
+          }
+        };
+        $scope.loadTags = function(text) {
+          return Tag.autocomplete({
+            text: text
+          }).$promise;
+        };
+        return $scope.search = function() {
+          var search;
+          search = {};
+          $scope.conditions.forEach(function(condition) {
+            return search[$scope.getOption(condition).value] = condition.value;
+          });
+          $.cookie('search', JSON.stringify(search), {
+            expires: 365,
+            path: '/'
+          });
+          ajaxStart();
+          $scope.searching = true;
+          return window.location = 'search';
+        };
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
   angular.module('Egecms').directive('ngSelectNew', function() {
     return {
       restrict: 'E',
@@ -608,27 +774,6 @@
 }).call(this);
 
 (function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]);
-
-}).call(this);
-
-(function() {
   var apiPath, countable, updatable;
 
   angular.module('Egecms').factory('Variable', function($resource) {
@@ -684,6 +829,27 @@
       }
     };
   };
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]);
 
 }).call(this);
 
@@ -906,6 +1072,26 @@
       window.location = "/" + this.controller + "/export?field=" + this.export_field;
       $('#export-modal').modal('hide');
       return false;
+    };
+    return this;
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').service('FactoryService', function($http) {
+    this.get = function(table, select, orderBy) {
+      if (select == null) {
+        select = null;
+      }
+      if (orderBy == null) {
+        orderBy = null;
+      }
+      return $http.post('api/factory', {
+        table: table,
+        select: select,
+        orderBy: orderBy
+      });
     };
     return this;
   });

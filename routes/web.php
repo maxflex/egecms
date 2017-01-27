@@ -15,6 +15,7 @@ Route::group(['middleware' => ['login']], function () {
     Route::get('pages/export', 'PagesController@export')->name('pages.export');
     Route::post('pages/import', 'PagesController@import')->name('pages.import');
     Route::resource('pages', 'PagesController');
+    Route::get('search', 'PagesController@search');
 
     # Tags
     Route::get('tags/export', 'TagsController@export')->name('tags.export');

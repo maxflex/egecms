@@ -1,6 +1,6 @@
 @extends('app')
 @section('title', 'Разделы')
-@section('controller', 'PagesIndex')
+@section('controller', $ngController . 'Index')
 
 @section('title-right')
     <span ng-click='ExportService.exportDialog()'>экспорт</span>

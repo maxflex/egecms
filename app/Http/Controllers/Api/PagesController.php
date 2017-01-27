@@ -18,7 +18,9 @@ class PagesController extends Controller
      */
     public function index(Request $request)
     {
-        $search = isset($_COOKIE['pages']) ? json_decode($_COOKIE['pages']) : (object)[];
+        // откуда обращаемся – с поиска или с общей страницы?
+        $controller = collect(explode('/', $request->header('referer')))->last();
+        $search = isset($_COOKIE[$controller]) ? json_decode($_COOKIE[$controller]) : (object)[];
         $query = Page::search($search);
         if ($request->sort) {
             $query->orderBy('updated_at', 'desc');

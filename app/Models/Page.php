@@ -104,7 +104,27 @@ class Page extends Model
     {
         $query = static::query();
 
-        if (!empty($search->tags)) {
+        // поиск по текстовым полям
+        foreach(['keyphrase', 'url', 'title', 'h1', 'h1_bottom', 'keywords', 'desc', 'hidden_filter', 'html'] as $text_field) {
+            if (isset($search->{$text_field}) && ! empty($search->{$text_field})) {
+                $query->where($text_field, 'like', '%' . $search->{$text_field} . '%');
+            }
+        }
+
+        // поиск по цифровым полям
+        foreach(['seo_desktop', 'seo_mobile', 'station_id', 'sort', 'place'] as $numeric_field) {
+            if (isset($search->{$numeric_field})) {
+                $query->where($numeric_field, $search->{$numeric_field});
+            }
+        }
+
+        if (isset($search->subjects)) {
+            foreach($search->subjects as $subject_id) {
+                $query->whereRaw("FIND_IN_SET('{$subject_id}', subjects)");
+            }
+        }
+
+        if (! empty($search->tags)) {
             foreach(Tag::getIds($search->tags) as $tag_id) {
                 $query->whereHas('tags', function($query) use ($tag_id) {
                     $query->whereId($tag_id);
