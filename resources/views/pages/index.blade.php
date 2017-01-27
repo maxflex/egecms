@@ -14,7 +14,7 @@
             <div class='col-sm-12'>
                 <order-by options="['по алфавиту', 'по времени сохранения']"></order-by>
             </div>
-            <div class="col-sm-12">
+            {{-- <div class="col-sm-12">
                 <tags-input
                     ng-model="IndexService.search.tags"
                     on-tag-added="IndexService.filter()"
@@ -26,7 +26,7 @@
                 >
                     <auto-complete min-length='2' source="loadTags($query)"></auto-complete>
                 </tags-input>
-            </div>
+            </div> --}}
         </div>
         {{-- <tbody ui-sortable='sortableOptions' ng-model="IndexService.page.data" > --}}
         <tbody>
