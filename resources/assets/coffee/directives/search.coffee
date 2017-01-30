@@ -25,7 +25,7 @@ angular.module 'Egecms'
                 {title: 'метро', value: 'station_id', type: 'station_id'},
                 {title: 'сортировка', value: 'sort', type: 'sort'},
                 {title: 'скрытый фильтр', value: 'hidden_filter', type: 'text'},
-                {title: 'содержание раздела', value: 'html', type: 'text'}
+                {title: 'содержание раздела', value: 'html', type: 'textarea'}
             ]
 
             $scope.getOption = (condition) -> $scope.options[condition.option]

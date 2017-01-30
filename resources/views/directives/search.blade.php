@@ -16,6 +16,9 @@
                   <div ng-if="getOption(condition).type == 'text'">
                       <input type='text' class='form-control' ng-model='condition.value' placeholder="@{{ getOption(condition).title }}">
                   </div>
+                  <div ng-if="getOption(condition).type == 'textarea'">
+                      <textarea rows='5' class='form-control' ng-model='condition.value' placeholder="@{{ getOption(condition).title }}"></textarea>
+                  </div>
                   <div ng-if="getOption(condition).type == 'published'">
                       <ng-select-new model='condition.value' object="Published" label="title" convert-to-number class='search-value-control'></ng-select-new>
                   </div>

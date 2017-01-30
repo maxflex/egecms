@@ -105,9 +105,16 @@ class Page extends Model
         $query = static::query();
 
         // поиск по текстовым полям
-        foreach(['keyphrase', 'url', 'title', 'h1', 'h1_bottom', 'keywords', 'desc', 'hidden_filter', 'html'] as $text_field) {
+        foreach(['keyphrase', 'url', 'title', 'h1', 'h1_bottom', 'keywords', 'desc', 'hidden_filter'] as $text_field) {
             if (isset($search->{$text_field}) && ! empty($search->{$text_field})) {
                 $query->where($text_field, 'like', '%' . $search->{$text_field} . '%');
+            }
+        }
+
+        // поиск по textarea-полям
+        foreach(['html'] as $text_field) {
+            if (isset($search->{$text_field}) && ! empty($search->{$text_field})) {
+                $query->whereRaw("onlysymbols({$text_field}) like CONCAT('%', onlysymbols('{$search->{$text_field}}') ,'%')");
             }
         }
 
@@ -135,3 +142,32 @@ class Page extends Model
         return $query;
     }
 }
+
+/**
+ * Функция поиска БД
+ *
+ DROP FUNCTION IF EXISTS onlysymbols;
+ DELIMITER $$
+ CREATE FUNCTION `onlysymbols`( str TEXT ) RETURNS TEXT CHARSET utf8
+ BEGIN
+   DECLARE i, len SMALLINT DEFAULT 1;
+   DECLARE ret TEXT DEFAULT '';
+   DECLARE c CHAR(1);
+   SET str = LOWER(REPLACE(str, ' ', ''));
+   SET len = CHAR_LENGTH( str );
+   REPEAT
+     BEGIN
+       SET c = MID( str, i, 1 );
+       IF c REGEXP '[а-я]+' THEN
+         SET ret=CONCAT(ret,c);
+       ELSEIF  c = ' ' THEN
+           SET ret=CONCAT(ret," ");
+       END IF;
+       SET i = i + 1;
+     END;
+   UNTIL i > len END REPEAT;
+   SET ret = lower(ret);
+   RETURN ret;
+   END $$
+   DELIMITER ;
+ */
