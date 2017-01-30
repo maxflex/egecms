@@ -64,4 +64,4 @@ angular.module 'Egecms'
                 $.cookie('search', JSON.stringify(search), { expires: 365, path: '/' })
                 ajaxStart()
                 $scope.searching = true
-                window.location = 'search'
+                $timeout -> window.location = 'search'

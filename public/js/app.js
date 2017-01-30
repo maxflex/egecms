@@ -684,7 +684,9 @@
           });
           ajaxStart();
           $scope.searching = true;
-          return window.location = 'search';
+          return $timeout(function() {
+            return window.location = 'search';
+          });
         };
       }
     };

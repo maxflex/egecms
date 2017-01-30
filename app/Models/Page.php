@@ -114,7 +114,7 @@ class Page extends Model
         // поиск по textarea-полям
         foreach(['html'] as $text_field) {
             if (isset($search->{$text_field}) && ! empty($search->{$text_field})) {
-                $query->whereRaw("onlysymbols({$text_field}) like CONCAT('%', onlysymbols('{$search->{$text_field}}') ,'%')");
+                $query->whereRaw("onlysymbols({$text_field}) like CONCAT('%', CONVERT(onlysymbols('" . $search->{$text_field} . "') USING utf8) COLLATE utf8_bin, '%')");
             }
         }
 
