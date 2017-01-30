@@ -678,15 +678,16 @@
           $scope.conditions.forEach(function(condition) {
             return search[$scope.getOption(condition).value] = condition.value;
           });
+          if (search.hasOwnProperty('html')) {
+            search.html = search.html.substr(0, 200);
+          }
           $.cookie('search', JSON.stringify(search), {
             expires: 365,
             path: '/'
           });
           ajaxStart();
           $scope.searching = true;
-          return $timeout(function() {
-            return window.location = 'search';
-          });
+          return window.location = 'search';
         };
       }
     };
@@ -776,27 +777,6 @@
 }).call(this);
 
 (function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]);
-
-}).call(this);
-
-(function() {
   var apiPath, countable, updatable;
 
   angular.module('Egecms').factory('Variable', function($resource) {
@@ -852,6 +832,27 @@
       }
     };
   };
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]);
 
 }).call(this);
 

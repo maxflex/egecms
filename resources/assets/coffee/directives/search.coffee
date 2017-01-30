@@ -61,7 +61,10 @@ angular.module 'Egecms'
                 search = {}
                 $scope.conditions.forEach (condition) ->
                     search[$scope.getOption(condition).value] = condition.value
+                # long input bug fix – cookie can only store N bytes
+                search.html = search.html.substr(0, 200) if search.hasOwnProperty('html')
+                
                 $.cookie('search', JSON.stringify(search), { expires: 365, path: '/' })
                 ajaxStart()
                 $scope.searching = true
-                $timeout -> window.location = 'search'
+                window.location = 'search'
