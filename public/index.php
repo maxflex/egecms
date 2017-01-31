@@ -46,6 +46,11 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 | and wonderful application we have prepared for them.
 |
 */
+
+// server should keep session data for AT LEAST 1 hour
+ini_set('session.gc_maxlifetime', 3600);
+// each client should remember their session id for EXACTLY 1 hour
+session_set_cookie_params(3600);
 session_start();
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
