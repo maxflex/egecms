@@ -16,6 +16,9 @@ angular.module 'Egecms'
                 value = $scope.object[value][$scope.field] if $scope.field
 
                 $scope.model = value
-            $timeout ->
-                $($element).selectpicker()
-            , 500
+
+            $element.selectpicker
+                noneSelectedText: $scope.noneText
+
+            $scope.$watchGroup ['model', 'object'], (newVal) ->
+                $element.selectpicker 'refresh'
