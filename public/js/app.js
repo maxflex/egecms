@@ -440,11 +440,12 @@
       },
       templateUrl: 'directives/ngmulti',
       controller: function($scope, $element, $attrs, $timeout) {
-        return $timeout(function() {
-          return $($element).selectpicker({
-            noneSelectedText: $scope.noneText
-          });
-        }, 100);
+        $element.selectpicker({
+          noneSelectedText: $scope.noneText
+        });
+        return $scope.$watchGroup(['model', 'object'], function(newVal) {
+          return $element.selectpicker('refresh');
+        });
       }
     };
   });
@@ -717,9 +718,12 @@
           }
           $scope.model = value;
         }
-        return $timeout(function() {
-          return $($element).selectpicker();
-        }, 500);
+        $element.selectpicker({
+          noneSelectedText: $scope.noneText
+        });
+        return $scope.$watchGroup(['model', 'object'], function(newVal) {
+          return $element.selectpicker('refresh');
+        });
       }
     };
   });
@@ -773,27 +777,6 @@
 
 (function() {
 
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]);
 
 }).call(this);
 
@@ -857,6 +840,27 @@
 }).call(this);
 
 (function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]);
+
+}).call(this);
+
+(function() {
   angular.module('Egecms').service('AceService', function() {
     this.initEditor = function(FormService, minLines, id) {
       if (minLines == null) {
@@ -898,7 +902,7 @@
       this.current_page = 1;
       return this.pageChanged();
     };
-    this.max_size = 30;
+    this.max_size = 10;
     this.init = function(Resource, current_page, attrs, load_page) {
       if (load_page == null) {
         load_page = true;
