@@ -5,7 +5,7 @@ angular.module 'Egecms'
             this.current_page = 1
             this.pageChanged()
 
-        this.max_size = 30
+        this.max_size = 10
 
         this.init = (Resource, current_page, attrs, load_page = true) ->
             $rootScope.frontend_loading = true
