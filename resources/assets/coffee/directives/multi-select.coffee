@@ -9,7 +9,8 @@ angular.module 'Egecms'
             noneText: '@'
         templateUrl: 'directives/ngmulti'
         controller: ($scope, $element, $attrs, $timeout) ->
-            $timeout ->
-                $($element).selectpicker
-                    noneSelectedText: $scope.noneText
-            , 100
+            $element.selectpicker
+                noneSelectedText: $scope.noneText
+
+            $scope.$watchGroup ['model', 'object'], (newVal) ->
+                $element.selectpicker 'refresh'
