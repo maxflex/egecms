@@ -13,4 +13,4 @@ angular.module 'Egecms'
                 noneSelectedText: $scope.noneText
 
             $scope.$watchGroup ['model', 'object'], (newVal) ->
-                $element.selectpicker 'refresh'
+                $element.selectpicker 'refresh' if newVal
