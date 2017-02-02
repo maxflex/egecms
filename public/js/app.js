@@ -187,6 +187,27 @@
 }).call(this);
 
 (function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]);
+
+}).call(this);
+
+(function() {
 
 
 }).call(this);
@@ -444,7 +465,9 @@
           noneSelectedText: $scope.noneText
         });
         return $scope.$watchGroup(['model', 'object'], function(newVal) {
-          return $element.selectpicker('refresh');
+          if (newVal) {
+            return $element.selectpicker('refresh');
+          }
         });
       }
     };
@@ -718,12 +741,11 @@
           }
           $scope.model = value;
         }
-        $element.selectpicker({
-          noneSelectedText: $scope.noneText
-        });
-        return $scope.$watchGroup(['model', 'object'], function(newVal) {
-          return $element.selectpicker('refresh');
-        });
+        return $timeout(function() {
+          return $element.selectpicker({
+            noneSelectedText: $scope.noneText
+          });
+        }, 100);
       }
     };
   });
@@ -836,27 +858,6 @@
       }
     };
   };
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]);
 
 }).call(this);
 
