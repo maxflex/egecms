@@ -13,7 +13,7 @@ class Api
      * Отправить запрос.
      *
      */
-    public static function exec($function, $data)
+    public static function exec($function, $data = [])
     {
         // Добавляем API_KEY к запросу
         $data["API_KEY"] = static::API_KEY;

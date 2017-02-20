@@ -96,4 +96,9 @@ class VariablesController extends Controller
             return false;
         }
     }
+
+    public function pull(Request $request)
+    {
+        return \DB::table('variables')->get()->all();
+    }
 }
