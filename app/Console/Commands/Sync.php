@@ -45,17 +45,17 @@ class Sync extends Command
 
     }
 
-    public function sync()
+    public function push()
     {
-        $this->info('Syncing variables...');
+        $this->info('Pushing variables to server...');
         $variables = Variable::all();
-        Api::exec('variables/sync', ['variables' => $variables->toArray()]);
+        Api::exec('variables/push', ['variables' => $variables->toArray()]);
     }
 
     public function pull()
     {
         $this->info('Pulling variables from server...');
-        $variables = Api::exec('variables/pull', []);
+        $variables = Api::exec('variables/pull');
         \DB::table('variables')->truncate();
         foreach ($variables as $var) {
             \DB::table('variables')->insert((array)$var);
