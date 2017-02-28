@@ -47,7 +47,7 @@ class SassController extends Controller
     public function update(Request $request, $id)
     {
         Storage::disk('web_sass')->put($id, $request->text);
-        $output = shell_exec("cd " . env('WEB_PATH') . " 2>&1 && git -c user.name=shamego -c user.email=shamik1551@mail.ru commit -m styles resources/assets/sass/{$id} && gulp sass 2>&1");
+        $output = shell_exec("cd " . env('WEB_PATH') . " 2>&1 && git -c user.name=shamego -c user.email=shamik1551@mail.ru commit -m styles resources/assets/sass/{$id} 2>&1 && npm run gulp sass 2>&1");
         Storage::disk('web_sass')->put('log.txt', $output);
     }
 }
