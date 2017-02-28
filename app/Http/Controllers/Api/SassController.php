@@ -47,7 +47,7 @@ class SassController extends Controller
     public function update(Request $request, $id)
     {
         Storage::disk('web_sass')->put($id, $request->text);
-        $output = shell_exec("./compile-web-sass.sh");
+        $output = shell_exec("/home/egerep-web/compile-web-sass.sh");
         Storage::disk('web_sass')->put('log.txt', $output);
     }
 }
