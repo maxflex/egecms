@@ -57,6 +57,7 @@ class Page extends Model
         'seo_desktop' => 0,
         'seo_mobile' => 0,
         'sort' => 1,
+        'place' => 1
     ];
 
     public function tags()

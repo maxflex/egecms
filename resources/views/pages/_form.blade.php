@@ -126,7 +126,9 @@
         </div>
         <div class="col-sm-3">
             <label class="no-margin-bottom label-opacity">выезд</label>
-            <ng-select-new model='FormService.model.place' object="{{ fact('places', 'serp') }}" label='serp' none-text='неважно где заниматься' convert-to-number></ng-select-new>
+            <select class='form-control selectpicker' ng-model='FormService.model.place' convert-to-number>
+                <option ng-repeat='place in {{ fact('places', 'serp') }}' value='@{{ place.id }}'>@{{ place.serp }}</option>
+            </select>
         </div>
         <div class="col-sm-3">
             <label class="no-margin-bottom label-opacity">метро</label>

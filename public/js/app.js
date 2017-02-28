@@ -187,6 +187,11 @@
 }).call(this);
 
 (function() {
+
+
+}).call(this);
+
+(function() {
   angular.module('Egecms').controller('LoginCtrl', function($scope, $http) {
     angular.element(document).ready(function() {
       return $scope.l = Ladda.create(document.querySelector('#login-submit'));
@@ -328,27 +333,6 @@
 }).call(this);
 
 (function() {
-  angular.module('Egecms').controller('SassIndex', function($scope, $attrs, IndexService, Sass) {
-    bindArguments($scope, arguments);
-    return angular.element(document).ready(function() {
-      return IndexService.init(Sass, $scope.current_page, $attrs);
-    });
-  }).controller('SassForm', function($scope, FormService, AceService, Sass) {
-    bindArguments($scope, arguments);
-    return angular.element(document).ready(function() {
-      FormService.init(Sass, $scope.id, $scope.model);
-      FormService.dataLoaded.promise.then(function() {
-        return AceService.initEditor(FormService, 30);
-      });
-      return FormService.beforeSave = function() {
-        return FormService.model.text = AceService.editor.getValue();
-      };
-    });
-  });
-
-}).call(this);
-
-(function() {
   angular.module('Egecms').controller('SearchIndex', function($scope, $attrs, $timeout, IndexService, Page, Published, Tag, ExportService) {
     bindArguments($scope, arguments);
     ExportService.init({
@@ -400,11 +384,6 @@
       };
     });
   });
-
-}).call(this);
-
-(function() {
-
 
 }).call(this);
 
@@ -741,18 +720,11 @@
           }
           $scope.model = value;
         }
-        $timeout(function() {
+        return $timeout(function() {
           return $element.selectpicker({
             noneSelectedText: $scope.noneText
           });
         }, 100);
-        return $scope.$watchGroup(['model', 'object'], function(newVal) {
-          if (newVal) {
-            return $timeout(function() {
-              return $element.selectpicker('refresh');
-            });
-          }
-        });
       }
     };
   });
@@ -850,10 +822,6 @@
         isArray: true
       }
     });
-  }).factory('Sass', function($resource) {
-    return $resource(apiPath('sass'), {
-      id: '@id'
-    }, updatable());
   }).factory('Page', function($resource) {
     return $resource(apiPath('pages'), {
       id: '@id'
@@ -907,7 +875,7 @@
       this.editor.getSession().setUseWrapMode(true);
       this.editor.setOptions({
         minLines: minLines,
-        maxLines: 2e308
+        maxLines: Infinity
       });
       return this.editor.commands.addCommand({
         name: 'save',

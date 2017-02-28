@@ -87,7 +87,7 @@ class VariablesController extends Controller
         Variable::destroy($id);
     }
 
-    public function sync(Request $request)
+    public function push(Request $request)
     {
         if (Api::API_KEY == $request->input('API_KEY')) {
             \DB::table('variables')->truncate();
@@ -95,5 +95,10 @@ class VariablesController extends Controller
         } else {
             return false;
         }
+    }
+
+    public function pull(Request $request)
+    {
+        return \DB::table('variables')->get()->all();
     }
 }
