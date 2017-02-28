@@ -62,6 +62,12 @@ return [
             'bucket' => 'your-bucket',
         ],
 
+        'web_sass' => [
+            'driver' => 'local',
+            'root' => env('WEB_SASS_PATH'),
+            'visibility' => 'public',
+        ]
+
     ],
 
 ];

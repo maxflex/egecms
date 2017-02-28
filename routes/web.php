@@ -22,6 +22,8 @@ Route::group(['middleware' => ['login']], function () {
     Route::post('tags/import', 'TagsController@import')->name('tags.import');
     Route::resource('tags', 'TagsController');
 
+    Route::resource('sass', 'SassController');
+
     # Templates for angular directives
     Route::get('directives/{directive}', function($directive) {
         return view("directives.{$directive}");

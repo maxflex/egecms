@@ -187,11 +187,6 @@
 }).call(this);
 
 (function() {
-
-
-}).call(this);
-
-(function() {
   angular.module('Egecms').controller('LoginCtrl', function($scope, $http) {
     angular.element(document).ready(function() {
       return $scope.l = Ladda.create(document.querySelector('#login-submit'));
@@ -333,6 +328,27 @@
 }).call(this);
 
 (function() {
+  angular.module('Egecms').controller('SassIndex', function($scope, $attrs, IndexService, Sass) {
+    bindArguments($scope, arguments);
+    return angular.element(document).ready(function() {
+      return IndexService.init(Sass, $scope.current_page, $attrs);
+    });
+  }).controller('SassForm', function($scope, FormService, AceService, Sass) {
+    bindArguments($scope, arguments);
+    return angular.element(document).ready(function() {
+      FormService.init(Sass, $scope.id, $scope.model);
+      FormService.dataLoaded.promise.then(function() {
+        return AceService.initEditor(FormService, 30);
+      });
+      return FormService.beforeSave = function() {
+        return FormService.model.text = AceService.editor.getValue();
+      };
+    });
+  });
+
+}).call(this);
+
+(function() {
   angular.module('Egecms').controller('SearchIndex', function($scope, $attrs, $timeout, IndexService, Page, Published, Tag, ExportService) {
     bindArguments($scope, arguments);
     ExportService.init({
@@ -398,6 +414,11 @@
 }).call(this);
 
 (function() {
+
+
+}).call(this);
+
+(function() {
   angular.module('Egecms').directive('ngCounter', function($timeout) {
     return {
       restrict: 'A',
@@ -444,7 +465,9 @@
           noneSelectedText: $scope.noneText
         });
         return $scope.$watchGroup(['model', 'object'], function(newVal) {
-          return $element.selectpicker('refresh');
+          if (newVal) {
+            return $element.selectpicker('refresh');
+          }
         });
       }
     };
@@ -718,11 +741,17 @@
           }
           $scope.model = value;
         }
-        $element.selectpicker({
-          noneSelectedText: $scope.noneText
-        });
+        $timeout(function() {
+          return $element.selectpicker({
+            noneSelectedText: $scope.noneText
+          });
+        }, 100);
         return $scope.$watchGroup(['model', 'object'], function(newVal) {
-          return $element.selectpicker('refresh');
+          if (newVal) {
+            return $timeout(function() {
+              return $element.selectpicker('refresh');
+            });
+          }
         });
       }
     };
@@ -781,6 +810,27 @@
 }).call(this);
 
 (function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]);
+
+}).call(this);
+
+(function() {
   var apiPath, countable, updatable;
 
   angular.module('Egecms').factory('Variable', function($resource) {
@@ -800,6 +850,10 @@
         isArray: true
       }
     });
+  }).factory('Sass', function($resource) {
+    return $resource(apiPath('sass'), {
+      id: '@id'
+    }, updatable());
   }).factory('Page', function($resource) {
     return $resource(apiPath('pages'), {
       id: '@id'
@@ -840,27 +894,6 @@
 }).call(this);
 
 (function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]);
-
-}).call(this);
-
-(function() {
   angular.module('Egecms').service('AceService', function() {
     this.initEditor = function(FormService, minLines, id) {
       if (minLines == null) {
@@ -874,7 +907,7 @@
       this.editor.getSession().setUseWrapMode(true);
       this.editor.setOptions({
         minLines: minLines,
-        maxLines: Infinity
+        maxLines: 2e308
       });
       return this.editor.commands.addCommand({
         name: 'save',

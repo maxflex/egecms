@@ -18,6 +18,8 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
     Route::get('tags/autocomplete', 'TagsController@autocomplete');
     Route::resource('tags', 'TagsController');
 
+    Route::resource('sass', 'SassController');
+
     # Factory
     Route::post('factory', 'FactoryController@get');
 });

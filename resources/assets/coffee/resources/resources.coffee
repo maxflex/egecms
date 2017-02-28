@@ -9,7 +9,10 @@ angular.module('Egecms')
                     method: 'GET'
                     url: apiPath('tags', 'autocomplete')
                     isArray: true
-                    
+
+    .factory 'Sass', ($resource) ->
+        $resource apiPath('sass'), {id: '@id'}, updatable()
+
     .factory 'Page', ($resource) ->
         $resource apiPath('pages'), {id: '@id'},
             update:
