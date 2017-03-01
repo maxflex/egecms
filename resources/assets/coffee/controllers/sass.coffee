@@ -10,6 +10,6 @@ angular
     angular.element(document).ready ->
         FormService.init Sass, $scope.id, $scope.model
         FormService.dataLoaded.promise.then ->
-            AceService.initEditor FormService, 30
+            AceService.initEditor FormService, 30, 'editor', 'ace/mode/css'
         FormService.beforeSave = ->
             FormService.model.text = AceService.editor.getValue()
