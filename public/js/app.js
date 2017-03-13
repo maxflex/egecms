@@ -343,7 +343,7 @@
     return angular.element(document).ready(function() {
       FormService.init(Sass, $scope.id, $scope.model);
       FormService.dataLoaded.promise.then(function() {
-        return AceService.initEditor(FormService, 30);
+        return AceService.initEditor(FormService, 30, 'editor', 'ace/mode/css');
       });
       return FormService.beforeSave = function() {
         return FormService.model.text = AceService.editor.getValue();
@@ -810,27 +810,6 @@
 }).call(this);
 
 (function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]);
-
-}).call(this);
-
-(function() {
   var apiPath, countable, updatable;
 
   angular.module('Egecms').factory('Variable', function($resource) {
@@ -895,15 +874,18 @@
 
 (function() {
   angular.module('Egecms').service('AceService', function() {
-    this.initEditor = function(FormService, minLines, id) {
+    this.initEditor = function(FormService, minLines, id, mode) {
       if (minLines == null) {
         minLines = 30;
       }
       if (id == null) {
         id = 'editor';
       }
+      if (mode == null) {
+        mode = 'ace/mode/html';
+      }
       this.editor = ace.edit(id);
-      this.editor.getSession().setMode("ace/mode/html");
+      this.editor.getSession().setMode(mode);
       this.editor.getSession().setUseWrapMode(true);
       this.editor.setOptions({
         minLines: minLines,
@@ -1047,7 +1029,11 @@
           _this.saving = false;
           return ajaxEnd();
         };
-      })(this));
+      })(this), function(response) {
+        notifyError(response.data);
+        this.saving = false;
+        return ajaxEnd();
+      });
     };
     this.create = function() {
       if (!beforeSave()) {
@@ -1135,6 +1121,27 @@
     };
     return this;
   });
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]);
 
 }).call(this);
 

@@ -81,6 +81,10 @@ angular.module 'Egecms'
             this.model.$update().then =>
                 this.saving = false
                 ajaxEnd()
+            , (response) ->
+                notifyError(response.data)
+                this.saving = false
+                ajaxEnd()
 
         this.create = ->
             return if not beforeSave()
