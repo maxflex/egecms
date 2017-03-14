@@ -97,16 +97,20 @@ class PagesController extends Controller
             foreach($tags[0] as $tag) {
                 // only <a></a> is allowed with attributes
                 if (strpos($tag, '<a') === 0) {
-                    continue;
                     @$counts['a']++;
+                    continue;
                 }
                 $allowed = false;
                 foreach(self::ALLOWED_TAGS as $allowed_tag) {
                     if (in_array($tag, ["<{$allowed_tag}>", "</{$allowed_tag}>"])) {
+                        if (! isset($counts[$allowed_tag])) {
+                            $counts[$allowed_tag] = 0;
+                        }
+
                         if ($tag[1] == '/') {
-                            @$counts[$allowed_tag]--;
+                            $counts[$allowed_tag]--;
                         } else {
-                            @$counts[$allowed_tag]++;
+                            $counts[$allowed_tag]++;
                         }
                         $allowed = true;
                         break;
