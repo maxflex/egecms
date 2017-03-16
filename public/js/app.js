@@ -187,11 +187,6 @@
 }).call(this);
 
 (function() {
-
-
-}).call(this);
-
-(function() {
   angular.module('Egecms').controller('LoginCtrl', function($scope, $http) {
     angular.element(document).ready(function() {
       return $scope.l = Ladda.create(document.querySelector('#login-submit'));
@@ -405,6 +400,11 @@
       };
     });
   });
+
+}).call(this);
+
+(function() {
+
 
 }).call(this);
 
@@ -739,7 +739,9 @@
           if ($scope.field) {
             value = $scope.object[value][$scope.field];
           }
-          $scope.model = value;
+          if (!$scope.model) {
+            $scope.model = value;
+          }
         }
         $timeout(function() {
           return $element.selectpicker({
@@ -806,6 +808,27 @@
 
 (function() {
 
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]);
 
 }).call(this);
 
@@ -889,7 +912,7 @@
       this.editor.getSession().setUseWrapMode(true);
       this.editor.setOptions({
         minLines: minLines,
-        maxLines: Infinity
+        maxLines: 2e308
       });
       return this.editor.commands.addCommand({
         name: 'save',
@@ -1121,27 +1144,6 @@
     };
     return this;
   });
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]);
 
 }).call(this);
 

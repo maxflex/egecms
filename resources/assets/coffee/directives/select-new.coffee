@@ -15,7 +15,8 @@ angular.module 'Egecms'
                 value = _.first Object.keys($scope.object)
                 value = $scope.object[value][$scope.field] if $scope.field
 
-                $scope.model = value
+                if not $scope.model #race condition fix
+                    $scope.model = value
 
             $timeout ->
                 $element.selectpicker
