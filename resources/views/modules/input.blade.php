@@ -5,7 +5,7 @@
     @endif
     @if(isset($attributes))
         @foreach($attributes as $key => $attr)
-            {{ $key }}@if($attr !== true){{ '=' . $attr }}@endif
+            {{ $key }}@if($attr !== true){!! '="' . $attr . '"' !!}@endif
         @endforeach
     @endif
   >@if(isset($textarea))</textarea>@endif
