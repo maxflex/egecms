@@ -187,6 +187,11 @@
 }).call(this);
 
 (function() {
+
+
+}).call(this);
+
+(function() {
   angular.module('Egecms').controller('LoginCtrl', function($scope, $http) {
     angular.element(document).ready(function() {
       return $scope.l = Ladda.create(document.querySelector('#login-submit'));
@@ -400,11 +405,6 @@
       };
     });
   });
-
-}).call(this);
-
-(function() {
-
 
 }).call(this);
 
@@ -833,69 +833,6 @@
 }).call(this);
 
 (function() {
-  var apiPath, countable, updatable;
-
-  angular.module('Egecms').factory('Variable', function($resource) {
-    return $resource(apiPath('variables'), {
-      id: '@id'
-    }, updatable());
-  }).factory('Tag', function($resource) {
-    return $resource(apiPath('tags'), {
-      id: '@id'
-    }, {
-      update: {
-        method: 'PUT'
-      },
-      autocomplete: {
-        method: 'GET',
-        url: apiPath('tags', 'autocomplete'),
-        isArray: true
-      }
-    });
-  }).factory('Sass', function($resource) {
-    return $resource(apiPath('sass'), {
-      id: '@id'
-    }, updatable());
-  }).factory('Page', function($resource) {
-    return $resource(apiPath('pages'), {
-      id: '@id'
-    }, {
-      update: {
-        method: 'PUT'
-      },
-      checkExistance: {
-        method: 'POST',
-        url: apiPath('pages', 'checkExistance')
-      }
-    });
-  });
-
-  apiPath = function(entity, additional) {
-    if (additional == null) {
-      additional = '';
-    }
-    return ("api/" + entity + "/") + (additional ? additional + '/' : '') + ":id";
-  };
-
-  updatable = function() {
-    return {
-      update: {
-        method: 'PUT'
-      }
-    };
-  };
-
-  countable = function() {
-    return {
-      count: {
-        method: 'GET'
-      }
-    };
-  };
-
-}).call(this);
-
-(function() {
   angular.module('Egecms').service('AceService', function() {
     this.initEditor = function(FormService, minLines, id, mode) {
       if (minLines == null) {
@@ -912,7 +849,7 @@
       this.editor.getSession().setUseWrapMode(true);
       this.editor.setOptions({
         minLines: minLines,
-        maxLines: 2e308
+        maxLines: Infinity
       });
       return this.editor.commands.addCommand({
         name: 'save',
@@ -1144,6 +1081,69 @@
     };
     return this;
   });
+
+}).call(this);
+
+(function() {
+  var apiPath, countable, updatable;
+
+  angular.module('Egecms').factory('Variable', function($resource) {
+    return $resource(apiPath('variables'), {
+      id: '@id'
+    }, updatable());
+  }).factory('Tag', function($resource) {
+    return $resource(apiPath('tags'), {
+      id: '@id'
+    }, {
+      update: {
+        method: 'PUT'
+      },
+      autocomplete: {
+        method: 'GET',
+        url: apiPath('tags', 'autocomplete'),
+        isArray: true
+      }
+    });
+  }).factory('Sass', function($resource) {
+    return $resource(apiPath('sass'), {
+      id: '@id'
+    }, updatable());
+  }).factory('Page', function($resource) {
+    return $resource(apiPath('pages'), {
+      id: '@id'
+    }, {
+      update: {
+        method: 'PUT'
+      },
+      checkExistance: {
+        method: 'POST',
+        url: apiPath('pages', 'checkExistance')
+      }
+    });
+  });
+
+  apiPath = function(entity, additional) {
+    if (additional == null) {
+      additional = '';
+    }
+    return ("api/" + entity + "/") + (additional ? additional + '/' : '') + ":id";
+  };
+
+  updatable = function() {
+    return {
+      update: {
+        method: 'PUT'
+      }
+    };
+  };
+
+  countable = function() {
+    return {
+      count: {
+        method: 'GET'
+      }
+    };
+  };
 
 }).call(this);
 
