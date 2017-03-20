@@ -3,6 +3,7 @@
 /vendor
 /.idea
 /resources/assets/bower
+cookies.txt
 Envoy.blade.php
 Homestead.json
 Homestead.yaml
