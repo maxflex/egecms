@@ -38,17 +38,6 @@
                           <div class='selectable' ng-class="{'selected': condition.value == 0}" ng-click='condition.value = 0'></div>
                       </div>
                   </div>
-                  <div ng-if="getOption(condition).type == 'tags'">
-                      <tags-input
-                          ng-model="condition.value"
-                          add-from-autocomplete-only="true"
-                          display-property="text"
-                          placeholder="добавить тег"
-                          replace-spaces-with-dashes="false"
-                      >
-                          <auto-complete min-length='2' source="loadTags($query)"></auto-complete>
-                      </tags-input>
-                  </div>
                   <div ng-if="getOption(condition).type == 'subjects'">
                       <ng-multi object='subjects' label='name' model='condition.value' none-text='выберите предметы'></ng-multi>
                   </div>

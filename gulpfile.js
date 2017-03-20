@@ -75,7 +75,6 @@ const elixir = require('laravel-elixir');
              'ace/lib/ace/commands/default_commands',
              'angular-file-upload/dist/angular-file-upload.min',
              'jquery.maskedinput/dist/jquery.maskedinput.min',
-             'ng-tags-input/ng-tags-input.min',
              'angucomplete-alt/dist/angucomplete-alt.min'
          ]).concat(['resources/assets/js/*.js']), 'public/js/vendor.js');
  });

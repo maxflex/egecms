@@ -49,21 +49,12 @@ class Page extends Model
         'html'
     ];
 
-    protected static $with_comma_on_export = [
-        'tags'
-    ];
-
     protected $attributes = [
         'seo_desktop' => 0,
         'seo_mobile' => 0,
         'sort' => 1,
         'place' => 1
     ];
-
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class);
-    }
 
     public function useful()
     {
@@ -129,14 +120,6 @@ class Page extends Model
         if (isset($search->subjects)) {
             foreach($search->subjects as $subject_id) {
                 $query->whereRaw("FIND_IN_SET('{$subject_id}', subjects)");
-            }
-        }
-
-        if (! empty($search->tags)) {
-            foreach(Tag::getIds($search->tags) as $tag_id) {
-                $query->whereHas('tags', function($query) use ($tag_id) {
-                    $query->whereId($tag_id);
-                });
             }
         }
 
