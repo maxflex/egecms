@@ -1,13 +1,13 @@
 angular
     .module 'Egecms'
-    .controller 'PagesIndex', ($scope, $attrs, $timeout, IndexService, Page, Published, Tag, ExportService) ->
+    .controller 'PagesIndex', ($scope, $attrs, $timeout, IndexService, Page, Published, ExportService) ->
         bindArguments($scope, arguments)
         ExportService.init({controller: 'pages'})
 
         angular.element(document).ready ->
             IndexService.init(Page, $scope.current_page, $attrs, false)
 
-    .controller 'PagesForm', ($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Tag) ->
+    .controller 'PagesForm', ($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown) ->
         bindArguments($scope, arguments)
 
         empty_useful = {text: null, page_id_field: null}
@@ -82,6 +82,3 @@ angular
 
         $scope.$watch 'FormService.model.station_id', (newVal, oldVal) ->
             $timeout -> $('#sort').selectpicker('refresh')
-
-        $scope.loadTags = (text) ->
-            Tag.autocomplete({text: text}).$promise

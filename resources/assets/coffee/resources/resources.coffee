@@ -1,14 +1,6 @@
 angular.module('Egecms')
     .factory 'Variable', ($resource) ->
         $resource apiPath('variables'), {id: '@id'}, updatable()
-    .factory 'Tag', ($resource) ->
-        $resource apiPath('tags'), {id: '@id'},
-                update:
-                    method: 'PUT'
-                autocomplete:
-                    method: 'GET'
-                    url: apiPath('tags', 'autocomplete')
-                    isArray: true
 
     .factory 'Sass', ($resource) ->
         $resource apiPath('sass'), {id: '@id'}, updatable()

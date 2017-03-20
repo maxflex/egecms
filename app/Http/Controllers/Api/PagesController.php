@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Page;
-use App\Models\Tag;
 
 class PagesController extends Controller
 {
@@ -52,11 +51,7 @@ class PagesController extends Controller
      */
     public function store(Request $request)
     {
-        $page = Page::create($request->input())->fresh();
-        if (isset($request->tags)) {
-            $page->tags()->sync(Tag::getIds($request->tags));
-        }
-        return $page;
+        return Page::create($request->input())->fresh();
     }
 
     /**
@@ -67,7 +62,7 @@ class PagesController extends Controller
      */
     public function show($id)
     {
-        return Page::with(['tags', 'useful'])->find($id);
+        return Page::with(['useful'])->find($id);
     }
 
     /**
@@ -128,11 +123,7 @@ class PagesController extends Controller
             }
         }
 
-        $page = Page::find($id);
-        if (isset($request->tags)) {
-            $page->tags()->sync(Tag::getIds($request->tags));
-        }
-        $page->update($request->input());
+        Page::find($id)->update($request->input());
     }
 
 

@@ -5,7 +5,7 @@ angular.module 'Egecms'
         scope: {}
         link: ->
             $('.search-icon').on 'click', -> $('#search-app').modal('show')
-        controller: ($scope, $timeout, $http, Published, Tag, FactoryService) ->
+        controller: ($scope, $timeout, $http, Published, FactoryService) ->
             bindArguments($scope, arguments)
             $scope.conditions = []
             $scope.options = [
@@ -19,7 +19,6 @@ angular.module 'Egecms'
                 {title: 'h1 внизу', value: 'h1_bottom', type: 'text'},
                 {title: 'meta keywords', value: 'keywords', type: 'text'},
                 {title: 'meta description', value: 'desc', type: 'text'},
-                {title: 'тэги', value: 'tags', type: 'tags'},
                 {title: 'предметы', value: 'subjects', type: 'subjects'},
                 {title: 'выезд', value: 'place', type: 'place'},
                 {title: 'метро', value: 'station_id', type: 'station_id'},
@@ -53,9 +52,6 @@ angular.module 'Egecms'
                         if $scope.sort is undefined then FactoryService.get('sort').then (response) ->
                             $scope.sort = response.data
                 # $('.search-value-control').selectpicker('refresh')
-
-            $scope.loadTags = (text) ->
-                Tag.autocomplete({text: text}).$promise
 
             $scope.search = ->
                 search = {}

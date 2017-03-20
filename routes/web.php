@@ -17,11 +17,6 @@ Route::group(['middleware' => ['login']], function () {
     Route::resource('pages', 'PagesController');
     Route::get('search', 'PagesController@search');
 
-    # Tags
-    Route::get('tags/export', 'TagsController@export')->name('tags.export');
-    Route::post('tags/import', 'TagsController@import')->name('tags.import');
-    Route::resource('tags', 'TagsController');
-
     Route::resource('sass', 'SassController');
 
     # Templates for angular directives

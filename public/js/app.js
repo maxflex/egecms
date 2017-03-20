@@ -1,7 +1,7 @@
 (function() {
   var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-  angular.module("Egecms", ['ngSanitize', 'ngResource', 'ngAnimate', 'ui.sortable', 'ui.bootstrap', 'angular-ladda', 'angularFileUpload', 'ngTagsInput', 'angucomplete-alt']).config([
+  angular.module("Egecms", ['ngSanitize', 'ngResource', 'ngAnimate', 'ui.sortable', 'ui.bootstrap', 'angular-ladda', 'angularFileUpload', 'angucomplete-alt']).config([
     '$compileProvider', function($compileProvider) {
       return $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|sip):/);
     }
@@ -214,7 +214,7 @@
 }).call(this);
 
 (function() {
-  angular.module('Egecms').controller('PagesIndex', function($scope, $attrs, $timeout, IndexService, Page, Published, Tag, ExportService) {
+  angular.module('Egecms').controller('PagesIndex', function($scope, $attrs, $timeout, IndexService, Page, Published, ExportService) {
     bindArguments($scope, arguments);
     ExportService.init({
       controller: 'pages'
@@ -222,7 +222,7 @@
     return angular.element(document).ready(function() {
       return IndexService.init(Page, $scope.current_page, $attrs, false);
     });
-  }).controller('PagesForm', function($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Tag) {
+  }).controller('PagesForm', function($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown) {
     var empty_useful;
     bindArguments($scope, arguments);
     empty_useful = {
@@ -313,16 +313,11 @@
       AceService.editor.session.replace(AceService.editor.selection.getRange(), link);
       return $('#link-manager').modal('hide');
     };
-    $scope.$watch('FormService.model.station_id', function(newVal, oldVal) {
+    return $scope.$watch('FormService.model.station_id', function(newVal, oldVal) {
       return $timeout(function() {
         return $('#sort').selectpicker('refresh');
       });
     });
-    return $scope.loadTags = function(text) {
-      return Tag.autocomplete({
-        text: text
-      }).$promise;
-    };
   });
 
 }).call(this);
@@ -349,34 +344,13 @@
 }).call(this);
 
 (function() {
-  angular.module('Egecms').controller('SearchIndex', function($scope, $attrs, $timeout, IndexService, Page, Published, Tag, ExportService) {
+  angular.module('Egecms').controller('SearchIndex', function($scope, $attrs, $timeout, IndexService, Page, Published, ExportService) {
     bindArguments($scope, arguments);
     ExportService.init({
       controller: 'pages'
     });
     return angular.element(document).ready(function() {
       return IndexService.init(Page, $scope.current_page, $attrs, false);
-    });
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').controller('TagsIndex', function($scope, $attrs, IndexService, ExportService, Tag) {
-    bindArguments($scope, arguments);
-    ExportService.init({
-      controller: 'tags'
-    });
-    return angular.element(document).ready(function() {
-      return IndexService.init(Tag, $scope.current_page, $attrs);
-    });
-  }).controller('TagsForm', function($scope, $attrs, $timeout, FormService, Tag) {
-    bindArguments($scope, arguments);
-    return angular.element(document).ready(function() {
-      FormService.onCreateError = function(response) {
-        return notifyError('тэг уже существует');
-      };
-      return FormService.init(Tag, $scope.id, $scope.model);
     });
   });
 
@@ -569,7 +543,7 @@
           return $('#search-app').modal('show');
         });
       },
-      controller: function($scope, $timeout, $http, Published, Tag, FactoryService) {
+      controller: function($scope, $timeout, $http, Published, FactoryService) {
         bindArguments($scope, arguments);
         $scope.conditions = [];
         $scope.options = [
@@ -613,10 +587,6 @@
             title: 'meta description',
             value: 'desc',
             type: 'text'
-          }, {
-            title: 'тэги',
-            value: 'tags',
-            type: 'tags'
           }, {
             title: 'предметы',
             value: 'subjects',
@@ -690,11 +660,6 @@
                 });
               }
           }
-        };
-        $scope.loadTags = function(text) {
-          return Tag.autocomplete({
-            text: text
-          }).$promise;
         };
         return $scope.search = function() {
           var search;
@@ -829,69 +794,6 @@
       title: 'внизу'
     }
   ]);
-
-}).call(this);
-
-(function() {
-  var apiPath, countable, updatable;
-
-  angular.module('Egecms').factory('Variable', function($resource) {
-    return $resource(apiPath('variables'), {
-      id: '@id'
-    }, updatable());
-  }).factory('Tag', function($resource) {
-    return $resource(apiPath('tags'), {
-      id: '@id'
-    }, {
-      update: {
-        method: 'PUT'
-      },
-      autocomplete: {
-        method: 'GET',
-        url: apiPath('tags', 'autocomplete'),
-        isArray: true
-      }
-    });
-  }).factory('Sass', function($resource) {
-    return $resource(apiPath('sass'), {
-      id: '@id'
-    }, updatable());
-  }).factory('Page', function($resource) {
-    return $resource(apiPath('pages'), {
-      id: '@id'
-    }, {
-      update: {
-        method: 'PUT'
-      },
-      checkExistance: {
-        method: 'POST',
-        url: apiPath('pages', 'checkExistance')
-      }
-    });
-  });
-
-  apiPath = function(entity, additional) {
-    if (additional == null) {
-      additional = '';
-    }
-    return ("api/" + entity + "/") + (additional ? additional + '/' : '') + ":id";
-  };
-
-  updatable = function() {
-    return {
-      update: {
-        method: 'PUT'
-      }
-    };
-  };
-
-  countable = function() {
-    return {
-      count: {
-        method: 'GET'
-      }
-    };
-  };
 
 }).call(this);
 
@@ -1144,6 +1046,56 @@
     };
     return this;
   });
+
+}).call(this);
+
+(function() {
+  var apiPath, countable, updatable;
+
+  angular.module('Egecms').factory('Variable', function($resource) {
+    return $resource(apiPath('variables'), {
+      id: '@id'
+    }, updatable());
+  }).factory('Sass', function($resource) {
+    return $resource(apiPath('sass'), {
+      id: '@id'
+    }, updatable());
+  }).factory('Page', function($resource) {
+    return $resource(apiPath('pages'), {
+      id: '@id'
+    }, {
+      update: {
+        method: 'PUT'
+      },
+      checkExistance: {
+        method: 'POST',
+        url: apiPath('pages', 'checkExistance')
+      }
+    });
+  });
+
+  apiPath = function(entity, additional) {
+    if (additional == null) {
+      additional = '';
+    }
+    return ("api/" + entity + "/") + (additional ? additional + '/' : '') + ":id";
+  };
+
+  updatable = function() {
+    return {
+      update: {
+        method: 'PUT'
+      }
+    };
+  };
+
+  countable = function() {
+    return {
+      count: {
+        method: 'GET'
+      }
+    };
+  };
 
 }).call(this);
 
