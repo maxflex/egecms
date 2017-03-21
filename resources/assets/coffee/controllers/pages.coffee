@@ -7,7 +7,7 @@ angular
         angular.element(document).ready ->
             IndexService.init(Page, $scope.current_page, $attrs, false)
 
-    .controller 'PagesForm', ($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown) ->
+    .controller 'PagesForm', ($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Anchor) ->
         bindArguments($scope, arguments)
 
         empty_useful = {text: null, page_id_field: null}
@@ -70,8 +70,19 @@ angular
                     return response
 
         $scope.searchSelected = (selectedObject) ->
-            $scope.link_page_id = selectedObject.originalObject.id
+            $scope.link_page_id = selectedObject.originalObject.id if selectedObject isnt undefined
             $scope.$broadcast('angucomplete-alt:changeInput', 'page-search', $scope.link_page_id.toString())
+
+        $scope.searchSelected2 = (selectedObject) ->
+            FormService.model.anchor_page_id = selectedObject.originalObject.id if selectedObject isnt undefined
+
+        $scope.$watch 'FormService.model.anchor_page_id', (newVal, oldVal) ->
+            return if newVal is undefined
+            if newVal is null
+                $scope.$broadcast('angucomplete-alt:clearInput', 'page-search-2')
+            else
+                $scope.$broadcast('angucomplete-alt:changeInput', 'page-search-2', newVal.toString())
+            $timeout -> $scope.$apply()
 
         $scope.addLink = ->
             link = "<a href='[link|#{$scope.link_page_id}]'>#{$scope.link_text}</a>"

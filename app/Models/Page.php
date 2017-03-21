@@ -30,7 +30,11 @@ class Page extends Model
         'seo_mobile',
         'variable_id',
         'hidden_filter',
-        'useful'
+        'useful',
+        'anchor',
+        'anchor_block_id',
+        'anchor_page_id',
+        'anchor_published',
     ];
 
     protected static $hidden_on_export = [

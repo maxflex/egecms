@@ -7,3 +7,9 @@ angular.module('Egecms')
         {id: 1, title: 'вверху'},
         {id: 2, title: 'внизу'},
     ]
+    .value 'Anchor', [
+        {id: 1, title: 'главная – блок 1'},
+        {id: 2, title: 'главная – блок 2'},
+        {id: 3, title: 'главная – блок 3'},
+        {id: 4, title: 'раздел...'},
+    ]

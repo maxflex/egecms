@@ -15533,6 +15533,16 @@ label {
 select[multiple] {
   height: 34px; }
 
+.cross-inside-input {
+  height: 20px;
+  opacity: .5;
+  position: absolute;
+  right: 22px;
+  top: 27px;
+  cursor: pointer; }
+  .cross-inside-input:hover {
+    opacity: 1; }
+
 .list-group-item .search-icon {
   float: right;
   cursor: pointer; }

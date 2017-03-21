@@ -33,11 +33,36 @@
 </div>
 
 <div class="row mbs">
-    <div class="col-sm-11">
-        <label class="no-margin-bottom label-opacity">публикация</label>
+    <div class="col-sm-6">
+        @include('modules.input', [
+            'title' => 'h1 вверху',
+            'model' => 'h1',
+            'attributes' => [
+                'ng-counter' => true,
+            ]
+        ])
+    </div>
+    <div class="col-sm-6">
+        @include('modules.input', [
+            'title' => 'h1 внизу',
+            'model' => 'h1_bottom',
+            'attributes' => [
+                'ng-counter' => true,
+            ]
+        ])
+    </div>
+</div>
+
+<div class="row mbs">
+    <div class="col-sm-6">
+        <label class="no-margin-bottom label-opacity">публикация страницы</label>
         <ng-select-new model='FormService.model.published' object="Published" label="title" convert-to-number></ng-select-new>
     </div>
-    <div class="col-sm-1">
+    <div class="col-sm-5">
+        <label class="no-margin-bottom label-opacity">публикация анкора</label>
+        <ng-select-new model='FormService.model.anchor_published' object="Published" label="title" convert-to-number></ng-select-new>
+    </div>
+    <div class="col-sm-1 offset-1">
         <div class='burger seo-desktop'>
             <div class='selectable' ng-class="{'selected': FormService.model.seo_desktop == 1}" ng-click='FormService.model.seo_desktop = 1'></div>
             <div></div>
@@ -54,25 +79,28 @@
 </div>
 
 <div class="row mbs">
-    <div class="col-sm-12">
-        @include('modules.input', [
-            'title' => 'h1 вверху',
-            'model' => 'h1',
-            'attributes' => [
-                'ng-counter' => true,
-            ]
-        ])
+    <div class="col-sm-4">
+        @include('modules.input', ['title' => 'anchor', 'model' => 'anchor'])
     </div>
-</div>
-<div class="row mbs">
-    <div class="col-sm-12">
-        @include('modules.input', [
-            'title' => 'h1 внизу',
-            'model' => 'h1_bottom',
-            'attributes' => [
-                'ng-counter' => true,
-            ]
-        ])
+    <div class="col-sm-4">
+        <label class="no-margin-bottom label-opacity">блок</label>
+        <ng-select-new model='FormService.model.anchor_block_id' object="Anchor" label="title" convert-to-number none-text='выберите блок'></ng-select-new>
+    </div>
+    <div class="col-sm-4" ng-show='FormService.model.anchor_block_id == 4'>
+        <label class="no-margin-bottom label-opacity">номер раздела</label>
+        <div angucomplete-alt id='page-search-2'
+              placeholder="номер раздела"
+              pause="500"
+              selected-object="searchSelected2"
+              remote-api-handler='search'
+              title-field="title"
+              minlength="3"
+              text-searching='поиск...'
+              text-no-results='не найдено'
+              input-class="form-control form-control-small"
+              match-class="highlight">
+          </div>
+          <img src='img/svg/cross.svg' class='cross-inside-input' ng-show='FormService.model.anchor_page_id' ng-click="FormService.model.anchor_page_id = null">
     </div>
 </div>
 <div class="row mbs">
