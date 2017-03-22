@@ -1,23 +1,4 @@
-<div id="variable-group-modal" class="modal" role="dialog" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="field-container">
-                    <input type="text" class="field form-control" required placeholder="название группы" ng-model='GroupService.model.name'>
-                    <label class="floating-label">название группы</label>
-                </div>
-            </div>
-            <div class="modal-footer center">
-                <div class="row">
-                    <div class="col-sm-12 center">
-                        <button ng-if="GroupService.model.id" class="btn btn-primary" style='width: 150px' ng-click="update()" ng-disabled="GroupService.saving">сохранить</button>
-                        <button ng-if="!GroupService.model.id" class="btn btn-primary" style='width: 150px' ng-click="create()" ng-disabled="GroupService.saving">создать</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@include('directives.variable-group-form')
 
 <div class="add-group">
     <a class="link link-like" ng-click="add()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать группу</a>
@@ -26,12 +7,11 @@
 <div ng-repeat="group in GroupService.all()" class="variable-groups">
     <div class="variable-group" ng-show="group.id || GroupService.hasChild(group.id)">
         <div class="droppable"
-             ng-show="DragService.isDragging && !DragService.sameGroupItem(group.id)"
-             ondragenter="scope.DragService.dragEnter(event)"
-             ondragleave="scope.DragService.dragLeave(event)"
-             ondragover="scope.DragService.dragOver(event)"
-             ondrop="scope.DragService.drop(event)"
-             data-group-id="@{{group.id}}"
+             ng-show="isDragging && !sameGroupItem(group.id)"
+             ng-dragenter="dragEnter($event)"
+             ng-dragleave="dragLeave($event)"
+             ng-dragover="dragOver($event)"
+             ng-drop="drop($event, group)"
         ></div>
         <div class="caption">
             @{{ group.name }}
@@ -45,15 +25,13 @@
             </span>
         </div>
         <table class="table" ng-class="{'no-margin-bottom': !GroupService.hasChild(group.id)}" ng-hide="group.collapsed">
-            <tr class="draggable-item"
+            <tr ng-repeat="variable in GroupService.getChild(group.id)"
                 draggable="true"
-                ondragstart="scope.DragService.dragStart(event)"
-                ondragend="scope.DragService.dragEnd(event)"
-                data-item-id="@{{ variable.id }}"
-                data-group-id="@{{ variable.group_id }}"
-                ng-repeat="variable in GroupService.getChild(group.id)">
+                ng-dragstart="dragStart($event, variable)"
+                ng-dragend="dragEnd($event)"
+            >
                 <td>
-                    <a href='variables/@{{ variable.id }}/edit'>@{{ variable.name }}</a>
+                    <a draggable="false" href='variables/@{{ variable.id }}/edit'>@{{ variable.name }}</a>
                 </td>
                 <td>
                     @{{ variable.desc }}

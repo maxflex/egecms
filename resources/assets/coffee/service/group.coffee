@@ -7,31 +7,36 @@ angular.module 'Egecms'
         @model  = new VariableGroup
         @groups = VariableGroup.query()
 
+        @beforeRequest = =>
+            ajaxStart()
+            @saving = true
+
         @afterRequest = ->
+            @model = new VariableGroup
             @saving = false
             ajaxEnd()
 
         @update = ->
+            @beforeRequest()
             @model.$update().then =>
                 original_value = _.find @groups, id: @model.id
                 _.extend original_value, @model
-                @model = new Variable
                 @afterRequest()
 
         @create = ->
+            @beforeRequest()
             @model.$save(@model).then (response) =>
                 @groups.push response
-                @model = new Variable
                 @afterRequest()
 
         @delete = (model) ->
+            @beforeRequest()
             @model = model if model
             @model.$delete().then =>
                 @groups = _.without @groups, @model
                 _.where @children, group_id: @model.id
                     .map (child) =>
                         child.group_id = null
-
                 @afterRequest()
 
         @hasChild = (group_id) ->
@@ -45,9 +50,10 @@ angular.module 'Egecms'
             (groups = _.clone @groups).push @empty if fake_group
             _.sortBy groups, (g) -> if g.id then g.id else 1000
 
-        @transfer = (child_id, group_id) ->
-            child = _.find @children, id: child_id
-            _.extend child, group_id: group_id or null
-            (new Variable child).$update()
+        @transfer = (child, group) ->
+            _.extend child, group_id: group.id or null
+            @beforeRequest()
+            (new Variable child).$update().then =>
+                @afterRequest()
 
         @

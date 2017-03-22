@@ -4070,6 +4070,9 @@ select[multiple] {
             background: #eef8f2;
             color: #26a65b;
         }
+        & .dragging {
+            opacity: 0.5;
+        }
         & .droppable {
             position: absolute;
             width: 100%;

@@ -1,6 +1,6 @@
 angular
     .module 'Egecms'
-    .controller 'VariablesIndex', ($scope, $attrs, IndexService, Variable, VariableGroup, GroupService, DragService) ->
+    .controller 'VariablesIndex', ($scope, $attrs, IndexService, Variable, VariableGroup, GroupService) ->
         bindArguments($scope, arguments)
         angular.element(document).ready ->
             IndexService.init(Variable, $scope.current_page, $attrs)

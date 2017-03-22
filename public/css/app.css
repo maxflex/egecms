@@ -15544,6 +15544,8 @@ select[multiple] {
     border: 1px solid #26a65b;
     background: #eef8f2;
     color: #26a65b; }
+  .variable-groups .variable-group .dragging {
+    opacity: 0.5; }
   .variable-groups .variable-group .droppable {
     position: absolute;
     width: 100%;

@@ -1,9 +1,28 @@
+ngDragEventDirectives = {}
+angular.forEach 'drag dragend dragenter dragexit dragleave dragover dragstart drop'.split(' '), (eventName) ->
+  directiveName = 'ng' + eventName.charAt(0).toUpperCase() + eventName.slice(1)
+  ngDragEventDirectives[directiveName] = [
+    '$parse'
+    '$rootScope'
+    ($parse, $rootScope) ->
+      restrict: 'A'
+      compile: ($element, attr) ->
+        fn = $parse(attr[directiveName], null, true)
+        (scope, element) ->
+          element.on eventName, (event) ->
+            callback = ->
+              fn scope, $event: event
+
+            scope.$apply callback
+  ]
+
 angular.module("Egecms", ['ngSanitize', 'ngResource', 'ngAnimate', 'ui.sortable', 'ui.bootstrap', 'angular-ladda', 'angularFileUpload', 'angucomplete-alt'])
     .config [
         '$compileProvider'
         ($compileProvider) ->
             $compileProvider.aHrefSanitizationWhitelist /^\s*(https?|ftp|mailto|chrome-extension|sip):/
-	]
+    ]
+    .directive ngDragEventDirectives
     .filter 'cut', ->
       (value, wordwise, max, nothing = '', tail) ->
         if !value
