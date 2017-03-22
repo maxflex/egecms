@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\Variable;
+use App\Models\VariableGroup;
 
 class VariablesController extends Controller
 {
@@ -17,7 +18,8 @@ class VariablesController extends Controller
     public function index(Request $request)
     {
         return view('variables.index')->with(ngInit([
-            'current_page' => $request->page
+            'current_page' => $request->page,
+            'groups' => VariableGroup::getIds(),
         ]));
     }
 

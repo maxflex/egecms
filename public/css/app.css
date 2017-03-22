@@ -15543,6 +15543,9 @@ select[multiple] {
   .cross-inside-input:hover {
     opacity: 1; }
 
+.droppable-table {
+  border: 3px dashed transparent; }
+
 .list-group-item .search-icon {
   float: right;
   cursor: pointer; }

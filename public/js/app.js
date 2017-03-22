@@ -1,7 +1,7 @@
 (function() {
   var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-  angular.module("Egecms", ['ngSanitize', 'ngResource', 'ngAnimate', 'ui.sortable', 'ui.bootstrap', 'angular-ladda', 'angularFileUpload', 'angucomplete-alt']).config([
+  angular.module("Egecms", ['ngSanitize', 'ngResource', 'ngAnimate', 'ui.sortable', 'ui.bootstrap', 'angular-ladda', 'angularFileUpload', 'angucomplete-alt', 'ngDrag']).config([
     '$compileProvider', function($compileProvider) {
       return $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|sip):/);
     }
@@ -382,11 +382,29 @@
 }).call(this);
 
 (function() {
-  angular.module('Egecms').controller('VariablesIndex', function($scope, $attrs, IndexService, Variable) {
+  angular.module('Egecms').controller('VariablesIndex', function($scope, $attrs, $timeout, IndexService, Variable) {
     bindArguments($scope, arguments);
-    return angular.element(document).ready(function() {
+    angular.element(document).ready(function() {
       return IndexService.init(Variable, $scope.current_page, $attrs);
     });
+    $scope.dnd = {};
+    $scope.dragStart = function(variable_id) {
+      return $timeout(function() {
+        console.log('drag start', variable_id);
+        return $scope.dnd.drag_id = variable_id;
+      });
+    };
+    $scope.dragEnd = function() {
+      console.log('drag end');
+      return $scope.dnd.drag_id = null;
+    };
+    return $scope.getVariables = function(group_id) {
+      if (IndexService.page) {
+        return IndexService.page.data.filter(function(d) {
+          return d.group_id === group_id;
+        });
+      }
+    };
   }).controller('VariablesForm', function($scope, $attrs, $timeout, FormService, AceService, Variable) {
     bindArguments($scope, arguments);
     return angular.element(document).ready(function() {
