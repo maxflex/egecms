@@ -86,7 +86,7 @@
         <label class="no-margin-bottom label-opacity">блок</label>
         <ng-select-new model='FormService.model.anchor_block_id' object="Anchor" label="title" convert-to-number none-text='выберите блок'></ng-select-new>
     </div>
-    <div class="col-sm-4" ng-show='FormService.model.anchor_block_id == 4'>
+    <div class="col-sm-4" ng-show='FormService.model.anchor_block_id == 5'>
         <label class="no-margin-bottom label-opacity">номер раздела</label>
         <div angucomplete-alt id='page-search-2'
               placeholder="номер раздела"
