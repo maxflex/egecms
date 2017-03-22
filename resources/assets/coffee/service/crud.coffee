@@ -1,5 +1,7 @@
 angular.module 'Egecms'
-    .service 'IndexService', ($rootScope) ->
+    .service 'IndexService', ($rootScope, $q) ->
+        this.loaded = $q.defer()
+
         this.filter = ->
             $.cookie(this.controller, JSON.stringify(this.search), { expires: 365, path: '/' })
             this.current_page = 1
@@ -19,6 +21,7 @@ angular.module 'Egecms'
             params = {page: this.current_page}
             params.sort = this.sort if this.sort isnt undefined
             this.Resource.get params, (response) =>
+                this.loaded.resolve true
                 this.page = response
                 $rootScope.frontend_loading = false
 

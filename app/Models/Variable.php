@@ -9,7 +9,8 @@ class Variable extends Model
     protected $fillable = [
         'name',
         'html',
-        'desc'
+        'desc',
+        'group_id'
     ];
 
     public static function getLight()

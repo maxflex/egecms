@@ -15533,6 +15533,27 @@ label {
 select[multiple] {
   height: 34px; }
 
+.add-group {
+  padding: 8px; }
+
+.variable-groups .variable-group {
+  position: relative; }
+  .variable-groups .variable-group .caption {
+    padding: 3px 8px;
+    margin-bottom: 5px;
+    border: 1px solid #26a65b;
+    background: #eef8f2;
+    color: #26a65b; }
+  .variable-groups .variable-group .droppable {
+    position: absolute;
+    width: 100%;
+    height: 100%; }
+  .variable-groups .variable-group .active.droppable + .caption {
+    background: #26a65b;
+    color: white; }
+  .variable-groups .variable-group table.ng-hide {
+    margin: 0; }
+
 .list-group-item .search-icon {
   float: right;
   cursor: pointer; }

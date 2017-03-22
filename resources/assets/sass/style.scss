@@ -4056,3 +4056,31 @@ label {
 select[multiple] {
     height: 34px;
 }
+
+.add-group {
+    padding: 8px;
+}
+.variable-groups {
+    .variable-group {
+        position: relative;
+        & .caption {
+            padding: 3px 8px;
+            margin-bottom: 5px;
+            border: 1px solid #26a65b;
+            background: #eef8f2;
+            color: #26a65b;
+        }
+        & .droppable {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        & .active.droppable + .caption {
+            background: #26a65b;
+            color: white;
+        }
+        & table.ng-hide {
+            margin: 0;
+        }
+    }
+}
