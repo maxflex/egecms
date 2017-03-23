@@ -382,7 +382,7 @@
 }).call(this);
 
 (function() {
-  angular.module('Egecms').controller('VariablesIndex', function($scope, $attrs, $timeout, IndexService, Variable) {
+  angular.module('Egecms').controller('VariablesIndex', function($scope, $attrs, $timeout, IndexService, Variable, VariableGroup) {
     bindArguments($scope, arguments);
     angular.element(document).ready(function() {
       return IndexService.init(Variable, $scope.current_page, $attrs);
@@ -391,12 +391,29 @@
     $scope.dragStart = function(variable_id) {
       return $timeout(function() {
         console.log('drag start', variable_id);
-        return $scope.dnd.drag_id = variable_id;
+        return $scope.dnd.variable_id = variable_id;
       });
     };
     $scope.dragEnd = function() {
       console.log('drag end');
-      return $scope.dnd.drag_id = null;
+      return $scope.dnd.variable_id = null;
+    };
+    $scope.dragLeave = function() {
+      return console.log('drag leave');
+    };
+    $scope.drop = function(group_id) {
+      var variable_id;
+      if (group_id === null) {
+        variable_id = $scope.dnd.variable_id;
+        return VariableGroup.save({
+          variable_id: variable_id
+        }, function(response) {
+          $scope.groups.push(response);
+          return IndexService.page.data.find(function(variable) {
+            return variable.id === variable_id;
+          }).group_id = response.id;
+        });
+      }
     };
     return $scope.getVariables = function(group_id) {
       if (IndexService.page) {
@@ -854,6 +871,10 @@
 
   angular.module('Egecms').factory('Variable', function($resource) {
     return $resource(apiPath('variables'), {
+      id: '@id'
+    }, updatable());
+  }).factory('VariableGroup', function($resource) {
+    return $resource(apiPath('variables/groups'), {
       id: '@id'
     }, updatable());
   }).factory('Sass', function($resource) {

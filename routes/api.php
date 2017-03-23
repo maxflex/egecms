@@ -6,6 +6,9 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
     Route::post('variables/push', 'VariablesController@push');
     Route::post('variables/pull', 'VariablesController@pull');
     Route::resource('variables', 'VariablesController');
+    Route::group(['prefix' => 'variables'], function() {
+        Route::resource('groups', 'VariableGroupsController');
+    });
 
     # Pages
     Route::post('pages/checkExistance/{id?}', 'PagesController@checkExistance');

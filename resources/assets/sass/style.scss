@@ -4071,4 +4071,22 @@ select[multiple] {
 
 .droppable-table {
     border: 3px dashed transparent;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    & table {
+        margin-bottom: 0;
+    }
+    &.over {
+        border-color: $green-main;
+        & * {
+            pointer-events: none;
+        }
+    }
+}
+
+.fake-info {
+    height: 8px;
+    width: 150px;
+    background-color: $hr_gray;
+    display: inline-block;
 }

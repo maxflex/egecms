@@ -6,13 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class VariableGroup extends Model
 {
+    public $timestamps = false;
+
+    const DEFAULT_TITLE = 'Новая группа';
+
     public static function getIds()
     {
-        $ids = self::pluck('id')->all();
-        $ids[] = [
+        $groups = self::get();
+        $groups[] = [
             'id'    => null,
             'title' => 'Остальные'
         ];
-        return $ids;
+        return $groups;
+    }
+
+    public static function boot()
+    {
+        static::creating(function($model) {
+            $model->title = self::DEFAULT_TITLE;
+        });
     }
 }
