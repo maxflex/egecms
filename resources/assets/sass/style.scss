@@ -538,6 +538,7 @@ a {
 }
 
 .show-on-hover {
+    margin-left: 5px;
     opacity: 0;
     transition: all linear .3s;
     text-decoration: none !important;
@@ -4082,6 +4083,11 @@ select[multiple] {
             pointer-events: none;
         }
     }
+}
+
+.disable-events {
+    cursor: default !important;
+    pointer-events: none;
 }
 
 .fake-info {

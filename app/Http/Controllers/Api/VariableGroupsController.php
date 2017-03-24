@@ -77,7 +77,7 @@ class VariableGroupsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        VariableGroup::find($id)->update($request->input());
     }
 
     /**
@@ -88,6 +88,6 @@ class VariableGroupsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        VariableGroup::destroy($id);
     }
 }

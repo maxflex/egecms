@@ -9,13 +9,16 @@
 @section('content')
     <span ng-init='groups = {{ \App\Models\VariableGroup::getIds() }}'></span>
     <div ng-repeat="group in groups">
-        <h4>@{{ group.title }}</h4>
+        <div>
+            <h4 class='inline-block' editable='@{{ group.id }}' ng-class="{'disable-events': !group.id}">@{{ group.title }}</h4>
+            <a ng-if='group.id' class='link-like text-danger show-on-hover' ng-click='removeGroup(group)'>удалить</a>
+        </div>
         <div class='droppable-table' ondragover="allowDrop(event)"
             ng-dragenter="dnd.over = group.id" ng-dragleave="dnd.over = undefined" ng-drop="drop(group.id)"
-            ng-class="{'over': dnd.over === group.id && dnd.over != dnd.variable_id}">
+            ng-class="{'over': dnd.over === group.id && dnd.over != getVariable(dnd.variable_id).id_group}">
             <table class="table droppable-table">
                 <tr ng-repeat="variable in getVariables(group.id)" draggable="true"
-                     ng-dragstart="dragStart(variable.id)" ng-dragend='dragEnd()'>
+                     ng-dragstart="dragStart(variable.id)" ng-dragend='dnd.variable_id = null'>
                     <td>
                         <a href='variables/@{{ variable.id }}/edit'>@{{ variable.name }}</a>
                     </td>
@@ -30,8 +33,8 @@
     <div ng-show='dnd.variable_id > 0'>
         <h4>{{ \App\Models\VariableGroup::DEFAULT_TITLE }}</h4>
         <div class='droppable-table' ondragover="allowDrop(event)"
-            ng-dragenter="dnd.over = null" ng-dragleave="dnd.over = undefined" ng-drop="drop(null)"
-            ng-class="{'over': dnd.over === null}">
+            ng-dragenter="dnd.over = -1" ng-dragleave="dnd.over = undefined" ng-drop="drop(-1)"
+            ng-class="{'over': dnd.over == -1}">
             <table class="table">
                 <tr ng-repeat="i in [1, 2, 3, 4]">
                     <td>
