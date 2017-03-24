@@ -15,7 +15,7 @@
         </div>
         <div class='droppable-table' ondragover="allowDrop(event)"
             ng-dragenter="dnd.over = group.id" ng-dragleave="dnd.over = undefined" ng-drop="drop(group.id)"
-            ng-class="{'over': dnd.over === group.id && dnd.over != getVariable(dnd.variable_id).id_group}">
+            ng-class="{'over': dnd.over === group.id && dnd.over != getVariable(dnd.variable_id).group_id}">
             <table class="table droppable-table">
                 <tr ng-repeat="variable in getVariables(group.id)" draggable="true"
                      ng-dragstart="dragStart(variable.id)" ng-dragend='dnd.variable_id = null'>
