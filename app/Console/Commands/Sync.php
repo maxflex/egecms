@@ -2,10 +2,12 @@
 
 namespace App\Console\Commands;
 
+use DB;
 use App\Models\Service\Api;
 use App\Models\Variable;
 use App\Models\Page;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Schema;
 
 class Sync extends Command
 {
@@ -41,24 +43,30 @@ class Sync extends Command
     public function handle()
     {
         $this->{$this->argument('cmd')}();
-        // $this->info($this->argument('command'));
-
     }
 
     public function push()
     {
         $this->info('Pushing variables to server...');
-        $variables = Variable::all();
-        Api::exec('variables/push', ['variables' => $variables->toArray()]);
+        Api::exec('variables/push', [
+            'variables' => Variable::all()->toArray(),
+            'groups'    => VariableGroup::all()->toArray(),
+        ]);
     }
 
     public function pull()
     {
         $this->info('Pulling variables from server...');
-        $variables = Api::exec('variables/pull');
-        \DB::table('variables')->truncate();
+        list($variables, $groups) = Api::exec('variables/pull');
+        Schema::disableForeignKeyConstraints();
+        DB::table('variables')->truncate();
+        DB::table('variable_groups')->truncate();
+        Schema::enableForeignKeyConstraints();
+        foreach ($groups as $group) {
+            DB::table('variable_groups')->insert((array)$group);
+        }
         foreach ($variables as $var) {
-            \DB::table('variables')->insert((array)$var);
+            DB::table('variables')->insert((array)$var);
         }
     }
 }

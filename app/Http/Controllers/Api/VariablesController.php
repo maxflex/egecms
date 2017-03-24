@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use DB;
 use App\Models\Service\Api;
 use Illuminate\Http\Request;
 
@@ -90,8 +91,10 @@ class VariablesController extends Controller
     public function push(Request $request)
     {
         if (Api::API_KEY == $request->input('API_KEY')) {
-            \DB::table('variables')->truncate();
-            \DB::table('variables')->insert($request->input('variables'));
+            DB::table('variable_groups')->truncate();
+            DB::table('variable_groups')->insert($request->groups);
+            DB::table('variables')->truncate();
+            DB::table('variables')->insert($request->variables);
         } else {
             return false;
         }
@@ -99,6 +102,9 @@ class VariablesController extends Controller
 
     public function pull(Request $request)
     {
-        return \DB::table('variables')->get()->all();
+        return [
+            DB::table('variables')->get()->all(),
+            DB::table('variable_groups')->get()->all()
+        ];
     }
 }
