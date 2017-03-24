@@ -12668,6 +12668,7 @@ a {
   position: absolute; }
 
 .show-on-hover {
+  margin-left: 5px;
   opacity: 0;
   -webkit-transition: all linear .3s;
   transition: all linear .3s;
@@ -15542,6 +15543,27 @@ select[multiple] {
   cursor: pointer; }
   .cross-inside-input:hover {
     opacity: 1; }
+
+.droppable-table {
+  border: 3px dashed transparent;
+  border-radius: 5px;
+  margin-bottom: 20px; }
+  .droppable-table table {
+    margin-bottom: 0; }
+  .droppable-table.over {
+    border-color: #26A65B; }
+    .droppable-table.over * {
+      pointer-events: none; }
+
+.disable-events {
+  cursor: default !important;
+  pointer-events: none; }
+
+.fake-info {
+  height: 8px;
+  width: 150px;
+  background-color: #eee;
+  display: inline-block; }
 
 .list-group-item .search-icon {
   float: right;

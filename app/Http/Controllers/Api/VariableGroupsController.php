@@ -1,25 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Models\Variable;
+use App\Http\Controllers\Controller;
 use App\Models\VariableGroup;
+use App\Models\Variable;
 
-class VariablesController extends Controller
+class VariableGroupsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        return view('variables.index')->with(ngInit([
-            'current_page' => $request->page
-        ]));
+        //
     }
 
     /**
@@ -29,9 +28,7 @@ class VariablesController extends Controller
      */
     public function create()
     {
-        return view('variables.create')->with(ngInit([
-            'model' => new Variable,
-        ]));
+        //
     }
 
     /**
@@ -42,7 +39,11 @@ class VariablesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $variable_group = VariableGroup::create();
+        Variable::whereId($request->variable_id)->update([
+            'group_id' => $variable_group->id,
+        ]);
+        return $variable_group;
     }
 
     /**
@@ -64,7 +65,7 @@ class VariablesController extends Controller
      */
     public function edit($id)
     {
-        return view('variables.edit')->with(ngInit(compact('id')));
+        //
     }
 
     /**
@@ -76,7 +77,7 @@ class VariablesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        VariableGroup::find($id)->update($request->input());
     }
 
     /**
@@ -87,6 +88,6 @@ class VariablesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        VariableGroup::destroy($id);
     }
 }

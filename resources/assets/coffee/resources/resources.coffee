@@ -2,6 +2,9 @@ angular.module('Egecms')
     .factory 'Variable', ($resource) ->
         $resource apiPath('variables'), {id: '@id'}, updatable()
 
+    .factory 'VariableGroup', ($resource) ->
+        $resource apiPath('variables/groups'), {id: '@id'}, updatable()
+
     .factory 'Sass', ($resource) ->
         $resource apiPath('sass'), {id: '@id'}, updatable()
 
