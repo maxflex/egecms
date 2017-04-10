@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use DB;
 use App\Models\Service\Api;
 use App\Models\Variable;
+use App\Models\VariableGroup;
 use App\Models\Page;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
