@@ -3,8 +3,6 @@ URL::forceSchema('https');
 
 Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
     # Variables
-    Route::post('variables/push', 'VariablesController@push');
-    Route::post('variables/pull', 'VariablesController@pull');
     Route::resource('variables', 'VariablesController');
     Route::group(['prefix' => 'variables'], function() {
         Route::resource('groups', 'VariableGroupsController');
@@ -22,4 +20,11 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
 
     # Factory
     Route::post('factory', 'FactoryController@get');
+
+    # Sync
+    Route::group(['prefix' => 'sync'], function() {
+        Route::get('get/{table}', 'SyncController@get');
+        Route::post('insert/{table}', 'SyncController@insert');
+        Route::post('update/{table}', 'SyncController@update');
+    });
 });

@@ -87,24 +87,4 @@ class VariablesController extends Controller
     {
         Variable::destroy($id);
     }
-
-    public function push(Request $request)
-    {
-        if (Api::API_KEY == $request->input('API_KEY')) {
-            DB::table('variable_groups')->truncate();
-            DB::table('variable_groups')->insert($request->groups);
-            DB::table('variables')->truncate();
-            DB::table('variables')->insert($request->variables);
-        } else {
-            return false;
-        }
-    }
-
-    public function pull(Request $request)
-    {
-        return [
-            DB::table('variables')->get()->all(),
-            DB::table('variable_groups')->get()->all()
-        ];
-    }
 }
