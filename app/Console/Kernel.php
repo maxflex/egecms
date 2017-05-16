@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use App\Console\Commands\DeleteUrl;
 use App\Console\Commands\Sync;
 use App\Console\Commands\FixTags;
 use Illuminate\Console\Scheduling\Schedule;
@@ -17,8 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Sync::class,
-        FixTags::class,
-        DeleteUrl::class,
+        FixTags::class
     ];
 
     /**
@@ -29,7 +27,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('delete:url')->hourly();
     }
 
     /**
