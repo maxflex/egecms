@@ -7,6 +7,11 @@
     php artisan route:cache
 @endtask
 
+@task('generate:version_control')
+    cd /home/egecms
+    php artisan generate:version_control
+@endtask
+
 @task('update_shared')
     cd /home/egecms
     composer update ege-shared
