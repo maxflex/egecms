@@ -5,7 +5,7 @@
     <div class="col-sm-6">
         <div class="field-container">
             <div class="input-group">
-                <input type="text" class="field form-control" required
+                <input type="text" ng-keyup="checkExistance('url', $event)" class="field form-control" required
                        placeholder="отображаемый URL" ng-model='FormService.model.url'
                        ng-model-options="{ allowInvalid: true }">
                <label class="floating-label">отображаемый URL</label>
@@ -26,7 +26,6 @@
             'model' => 'title',
             'attributes' => [
                 'ng-counter' => true,
-                'ng-keyup' => 'checkExistance(\'title\', $event)',
             ]
         ])
     </div>
