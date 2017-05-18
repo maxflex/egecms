@@ -5,7 +5,7 @@
     <div class="col-sm-6">
         <div class="field-container">
             <div class="input-group">
-                <input ng-keyup="checkExistance('url', $event)" type="text" class="field form-control" required
+                <input type="text" class="field form-control" required
                        placeholder="отображаемый URL" ng-model='FormService.model.url'
                        ng-model-options="{ allowInvalid: true }">
                <label class="floating-label">отображаемый URL</label>
@@ -86,7 +86,7 @@
         <label class="no-margin-bottom label-opacity">блок</label>
         <ng-select-new model='FormService.model.anchor_block_id' object="Anchor" label="title" convert-to-number none-text='выберите блок'></ng-select-new>
     </div>
-    <div class="col-sm-4" ng-show='FormService.model.anchor_block_id == 5'>
+    <div class="col-sm-4" ng-show='FormService.model.anchor_block_id == 4'>
         <label class="no-margin-bottom label-opacity">номер раздела</label>
         <div angucomplete-alt id='page-search-2'
               placeholder="номер раздела"

@@ -48,6 +48,9 @@ class Sync extends Command
     public function handle()
     {
         foreach(VersionControl::TABLES as $table) {
+            if ($table == 'pages') {
+                continue;
+            }
             $this->line("\n************** " . strtoupper($table) . " ************** \n");
             $server_data = Api::get("sync/get/{$table}");
 
