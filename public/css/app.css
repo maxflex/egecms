@@ -15501,9 +15501,6 @@ label {
     width: 20px;
     margin-left: 3px; }
 
-.useful-width {
-  width: calc(100% - 32px); }
-
 .highlight {
   font-weight: bold; }
 

@@ -26,15 +26,11 @@ class Page extends Model
         'place',
         'subjects',
         'station_id',
-        'seo_desktop',
-        'seo_mobile',
         'variable_id',
         'hidden_filter',
-        'useful',
         'anchor',
         'anchor_block_id',
         'anchor_page_id',
-        'anchor_published',
     ];
 
     protected static $hidden_on_export = [
@@ -54,26 +50,9 @@ class Page extends Model
     ];
 
     protected $attributes = [
-        'seo_desktop' => 0,
-        'seo_mobile' => 0,
         'sort' => 1,
         'place' => 1
     ];
-
-    public function useful()
-    {
-        return $this->hasMany(PageUseful::class);
-    }
-
-    public function setUsefulAttribute($value)
-    {
-        $this->useful()->delete();
-        foreach($value as $v) {
-            if ($v['page_id_field']) {
-                $this->useful()->create($v);
-            }
-        }
-    }
 
     public function setVariableIdAttribute($value)
     {
@@ -115,7 +94,7 @@ class Page extends Model
         }
 
         // поиск по цифровым полям
-        foreach(['seo_desktop', 'seo_mobile', 'station_id', 'sort', 'place', 'published'] as $numeric_field) {
+        foreach(['station_id', 'sort', 'place', 'published'] as $numeric_field) {
             if (isset($search->{$numeric_field})) {
                 $query->where($numeric_field, $search->{$numeric_field});
             }

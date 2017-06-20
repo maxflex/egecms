@@ -53,27 +53,9 @@
 </div>
 
 <div class="row mbs">
-    <div class="col-sm-6">
+    <div class="col-sm-12">
         <label class="no-margin-bottom label-opacity">публикация страницы</label>
         <ng-select-new model='FormService.model.published' object="Published" label="title" convert-to-number></ng-select-new>
-    </div>
-    <div class="col-sm-5">
-        <label class="no-margin-bottom label-opacity">публикация анкора</label>
-        <ng-select-new model='FormService.model.anchor_published' object="Published" label="title" convert-to-number></ng-select-new>
-    </div>
-    <div class="col-sm-1 offset-1">
-        <div class='burger seo-desktop'>
-            <div class='selectable' ng-class="{'selected': FormService.model.seo_desktop == 1}" ng-click='FormService.model.seo_desktop = 1'></div>
-            <div></div>
-            <div></div>
-            <div class='selectable' ng-class="{'selected': FormService.model.seo_desktop == 0}" ng-click='FormService.model.seo_desktop = 0'></div>
-        </div>
-        <div class='burger seo-mobile'>
-            <div class='selectable' ng-class="{'selected': FormService.model.seo_mobile == 1}" ng-click='FormService.model.seo_mobile = 1'></div>
-            <div></div>
-            <div></div>
-            <div class='selectable' ng-class="{'selected': FormService.model.seo_mobile == 0}" ng-click='FormService.model.seo_mobile = 0'></div>
-        </div>
     </div>
 </div>
 
@@ -117,23 +99,6 @@
                 'ng-counter' => true,
             ]
         ])
-    </div>
-</div>
-
-<div class="row mbs">
-    <div class="col-sm-7">
-        <label class="no-margin-bottom label-opacity">блок «полезное»</label>
-        <div class="input-group" ng-repeat='u in FormService.model.useful track by $index' ng-class="{'mbs useful-width': !$last}">
-           <input class="field form-control" placeholder="текст" ng-model='u.text' style='width: calc(165% + 1px)'>
-           <span class="input-group-btn" style="width:0px;"></span>
-           <input class="field form-control" style='margin-left: calc(65% - 1px); width: 35%'
-                  placeholder="ID раздела" ng-model='u.page_id_field' ng-keyup="checkUsefulExistance('id', $event, u.page_id_field)">
-           <span class="input-group-btn" style='left: -1px' ng-if='$last'>
-               <button class="btn btn-default" type="button" ng-disabled="!FormService.model.keyphrase" ng-click="addUseful()">
-                   <span class="glyphicon glyphicon-plus no-margin-right" style='font-size: 12px'></span>
-               </button>
-           </span>
-        </div>
     </div>
 </div>
 

@@ -228,18 +228,10 @@
       return IndexService.init(Page, $scope.current_page, $attrs, false);
     });
   }).controller('PagesForm', function($scope, $http, $attrs, $timeout, FormService, AceService, Page, Published, UpDown, Anchor) {
-    var empty_useful;
     bindArguments($scope, arguments);
-    empty_useful = {
-      text: null,
-      page_id_field: null
-    };
     angular.element(document).ready(function() {
       FormService.init(Page, $scope.id, $scope.model);
       FormService.dataLoaded.promise.then(function() {
-        if (!FormService.model.useful || !FormService.model.useful.length) {
-          FormService.model.useful = [angular.copy(empty_useful)];
-        }
         return AceService.initEditor(FormService, 15);
       });
       return FormService.beforeSave = function() {
@@ -272,26 +264,6 @@
           return element.removeClass('has-error');
         }
       });
-    };
-    $scope.checkUsefulExistance = function(field, event, value) {
-      return Page.checkExistance({
-        id: FormService.model.id,
-        field: field,
-        value: value
-      }, function(response) {
-        var element;
-        element = $(event.target);
-        if (!value || response.exists) {
-          FormService.error_element = void 0;
-          return element.removeClass('has-error');
-        } else {
-          FormService.error_element = element;
-          return element.addClass('has-error').focus();
-        }
-      });
-    };
-    $scope.addUseful = function() {
-      return FormService.model.useful.push(angular.copy(empty_useful));
     };
     $scope.addLinkDialog = function() {
       $scope.link_text = AceService.editor.getSelectedText();
@@ -462,41 +434,6 @@
       };
     });
   });
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]).value('Anchor', [
-    {
-      id: 1,
-      title: 'главная – блок 1'
-    }, {
-      id: 2,
-      title: 'главная – блок 2'
-    }, {
-      id: 3,
-      title: 'главная – блок 3'
-    }, {
-      id: 4,
-      title: 'раздел...'
-    }
-  ]);
 
 }).call(this);
 
@@ -700,14 +637,6 @@
             value: 'published',
             type: 'published'
           }, {
-            title: 'сео (стационар)',
-            value: 'seo_desktop',
-            type: 'seo_desktop'
-          }, {
-            title: 'сео (мобильная)',
-            value: 'seo_mobile',
-            type: 'seo_mobile'
-          }, {
             title: 'h1 вверху',
             value: 'h1',
             type: 'text'
@@ -765,8 +694,6 @@
           condition.value = null;
           switch ($scope.getOption(condition).type) {
             case 'published':
-            case 'seo_desktop':
-            case 'seo_mobile':
               return condition.value = 0;
             case 'subjects':
               if ($scope.subjects === void 0) {
@@ -909,6 +836,41 @@
 
 (function() {
 
+
+}).call(this);
+
+(function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]).value('Anchor', [
+    {
+      id: 1,
+      title: 'главная – блок 1'
+    }, {
+      id: 2,
+      title: 'главная – блок 2'
+    }, {
+      id: 3,
+      title: 'главная – блок 3'
+    }, {
+      id: 4,
+      title: 'раздел...'
+    }
+  ]);
 
 }).call(this);
 
