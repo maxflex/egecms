@@ -93,7 +93,7 @@ class Sms
     public static function verify($user)
     {
         $code = mt_rand(1000, 9999);
-        Redis::set("egecrm:codes:{$user->id}", $code, 'EX', 120);
+        Redis::set("egecms:codes:{$user->id}", $code, 'EX', 120);
         Sms::send($user->phone, $code . ' – код для входа в ЛК', false);
         // cache(["codes:{$user_id}" => $code], 3);
         return $code;
