@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use \Shared\Model;
+use App\Service\Sms;
 
 class User extends Model
 {
@@ -59,6 +60,24 @@ class User extends Model
         if ($User->exists()) {
             $user = $User->first();
             if ($user->allowed(\Shared\Rights::WORLDWIDE_ACCESS) || User::fromOffice()) {
+
+                // Дополнительная СМС-проверка, если пользователь логинится если не из офиса
+                if (! User::fromOffice() && $user->type == User::USER_TYPE) {
+                    $sent_code = Redis::get("egecms:codes:{$user->id}");
+                    // если уже был отправлен – проверяем
+                    if (! empty($sent_code)) {
+                        if (@$data['code'] != $sent_code) {
+                            return false;
+                        } else {
+                            Redis::del("egecms:codes:{$user->id}");
+                        }
+                    } else {
+                    // иначе отправляем код
+                        Sms::verify($user);
+                        return 'sms';
+                    }
+                }
+
                 $_SESSION['user'] = $user;
                 return true;
             }
