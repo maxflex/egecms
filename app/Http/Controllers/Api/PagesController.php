@@ -85,6 +85,10 @@ class PagesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (in_array(intval($request->priority), [2, 3]) && !$request->station_id) {
+            return response()->json("Укажите станцию метро", 403);
+        }
+
         // validate tags
         if ($request->html) {
             preg_match_all("/<[^>]*>/", $request->html, $tags);

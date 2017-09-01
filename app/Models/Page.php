@@ -27,6 +27,7 @@ class Page extends Model
         'subjects',
         'station_id',
         'variable_id',
+        'priority',
         'hidden_filter',
         'anchor',
         'anchor_block_id',

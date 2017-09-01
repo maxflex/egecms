@@ -21,7 +21,6 @@ class Factory
                 $query->orderBy($orderBy);
             }
         }
-
         return $query->get();
     }
 

@@ -104,25 +104,19 @@
 
 <div class="serp">
     <div class="row mb">
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <label class="no-margin-bottom label-opacity">предметы</label>
             <ng-multi object='{{ fact('subjects', 'name') }}' label='name' model='FormService.model.subjects' none-text='выберите предметы'></ng-multi>
         </div>
-        <div class="col-sm-3">
-            <label class="no-margin-bottom label-opacity">выезд</label>
-            <select class='form-control selectpicker' ng-model='FormService.model.place' convert-to-number>
-                <option ng-repeat='place in {{ fact('places', 'serp') }}' value='@{{ place.id }}'>@{{ place.serp }}</option>
+        <div class="col-sm-4">
+            <label class="no-margin-bottom label-opacity">приоритет</label>
+            <select class='form-control selectpicker' ng-model='FormService.model.priority' convert-to-number>
+                <option ng-repeat='priority in {{ fact('priorities', null, 'position') }}' value='@{{ priority.id }}'>@{{ priority.title }}</option>
             </select>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4" ng-show="FormService.model.priority == 2 || FormService.model.priority == 3">
             <label class="no-margin-bottom label-opacity">метро</label>
             <ng-select-new model='FormService.model.station_id' object="{{ fact('stations', 'title', 'title') }}" label='title' none-text='не указано' live-search='true' convert-to-number></ng-select-new>
-        </div>
-        <div class="col-sm-3">
-            <label class="no-margin-bottom label-opacity">сортировка по</label>
-            <select class='form-control selectpicker' ng-model='FormService.model.sort' convert-to-number id='sort'>
-                <option ng-repeat='o in {{ fact('sort') }}' value='@{{ o.id }}' ng-hide='(o.id == 5 && !FormService.model.station_id)'>@{{ o.title }}</option>
-            </select>
         </div>
     </div>
     <div class="row mb">
