@@ -25,14 +25,11 @@
                   <div ng-if="getOption(condition).type == 'subjects'">
                       <ng-multi object='subjects' label='name' model='condition.value' none-text='выберите предметы'></ng-multi>
                   </div>
-                  <div ng-if="getOption(condition).type == 'place'">
-                      <ng-select-new model='condition.value' object="places" label='serp' none-text='неважно где заниматься' convert-to-number></ng-select-new>
+                  <div ng-if="getOption(condition).type == 'priority'">
+                      <ng-select-new model='condition.value' object="priorities" label='title' none-text='приоритет' convert-to-number></ng-select-new>
                   </div>
                   <div ng-if="getOption(condition).type == 'station_id'">
                       <ng-select-new model='condition.value' object="stations" label='title' none-text='не указано' convert-to-number></ng-select-new>
-                  </div>
-                  <div ng-if="getOption(condition).type == 'sort'">
-                      <ng-select-new model='condition.value' object="sort" label='title' none-text='не указано' convert-to-number></ng-select-new>
                   </div>
               </div>
           </div>

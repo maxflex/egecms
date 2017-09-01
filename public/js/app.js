@@ -475,6 +475,41 @@
 }).call(this);
 
 (function() {
+  angular.module('Egecms').value('Published', [
+    {
+      id: 0,
+      title: 'не опубликовано'
+    }, {
+      id: 1,
+      title: 'опубликовано'
+    }
+  ]).value('UpDown', [
+    {
+      id: 1,
+      title: 'вверху'
+    }, {
+      id: 2,
+      title: 'внизу'
+    }
+  ]).value('Anchor', [
+    {
+      id: 1,
+      title: 'главная – блок 1'
+    }, {
+      id: 2,
+      title: 'главная – блок 2'
+    }, {
+      id: 3,
+      title: 'главная – блок 3'
+    }, {
+      id: 4,
+      title: 'раздел...'
+    }
+  ]);
+
+}).call(this);
+
+(function() {
 
 
 }).call(this);
@@ -694,17 +729,13 @@
             value: 'subjects',
             type: 'subjects'
           }, {
-            title: 'выезд',
-            value: 'place',
-            type: 'place'
+            title: 'приоритет',
+            value: 'priority',
+            type: 'priority'
           }, {
             title: 'метро',
             value: 'station_id',
             type: 'station_id'
-          }, {
-            title: 'сортировка',
-            value: 'sort',
-            type: 'sort'
           }, {
             title: 'скрытый фильтр',
             value: 'hidden_filter',
@@ -739,10 +770,10 @@
                 });
               }
               break;
-            case 'place':
-              if ($scope.places === void 0) {
-                return FactoryService.get('places', 'serp').then(function(response) {
-                  return $scope.places = response.data;
+            case 'priority':
+              if ($scope.priorities === void 0) {
+                return FactoryService.get('priorities', 'title').then(function(response) {
+                  return $scope.priorities = response.data;
                 });
               }
               break;
@@ -750,13 +781,6 @@
               if ($scope.stations === void 0) {
                 return FactoryService.get('stations', 'title', 'title').then(function(response) {
                   return $scope.stations = response.data;
-                });
-              }
-              break;
-            case 'sort':
-              if ($scope.sort === void 0) {
-                return FactoryService.get('sort').then(function(response) {
-                  return $scope.sort = response.data;
                 });
               }
           }
@@ -873,41 +897,6 @@
 
 (function() {
 
-
-}).call(this);
-
-(function() {
-  angular.module('Egecms').value('Published', [
-    {
-      id: 0,
-      title: 'не опубликовано'
-    }, {
-      id: 1,
-      title: 'опубликовано'
-    }
-  ]).value('UpDown', [
-    {
-      id: 1,
-      title: 'вверху'
-    }, {
-      id: 2,
-      title: 'внизу'
-    }
-  ]).value('Anchor', [
-    {
-      id: 1,
-      title: 'главная – блок 1'
-    }, {
-      id: 2,
-      title: 'главная – блок 2'
-    }, {
-      id: 3,
-      title: 'главная – блок 3'
-    }, {
-      id: 4,
-      title: 'раздел...'
-    }
-  ]);
 
 }).call(this);
 

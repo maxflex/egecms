@@ -18,9 +18,8 @@ angular.module 'Egecms'
                 {title: 'meta keywords', value: 'keywords', type: 'text'},
                 {title: 'meta description', value: 'desc', type: 'text'},
                 {title: 'предметы', value: 'subjects', type: 'subjects'},
-                {title: 'выезд', value: 'place', type: 'place'},
+                {title: 'приоритет', value: 'priority', type: 'priority'},
                 {title: 'метро', value: 'station_id', type: 'station_id'},
-                {title: 'сортировка', value: 'sort', type: 'sort'},
                 {title: 'скрытый фильтр', value: 'hidden_filter', type: 'text'},
                 {title: 'содержание раздела', value: 'html', type: 'textarea'}
             ]
@@ -40,15 +39,12 @@ angular.module 'Egecms'
                     when 'subjects'
                         if $scope.subjects is undefined then FactoryService.get('subjects', 'name').then (response) ->
                             $scope.subjects = response.data
-                    when 'place'
-                        if $scope.places is undefined then FactoryService.get('places', 'serp').then (response) ->
-                            $scope.places = response.data
+                    when 'priority'
+                        if $scope.priorities is undefined then FactoryService.get('priorities', 'title').then (response) ->
+                            $scope.priorities = response.data
                     when 'station_id'
                         if $scope.stations is undefined then FactoryService.get('stations', 'title', 'title').then (response) ->
                             $scope.stations = response.data
-                    when 'sort'
-                        if $scope.sort is undefined then FactoryService.get('sort').then (response) ->
-                            $scope.sort = response.data
                 # $('.search-value-control').selectpicker('refresh')
 
             $scope.search = ->
