@@ -95,7 +95,7 @@ class Page extends Model
         }
 
         // поиск по цифровым полям
-        foreach(['station_id', 'sort', 'place', 'published'] as $numeric_field) {
+        foreach(['station_id', 'sort', 'place', 'priority', 'published'] as $numeric_field) {
             if (isset($search->{$numeric_field})) {
                 $query->where($numeric_field, $search->{$numeric_field});
             }
