@@ -41,11 +41,6 @@ class Page extends Model
         'updated_at'
     ];
 
-    protected static $selects_on_export = [
-        'id',
-        'keyphrase',
-    ];
-
     protected static $long_fields = [
         'html'
     ];

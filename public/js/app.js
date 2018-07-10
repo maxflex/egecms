@@ -1172,6 +1172,7 @@
 (function() {
   angular.module('Egecms').service('ExportService', function($rootScope, FileUploader) {
     bindArguments(this, arguments);
+    this.export_fields = [];
     this.init = function(options) {
       var onWhenAddingFileFailed;
       this.controller = options.controller;
@@ -1208,7 +1209,7 @@
       return false;
     };
     this["export"] = function() {
-      window.location = "/" + this.controller + "/export?field=" + this.export_field;
+      window.location = "/" + this.controller + "/export?fields=" + (this.export_fields.join(','));
       $('#export-modal').modal('hide');
       return false;
     };

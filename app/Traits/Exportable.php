@@ -4,13 +4,8 @@ namespace App\Traits;
 
 use Schema;
 use Excel;
+use DB;
 
-
-/**
- *
- * using Exportable trait obliges defining $selects_on_export field in classes.
- *
-*/
 trait Exportable
 {
     public static function getExportableFields()
@@ -33,37 +28,26 @@ trait Exportable
     public static function export($request) {
         $table_name = (new static)->getTable();
         return Excel::create($table_name . '_' . date('Y-m-d_H-i-s'), function($excel) use ($request, $table_name) {
-            $excel->sheet($table_name, function($sheet) use ($request) {
-                $query = static::query();
-                // если экспортируем HTML, то только длина символов
-                if(isset(static::$with_comma_on_export) && in_array($request->field, static::$with_comma_on_export)) {
-                    $query->with(static::$with_comma_on_export);
-                } else {
-                    static::$selects_on_export[] =  $request->field;
-                }
+            $excel->sheet($table_name, function($sheet) use ($request, $table_name) {
 
-                $data = $query->select(array_unique(static::$selects_on_export))->get();
+                $export_fields = explode(',', $request->fields);
+                array_unshift($export_fields, 'id');
+
+                $data = DB::table($table_name)
+                    ->select($export_fields)
+                    ->orderBy('keyphrase')
+                    ->get();
+
                 $exportData = [];
-
-                $data->map(function ($item, $key) use ($request, &$exportData) {
-                    if (isset(static::$with_comma_on_export) && in_array($request->field, static::$with_comma_on_export)) {
-                        foreach (static::$with_comma_on_export as $field) {
-                            $item->$field = count($ids = $item->$field->pluck('id')) ? implode(',', $ids->all()) : '';
-                            unset($item->relations[$field]);
+                foreach($data as $index => $d) {
+                    foreach($d as $field => $value) {
+                        if (in_array($field, static::$long_fields)) {
+                            $exportData[$index][$field] = strlen($value);
+                        } else {
+                            $exportData[$index][$field] = $value;
                         }
                     }
-
-                    $exportData[$key] = $item->toArray();
-                    switch($field = $request->field) {
-                        case 'subjects':
-                            $exportData[$key][$field] = $item->getClean($field);
-                            break;
-                        case 'html':
-                            $exportData[$key][$field] = strlen($item->$field);
-                            break;
-                    }
-
-                });
+                }
 
                 $sheet->fromArray($exportData, null, 'A1', true);
             });
