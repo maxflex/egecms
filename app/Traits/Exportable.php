@@ -61,6 +61,9 @@ trait Exportable
     public static function import($request) {
         if ($request->hasFile('imported_file')) {
             Excel::load($request->file('imported_file'), function($reader){
+                $fillable = (new static)->getFillable();
+                $fillable[] = 'id';
+                
                 foreach ($reader->all()->toArray() as $model) {
                     if (isset(static::$long_fields)) {
                         foreach (static::$long_fields as $field) {
@@ -74,6 +77,12 @@ trait Exportable
                                 $model[$field] && $elem->$field()->sync(explode(',', str_replace('.', ',', $model[$field]))); // 5,6 => 5.6 fix
                                 unset($model[$field]);
                             }
+                        }
+                    }
+
+                    foreach ($model as $key => $field) { // numbers app fix
+                        if (! $key || ! in_array($key, $fillable)) {
+                            unset($model[$key]);
                         }
                     }
 
