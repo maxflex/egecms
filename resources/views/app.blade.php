@@ -52,5 +52,9 @@
         </div>
       </div>
     </div>
+    @include('_logout')
+    <script>
+        listenToSession('{{ config('sso.pusher-app-key') }}', {{ \App\Models\User::id() }})
+    </script>
   </body>
 </html>

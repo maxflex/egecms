@@ -4,12 +4,13 @@ URL::forceSchema('https');
 # Login
 Route::post('login', 'LoginController@login');
 Route::get('logout', 'LoginController@logout');
-
+Route::get('auth', 'AuthController@index');
 
 Route::group(['middleware' => ['login']], function () {
     # Variables
     Route::get('/', 'VariablesController@index');
     Route::resource('variables', 'VariablesController');
+    Route::get('auth/continue-session', 'AuthController@continueSession');
 
     # Pages
     Route::get('pages/export', 'PagesController@export')->name('pages.export');
