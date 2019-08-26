@@ -89,6 +89,18 @@ return [
             'unix_socket' => env('DB_SOCKET', ''),
         ],
 
+        'egecrm2' => [
+            'driver'    => 'mysql',
+            'host'      => env('DB_HOST_EGECRM2'),
+            'database'  => env('DB_DATABASE_EGECRM2'),
+            'username'  => env('DB_USERNAME_EGECRM2'),
+            'password'  => env('DB_PASSWORD_EGECRM2'),
+            'port'      => env('DB_PORT', 3306),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ],
+
         'factory' => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST_FACTORY'),
